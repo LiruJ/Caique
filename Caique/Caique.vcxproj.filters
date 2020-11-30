@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Content">
+      <UniqueIdentifier>{9adcd11a-11cb-425b-9146-ca868194b631}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Content">
+      <UniqueIdentifier>{2a2347f1-28c1-4ed9-b683-deff52b2fb00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics">
+      <UniqueIdentifier>{9b69d592-02e0-49d3-a75f-73b8d02537f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{7d3544cb-d86a-4a34-bab7-e5b853651c34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Behaviours">
+      <UniqueIdentifier>{9b6f980f-e698-4029-9e83-16a7f58c7a20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Lua">
+      <UniqueIdentifier>{fce19819-45ac-48c5-ab73-3eb2640860b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObjects">
+      <UniqueIdentifier>{380ec43d-f8d9-41ca-b961-18cdec5534a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObjects">
+      <UniqueIdentifier>{57e5d527-56bc-43c6-a9bd-038429067b6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Behaviours">
+      <UniqueIdentifier>{a694fbe6-de72-492b-8d88-a1c1d945f977}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Lua">
+      <UniqueIdentifier>{7b553713-729f-41e5-a4df-87d2b823c831}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resource Files\Shaders">
+      <UniqueIdentifier>{387f87a3-6c8e-4b03-bb28-f448d8ac818b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Textures">
+      <UniqueIdentifier>{e2c9a3bc-897b-4483-96c6-fac5df84287a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Models">
+      <UniqueIdentifier>{79b19574-1a1a-4fa8-a98d-a1565cc09f86}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ContentManager.cpp">
+      <Filter>Source Files\Content</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRenderer.cpp">
+      <Filter>Source Files\Behaviours</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Behaviours</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptInstance.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Behaviour.cpp">
+      <Filter>Source Files\Behaviours</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneLoader.cpp">
+      <Filter>Source Files\Content</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Content\Shaders\lab1Fragment.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\lab1Vertex.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\lab2Fragment.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\lab2UniformFragment.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\lab2Vertex.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\lab3Vertex.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\lab3Fragment.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\lab4Fragment.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Content\Shaders\lab4Vertex.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Content\Models\Lamp.fbx">
+      <Filter>Resource Files\Models</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Content\Textures\texture2.jpg">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\texture1.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\Lamp.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="Content\Textures\LampGlass.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ContentManager.h">
+      <Filter>Header Files\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Behaviour.h">
+      <Filter>Header Files\Behaviours</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptInstance.h">
+      <Filter>Header Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRenderer.h">
+      <Filter>Header Files\Behaviours</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Behaviours</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneLoader.h">
+      <Filter>Header Files\Content</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

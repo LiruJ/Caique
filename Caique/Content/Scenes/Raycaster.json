@@ -1,0 +1,30 @@
+{
+
+	"GameObjects":
+	[
+		{
+			"Name":"Player",
+			"Components":
+			{
+				"MeshRenderer":
+				{
+					"Model":"Models\\Player"
+				}
+			},
+			"Children":
+			[
+				{
+					"Name":"PlayerCamera",
+					"Components":
+					{
+						"RayCamera":
+						{
+							"FieldOfView":45,
+							"Shader":"Shaders\\Ray"
+						}
+					}
+				}
+			]
+		}
+	]
+}

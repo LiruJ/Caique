@@ -1,0 +1,15 @@
+URGENT
+------
+
+Texture the size of the screen, RGB->XYZ of directions? Texture is passed into compute shader, each pixel of this texture is treated as a direction for a ray.
+
+ENGINE
+------
+GameObjectManager that handles creating and destroying GameObjects
+BehaviourManager that handles creating and destroying Behaviours
+Make ScriptInstance into behaviour
+
+Make transform's child/parent stuff work safely rather than just hoping a transform doesn't exist in multiple objects
+Get/Set functions for all transform's properties
+
+Scene loading from file
