@@ -52,6 +52,12 @@
     <Filter Include="Resource Files\Models">
       <UniqueIdentifier>{79b19574-1a1a-4fa8-a98d-a1565cc09f86}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\DataStructures">
+      <UniqueIdentifier>{522c870d-d7b9-4899-a531-889cfea8cb37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DataStructures">
+      <UniqueIdentifier>{32fcefc1-d827-4a0f-9e24-f0baa8e5ec42}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -93,52 +99,9 @@
     <ClCompile Include="SceneLoader.cpp">
       <Filter>Source Files\Content</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Content\Shaders\lab1Fragment.shader">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="Content\Shaders\lab1Vertex.shader">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="Content\Shaders\lab2Fragment.shader">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="Content\Shaders\lab2UniformFragment.shader">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="Content\Shaders\lab2Vertex.shader">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="Content\Shaders\lab3Vertex.shader">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="Content\Shaders\lab3Fragment.shader">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="Content\Shaders\lab4Fragment.shader">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="Content\Shaders\lab4Vertex.shader">
-      <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="Content\Models\Lamp.fbx">
-      <Filter>Resource Files\Models</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Content\Textures\texture2.jpg">
-      <Filter>Resource Files\Textures</Filter>
-    </Image>
-    <Image Include="Content\Textures\texture1.png">
-      <Filter>Resource Files\Textures</Filter>
-    </Image>
-    <Image Include="Content\Textures\Lamp.png">
-      <Filter>Resource Files\Textures</Filter>
-    </Image>
-    <Image Include="Content\Textures\LampGlass.png">
-      <Filter>Resource Files\Textures</Filter>
-    </Image>
+    <ClCompile Include="GameTimeManager.cpp">
+      <Filter>Source Files\DataStructures</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ContentManager.h">
@@ -176,6 +139,12 @@
     </ClInclude>
     <ClInclude Include="SceneLoader.h">
       <Filter>Header Files\Content</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTimeManager.h">
+      <Filter>Header Files\DataStructures</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTime.h">
+      <Filter>Header Files\DataStructures</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

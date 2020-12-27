@@ -10,12 +10,18 @@
 #include <iostream>
 #include <fstream>
 
-// File includes.
-#include <filesystem>
+// Graphics includes.
+#include "Model.h"
+#include "Mesh.h"
+#include "Material.h"
+#include "GraphicsContext.h"
 
 // LiruGraphics includes.
 #include <VertexArrayObject.h>
 #include <VertexBufferObject.h>
+#include <GraphicsContext.h>
+#include <Texture2D.h>
+#include <ShaderProgram.h>
 
 // glm includes.
 #include <glm/vec4.hpp>
@@ -31,7 +37,7 @@ void Content::ContentManager::LoadModel(const std::string& assetPath, std::share
 	}
 
 	// Create the full file path from the given asset path.
-	std::experimental::filesystem::path fullFilePath = createFullPath(assetPath);
+	std::filesystem::path fullFilePath = createFullPath(assetPath);
 
 	// Load the model file.
 	nlohmann::json modelData;
@@ -41,10 +47,10 @@ void Content::ContentManager::LoadModel(const std::string& assetPath, std::share
 	nlohmann::json& meshesData = modelData[Builders::MeshDataName];
 
 	// Create a vector to hold the meshes.
-	std::vector<Graphics::Mesh> meshes;
+	std::vector<std::shared_ptr<Graphics::Mesh>> meshes;
 
 	// Go over each mesh and load it.
-	for (int meshIndex = 0; meshIndex < meshesData.size(); meshIndex++)
+	for (size_t meshIndex = 0; meshIndex < meshesData.size(); meshIndex++)
 	{
 		// Create the vertex array object.
 		std::shared_ptr<Graphics::VertexArrayObject> vertexArrayObject = std::make_shared<Graphics::VertexArrayObject>();
@@ -76,7 +82,7 @@ void Content::ContentManager::LoadModel(const std::string& assetPath, std::share
 		LoadMaterial(meshesData[meshIndex][Builders::MeshMaterialDataName], material);
 
 		// Push the mesh into the vector of meshes used for the model.
-		meshes.push_back(Graphics::Mesh(graphicsContext, indices, vertexArrayObject, material));
+		meshes.push_back(std::make_shared<Graphics::Mesh>(graphicsContext, indices, vertexArrayObject, material));
 	}
 
 	// Set the model.
@@ -97,7 +103,7 @@ void Content::ContentManager::LoadTexture(const std::string& assetPath, std::sha
 	}
 
 	// Create the full file path from the given asset path.
-	std::experimental::filesystem::path fullFilePath = createFullPath(assetPath);
+	std::filesystem::path fullFilePath = createFullPath(assetPath);
 
 	// Load the texture file.
 	nlohmann::json textureData;
@@ -129,7 +135,7 @@ void Content::ContentManager::LoadMaterial(const std::string& assetPath, std::sh
 	}
 
 	// Create the full file path from the given asset path.
-	std::experimental::filesystem::path fullFilePath = createFullPath(assetPath);
+	std::filesystem::path fullFilePath = createFullPath(assetPath);
 
 	// Load the material file.
 	nlohmann::json materialData;
@@ -140,16 +146,15 @@ void Content::ContentManager::LoadMaterial(const std::string& assetPath, std::sh
 	LoadShader(materialData[Builders::MaterialShaderName], shader);
 
 	// Load the textures.
-	std::map<char, std::weak_ptr<Graphics::Texture2D>> textures;
-	for (char textureIndex = 0; textureIndex < materialData[Builders::MaterialTexturesName].size(); textureIndex++)
+	std::map<char, std::shared_ptr<Graphics::Texture2D>> textures;
+	for (size_t textureIndex = 0; textureIndex < materialData[Builders::MaterialTexturesName].size(); textureIndex++)
 	{
 		// Yeah I know this line looks weird, but essentially it's telling the json parser to read as an int, then turns that int into a char.
 		char index = (char)(int)materialData[Builders::MaterialTexturesName][textureIndex][0];
 
 		// Load the texture as an asset.
-		std::shared_ptr<Graphics::Texture2D> textureShared;
-		LoadTexture(materialData[Builders::MaterialTexturesName][textureIndex][1], textureShared);
-		std::weak_ptr<Graphics::Texture2D> texture = textureShared;
+		std::shared_ptr<Graphics::Texture2D> texture;
+		LoadTexture(materialData[Builders::MaterialTexturesName][textureIndex][1], texture);
 
 		// Add to the map.
 		textures.emplace(index, texture);
@@ -157,7 +162,7 @@ void Content::ContentManager::LoadMaterial(const std::string& assetPath, std::sh
 
 	// Load the colours.
 	std::map<char, glm::vec4> colours;
-	for (char colourIndex = 0; colourIndex < materialData[Builders::MaterialColoursName].size(); colourIndex++)
+	for (size_t colourIndex = 0; colourIndex < materialData[Builders::MaterialColoursName].size(); colourIndex++)
 	{
 		char index = (char)(int)materialData[Builders::MaterialColoursName][colourIndex][0];
 
@@ -190,7 +195,7 @@ void Content::ContentManager::LoadShader(const std::string& assetPath, std::shar
 	}
 
 	// Create the full file path from the given asset path.
-	std::experimental::filesystem::path fullFilePath = createFullPath(assetPath);
+	std::filesystem::path fullFilePath = createFullPath(assetPath);
 
 	// Load the shader file.
 	nlohmann::json shaderData;
@@ -201,9 +206,9 @@ void Content::ContentManager::LoadShader(const std::string& assetPath, std::shar
 	std::string fragmentSource = shaderData[Builders::FragmentSourceName];
 	std::string texturesName = (shaderData.contains(Builders::TexturesDataName) && !shaderData[Builders::TexturesDataName].is_null()) ? shaderData[Builders::TexturesDataName] : "";
 	std::string coloursName = (shaderData.contains(Builders::ColoursDataName) && !shaderData[Builders::ColoursDataName].is_null()) ? shaderData[Builders::ColoursDataName] : "";
-	std::string modelMatrixName = shaderData[Builders::ModelMatrixName];
-	std::string projectionMatrixName = shaderData[Builders::ProjectionMatrixName];
-	std::string viewMatrixName = shaderData[Builders::ViewMatrixName];
+	std::string modelMatrixName = (shaderData.contains(Builders::ModelMatrixName) && !shaderData[Builders::ModelMatrixName].is_null()) ? shaderData[Builders::ModelMatrixName] : "";
+	std::string projectionMatrixName = (shaderData.contains(Builders::ProjectionMatrixName) && !shaderData[Builders::ProjectionMatrixName].is_null()) ? shaderData[Builders::ProjectionMatrixName] : "";
+	std::string viewMatrixName = (shaderData.contains(Builders::ViewMatrixName) && !shaderData[Builders::ViewMatrixName].is_null()) ? shaderData[Builders::ViewMatrixName] : "";
 	
 	// Set the shader.
 	shader = std::make_shared<Graphics::ShaderProgram>(vertexSource, fragmentSource, texturesName, coloursName, modelMatrixName, projectionMatrixName, viewMatrixName);
@@ -215,7 +220,7 @@ void Content::ContentManager::LoadShader(const std::string& assetPath, std::shar
 	loadedShaders.emplace(assetPath, shader);
 }
 
-void Content::ContentManager::loadAssetFile(const std::experimental::filesystem::path& filePath, nlohmann::json& outputData)
+void Content::ContentManager::loadAssetFile(const std::filesystem::path& filePath, nlohmann::json& outputData)
 {
 	// Load the file.
 	std::ifstream fileStream(filePath);

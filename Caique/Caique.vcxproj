@@ -77,6 +77,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Libraries\SDL\include;$(SolutionDir)LiruGraphics;$(SolutionDir)Libraries\glm;$(SolutionDir)LiruPhysics;$(SolutionDir)..\Libraries\LiruContent;$(SolutionDir)Libraries\Json;$(SolutionDir)Libraries\Lua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -94,6 +95,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Libraries\SDL\include;$(SolutionDir)LiruGraphics;$(SolutionDir)Libraries\glm;$(SolutionDir)LiruPhysics;$(SolutionDir)..\Libraries\LiruContent;$(SolutionDir)Libraries\Json;$(SolutionDir)Libraries\Lua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -113,6 +115,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Libraries\SDL\include;$(SolutionDir)LiruGraphics;$(SolutionDir)Libraries\glm;$(SolutionDir)LiruPhysics;$(SolutionDir)..\Libraries\LiruContent;$(SolutionDir)Libraries\Json;$(SolutionDir)Libraries\Lua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -134,6 +137,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Libraries\SDL\include;$(SolutionDir)LiruGraphics;$(SolutionDir)Libraries\glm;$(SolutionDir)LiruPhysics;$(SolutionDir)..\Libraries\LiruContent;$(SolutionDir)Libraries\Json;$(SolutionDir)Libraries\Lua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,6 +155,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ContentManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameTimeManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -162,56 +167,12 @@
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\Models\Lamp.fbx">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Content\Shaders\lab1Fragment.shader">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Content\Shaders\lab1Vertex.shader">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Content\Shaders\lab2Fragment.shader">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Content\Shaders\lab2UniformFragment.shader">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Content\Shaders\lab2Vertex.shader">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Content\Shaders\lab3Fragment.shader">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Content\Shaders\lab3Vertex.shader">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Content\Shaders\lab4Fragment.shader">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-    <None Include="Content\Shaders\lab4Vertex.shader">
-      <DeploymentContent>true</DeploymentContent>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Content\Textures\Lamp.png">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="Content\Textures\LampGlass.png">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="Content\Textures\texture1.png">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-    <Image Include="Content\Textures\texture2.jpg">
-      <DeploymentContent>true</DeploymentContent>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Behaviour.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ContentManager.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameTime.h" />
+    <ClInclude Include="GameTimeManager.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshRenderer.h" />

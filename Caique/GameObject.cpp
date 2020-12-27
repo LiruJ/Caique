@@ -1,9 +1,15 @@
 #include "GameObject.h"
 
-// Forward declare includes.
+// Behaviour includes.
 #include "Behaviour.h"
 #include "Transform.h"
 #include "Camera.h"
+
+// Content includes.
+#include "ContentManager.h"
+
+// Scene includes.
+#include "Scene.h"
 
 void GameObjects::GameObject::PreInitialise()
 {

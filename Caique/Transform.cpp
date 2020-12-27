@@ -7,12 +7,9 @@ GameObjects::Transform::Transform(std::weak_ptr<GameObjects::GameObject> owningG
 {
 	gameObject = owningGameObject;
 
-	//localMatrix = glm::identity<glm::mat4>();
 	position = glm::vec3(0, 0, 0);
 	scale = glm::vec3(1, 1, 1);
 	rotation = glm::identity<glm::quat>();
-	//rotation = glm::rotate(rotation, glm::radians(5.0f), glm::vec3(0, 1, 0));
-	
 }
 
 glm::mat4 GameObjects::Transform::GetLocalMatrix()
@@ -24,6 +21,8 @@ glm::mat4 GameObjects::Transform::GetLocalMatrix()
 		localMatrix = glm::translate(localMatrix, position);
 		localMatrix = glm::scale(localMatrix, scale);
 		localMatrix *= glm::mat4_cast(rotation);
+		
+		invertedLocalMatrix = glm::inverse(localMatrix);
 
 		isLocalDirty = false;
 	}
@@ -31,43 +30,56 @@ glm::mat4 GameObjects::Transform::GetLocalMatrix()
 	return localMatrix;
 }
 
+glm::mat4 GameObjects::Transform::GetInvertedLocalMatrix()
+{
+	if (isLocalDirty) GetLocalMatrix();
+	return invertedLocalMatrix;
+}
+
 glm::mat4 GameObjects::Transform::GetGlobalMatrix()
 {
-	// Get self reference and copy shared pointer to currentTransform.
-
-
-
-	
 	if (isGlobalDirty)
 	{
-
 		// Get the parent reference.
 		std::shared_ptr<GameObjects::Transform> parentTransform = parent.lock();
 
 		if (parentTransform != nullptr) globalMatrix = parentTransform->GetGlobalMatrix() * GetLocalMatrix();
 		else globalMatrix = GetLocalMatrix();
 
+		invertedGlobalMatrix = glm::inverse(globalMatrix);
+
 		isGlobalDirty = false;
 	}
 
 	return globalMatrix;
+}
 
-	//// Follow the parents upwards until the root matrix is found, then begin calculating from there.
-	//std::shared_ptr<GameObjects::Transform> currentTransform = selfReference;
-	//glm::mat4 currentGlobalMatrix = glm::identity<glm::mat4>();
-	//do
-	//{
-	//	currentGlobalMatrix = currentTransform->GetLocalMatrix() * currentGlobalMatrix;
-	//	currentTransform = currentTransform->parent.lock();
-	//}
-	//while (currentTransform != nullptr);
-
-	//return currentGlobalMatrix;
+glm::mat4 GameObjects::Transform::GetInvertedGlobalMatrix()
+{
+	if (isGlobalDirty) GetGlobalMatrix();
+	return invertedGlobalMatrix;
 }
 
 std::shared_ptr<GameObjects::GameObject> GameObjects::Transform::GetGameObject() { return gameObject.lock(); }
 
 glm::vec3 GameObjects::Transform::GetLocalPosition() { return position; }
+
+glm::vec3 GameObjects::Transform::GetGlobalPosition()
+{
+	return glm::vec3(GetInvertedGlobalMatrix() * glm::vec4(GetLocalPosition(), 1));
+}
+
+glm::quat GameObjects::Transform::GetLocalRotation()
+{
+	return rotation;
+}
+
+void GameObjects::Transform::RotateAround(const float angle, glm::vec3 axis)
+{
+	rotation = glm::rotate(rotation, angle, axis);
+	isLocalDirty = true;
+	dirtyGlobal();
+}
 
 void GameObjects::Transform::AddChild(std::shared_ptr<GameObjects::Transform> child)
 {
@@ -83,6 +95,6 @@ void GameObjects::Transform::dirtyGlobal()
 	isGlobalDirty = true;
 
 	// Do the same for all children.
-	for (int i = 0; i < children.size(); i++)
+	for (size_t i = 0; i < children.size(); i++)
 		children.at(i)->dirtyGlobal();
 }

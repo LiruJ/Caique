@@ -1,13 +1,11 @@
 #pragma once
 
-// GameObject includes.
-#include "GameObject.h"
-
 // Type includes.
 #include <memory>
 
-// Content includes.
-#include "ContentManager.h"
+// Foward declarations.
+namespace GameObjects { class GameObject; }
+namespace Content { class ContentManager; }
 
 namespace Behaviours
 {
@@ -18,7 +16,7 @@ namespace Behaviours
 		void Setup(std::weak_ptr<GameObjects::GameObject> gameObject, std::weak_ptr<Content::ContentManager> contentManager);
 
 		virtual void PreInitialise() {}
-		virtual void Initialise() {}
+		void Initialise() {}
 		virtual void PostInitialise() {}
 
 		virtual void Update() {}
@@ -31,6 +29,5 @@ namespace Behaviours
 		std::weak_ptr<GameObjects::GameObject> gameObject;
 		
 		std::weak_ptr<Content::ContentManager> contentManager;
-
 	};
 }

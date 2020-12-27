@@ -60,59 +60,122 @@ void Graphics::ShaderProgram::Link()
 	unlinkedShaders.clear();
 }
 
-void Graphics::ShaderProgram::SetUniform(const std::string& name, const int value)
+bool Graphics::ShaderProgram::SetUniform(const std::string& name, const int value)
 {
 	// Start using this shader.
 	SetCurrent();
 
-	// Get the uniform ID.
-	int uniformID = getUniformLocation(name);
+	// Get the uniform location, if it exists.
+	int uniformID;
+	bool uniformValid = getUniformLocation(name, uniformID);
 
-	// Set the value of the uniform.
-	glUniform1i(uniformID, value);
+	// If the uniform exists, set the data.
+	if (uniformValid)
+	{
+		// Set the value of the uniform.
+		glUniform1i(uniformID, value);
 
-	// Stop using this shader.
-	ResetCurrent();
+		// Stop using this shader.
+		ResetCurrent();
+	}
+
+	// Return the result of the get operation.
+	return uniformValid;
 }
 
-void Graphics::ShaderProgram::SetUniform(const std::string& name, const float value)
+bool Graphics::ShaderProgram::SetUniform(const std::string& name, const float value)
 {
 	SetCurrent();
-	int uniformID = getUniformLocation(name);
-	glUniform1f(uniformID, value);
-	ResetCurrent();
+
+	// Get the uniform location, if it exists.
+	int uniformID;
+	bool uniformValid = getUniformLocation(name, uniformID);
+
+	// If the uniform exists, set the data.
+	if (uniformValid)
+	{
+		glUniform1f(uniformID, value);
+		ResetCurrent();
+	}
+
+	// Return the result of the get operation.
+	return uniformValid;
 }
 
-void Graphics::ShaderProgram::SetUniform(const std::string& name, const glm::vec2 value)
+bool Graphics::ShaderProgram::SetUniform(const std::string& name, const glm::vec2 value)
 {
 	SetCurrent();
-	int uniformID = getUniformLocation(name);
-	glUniform2f(uniformID, value.x, value.y);
-	ResetCurrent();
+
+	// Get the uniform location, if it exists.
+	int uniformID;
+	bool uniformValid = getUniformLocation(name, uniformID);
+
+	// If the uniform exists, set the data.
+	if (uniformValid)
+	{
+		glUniform2f(uniformID, value.x, value.y);
+		ResetCurrent();
+	}
+
+	// Return the result of the get operation.
+	return uniformValid;
 }
 
-void Graphics::ShaderProgram::SetUniform(const std::string& name, const glm::vec3 value)
+bool Graphics::ShaderProgram::SetUniform(const std::string& name, const glm::vec3 value)
 {
 	SetCurrent();
-	int uniformID = getUniformLocation(name);
-	glUniform3f(uniformID, value.x, value.y, value.z);
-	ResetCurrent();
+
+	// Get the uniform location, if it exists.
+	int uniformID;
+	bool uniformValid = getUniformLocation(name, uniformID);
+
+	// If the uniform exists, set the data.
+	if (uniformValid)
+	{
+		glUniform3f(uniformID, value.x, value.y, value.z);
+		ResetCurrent();
+	}
+
+	// Return the result of the get operation.
+	return uniformValid;
 }
 
-void Graphics::ShaderProgram::SetUniform(const std::string& name, const glm::vec4 value)
+bool Graphics::ShaderProgram::SetUniform(const std::string& name, const glm::vec4 value)
 {
 	SetCurrent();
-	int uniformID = getUniformLocation(name);
-	glUniform4f(uniformID, value.x, value.y, value.z, value.w);
-	ResetCurrent();
+
+	// Get the uniform location, if it exists.
+	int uniformID;
+	bool uniformValid = getUniformLocation(name, uniformID);
+
+	// If the uniform exists, set the data.
+	if (uniformValid)
+	{
+		glUniform4f(uniformID, value.x, value.y, value.z, value.w);
+		ResetCurrent();
+	}
+
+	// Return the result of the get operation.
+	return uniformValid;
 }
 
-void Graphics::ShaderProgram::SetUniform(const std::string& name, const glm::mat4 value)
+bool Graphics::ShaderProgram::SetUniform(const std::string& name, const glm::mat4 value)
 {
 	SetCurrent();
-	int uniformID = getUniformLocation(name);
-	glUniformMatrix4fv(uniformID, 1, GL_FALSE, glm::value_ptr(value));
-	ResetCurrent();
+	
+	// Get the uniform location, if it exists.
+	int uniformID;
+	bool uniformValid = getUniformLocation(name, uniformID);
+
+	// If the uniform exists, set the data.
+	if (uniformValid)
+	{
+		glUniformMatrix4fv(uniformID, 1, GL_FALSE, glm::value_ptr(value));
+		ResetCurrent();
+	}
+
+	// Return the result of the get operation.
+	return uniformValid;
 }
 
 // Sets this program as the current via glUseProgram.
@@ -143,14 +206,14 @@ void Graphics::ShaderProgram::addShader(const int type, const std::string& sourc
 	glCompileShader(shaderID);
 
 	// Check to see that the compilation was successful.
-	int compilationResult = 0;
+	GLint compilationResult = 0;
 	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &compilationResult);
-	if (!compilationResult)
+	if (compilationResult == GL_FALSE)
 	{
 		// Get the error message from the GPU.
 		int messageLength = 0;
-		char message[1024];
-		glGetShaderInfoLog(shaderID, 1024, &messageLength, message);
+		char message[8192];
+		glGetShaderInfoLog(shaderID, 8192, &messageLength, message);
 
 		// Throw an exception with the error message.
 		throw std::exception(message);
@@ -163,24 +226,28 @@ void Graphics::ShaderProgram::addShader(const int type, const std::string& sourc
 	glAttachShader(graphicsDeviceID, shaderID);
 }
 
-int Graphics::ShaderProgram::getUniformLocation(const std::string& name)
+bool Graphics::ShaderProgram::getUniformLocation(const std::string& name, int& uniformID)
 {
 	// Try get the uniform ID from the RAM map.
 	std::map<std::string, int>::iterator foundItem = uniforms.find(name);
 
-	// If the uniform was found in the map, return it.
-	if (foundItem != uniforms.end()) return foundItem->second;
+	// If the uniform was found in the map, return true.
+	if (foundItem != uniforms.end())
+	{
+		uniformID = foundItem->second;
+		return true;
+	}
 
 	// Otherwise, attempt to get the uniform from the GPU.
-	int uniformID = glGetUniformLocation(graphicsDeviceID, name.c_str());
+	uniformID = glGetUniformLocation(graphicsDeviceID, name.c_str());
 
-	// If the given ID is above -1 (valid), add it to the map and return it.
+	// If the given ID is above -1 (valid), add it to the map and return true.
 	if (uniformID > -1)
 	{
 		uniforms.emplace(name, uniformID);
-		return uniformID;
+		return true;
 	}
 
-	// Otherwise, throw an exception.
-	throw std::exception("Given uniform name could not be associated to an ID.");
+	// Otherwise, return false.
+	return false;
 }

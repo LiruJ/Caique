@@ -1,31 +1,34 @@
 #include "Material.h"
 
+// Graphics includes.
+#include "ShaderProgram.h"
+#include "Texture2D.h"
+
 void Graphics::Material::InitialiseShader(const glm::mat4 modelMatrix, const glm::mat4 projectionMatrix, const glm::mat4 viewMatrix)
 {
 	// Set the matrices.
-	std::shared_ptr<Graphics::ShaderProgram> shaderProgram = shader.lock();
-	shaderProgram->SetModelMatrixUniform(modelMatrix);
-	shaderProgram->SetProjectionMatrixUniform(projectionMatrix);
-	shaderProgram->SetViewMatrixUniform(viewMatrix);
+	shader->SetModelMatrixUniform(modelMatrix);
+	shader->SetProjectionMatrixUniform(projectionMatrix);
+	shader->SetViewMatrixUniform(viewMatrix);
 
 	// Set each texture to active based on its index.
-	for (std::pair<char, std::weak_ptr<Graphics::Texture2D>> textureByKey : textures)
+	for (std::pair<char, std::shared_ptr<Graphics::Texture2D>> textureByKey : textures)
 	{
 		// Set the uniform in the shader.
-		shaderProgram->SetTextureUniform(textureByKey.first);
+		shader->SetTextureUniform(textureByKey.first);
 
 		// Set the texture to active.
-		textureByKey.second.lock()->SetCurrent(textureByKey.first);
+		textureByKey.second->SetCurrent(textureByKey.first);
 	}
 
 	// Set each colour.
-	for (std::pair<char, glm::vec4> colourByKey : colours)
-		shaderProgram->SetColourUniform(colourByKey.first, colourByKey.second);
+	for (const std::pair<char, glm::vec4>& colourByKey : colours)
+		shader->SetColourUniform(colourByKey.first, colourByKey.second);
 }
 
 void Graphics::Material::ResetShader()
 {
 	// Reset each texture.
-	for (std::pair<char, std::weak_ptr<Graphics::Texture2D>> textureByKey : textures)
-		textureByKey.second.lock()->ResetCurrent(textureByKey.first);
+	for (std::pair<char, std::shared_ptr<Graphics::Texture2D>> textureByKey : textures)
+		textureByKey.second->ResetCurrent(textureByKey.first);
 }

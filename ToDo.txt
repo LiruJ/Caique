@@ -1,15 +1,42 @@
 URGENT
 ------
 
-Texture the size of the screen, RGB->XYZ of directions? Texture is passed into compute shader, each pixel of this texture is treated as a direction for a ray.
+Copy CPU-rendering scene over to GPU project for video, remove after as it's not too useful
+Complete segment about the GPU renderer, edit it all down
+Ensure code runs properly, package everything up for handin. Ensure solution actually opens and isn't dependent on random things.
+Package.
+	Code.
+	Video.
+	Built version.
+
+Hand in zip file.
+Die.
+
+
+
+talk about lack of anti-aliasing, maybe research ways to do it?
+-Talk about how the spheres exist in world-space as GameObjects the same as traditional meshes.
+	Talk about how the depth buffer could be used to composite the ray-cast scene over the traditionally rendered scene to have elements that are raycast.
+	-Talk about how the positions of the light and the spheres can be moved in-engine which reflects where they're rendered with the raycaster.
+Talk about limitations of the data, how the data must be in a certain format and the limits of uniform buffers. Also how each shape would need its own separate pass.
+	Also talk about the O(n²) complexity, how each sphere that's added exponentially slows the raycaster down.
+	Talk about the same thing with how each light would require an entire pass.
+
+sources:
+some stuff about GLSL's uniform buffer limit
+Maybe research RTX and make a comparison?
+research other ways to split the CPU one up
+research ways to anti-alias as the scene is being drawn
+research ways to do the depth buffer thing
 
 ENGINE
 ------
 GameObjectManager that handles creating and destroying GameObjects
 BehaviourManager that handles creating and destroying Behaviours
 Make ScriptInstance into behaviour
+Scene loading from file
 
 Make transform's child/parent stuff work safely rather than just hoping a transform doesn't exist in multiple objects
 Get/Set functions for all transform's properties
 
-Scene loading from file
+

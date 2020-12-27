@@ -2,6 +2,7 @@
 
 // Graphics includes.
 #include <glew.h>
+#include "VertexBufferObject.h"
 
 Graphics::VertexArrayObject::VertexArrayObject()
 {

@@ -6,19 +6,19 @@
 #include <string>
 #include <typeindex>
 
-// Content includes.
-#include "ContentManager.h"
-
 // Foward declarations.
+namespace Content { class ContentManager; }
 namespace Behaviours { class Behaviour; class Camera; }
+
 namespace GameObjects
 {
+	class Scene;
 	class Transform;
 
 	class GameObject : public std::enable_shared_from_this<GameObjects::GameObject>
 	{
 	public:
-		GameObject(std::weak_ptr<Content::ContentManager> contentManager) : contentManager(contentManager) {}
+		GameObject(std::weak_ptr<GameObjects::Scene> scene, std::weak_ptr<Content::ContentManager> contentManager) : contentManager(contentManager), scene(scene) {}
 		GameObject() {}
 
 		template<typename T>
@@ -36,8 +36,8 @@ namespace GameObjects
 			return nullptr;
 		}
 
-		template<typename T>
-		std::shared_ptr<T> AddComponent()
+		template<typename T, typename ... Args>
+		std::shared_ptr<T> AddComponent(Args&&... args)
 		{
 			// Create a shared pointer from the weak.
 			std::shared_ptr<T> behaviour = std::make_shared<T>();
@@ -45,7 +45,7 @@ namespace GameObjects
 			behaviour->Setup(weak_from_this(), contentManager);
 
 			behaviour->PreInitialise();
-			behaviour->Initialise();
+			behaviour->Initialise(std::forward<Args>(args)...);
 			behaviour->PostInitialise();
 
 			behavioursByTypeIndex.emplace(typeid(T), behaviour);
@@ -63,11 +63,15 @@ namespace GameObjects
 		void Draw(Behaviours::Camera& camera);
 
 		std::shared_ptr<GameObjects::Transform> GetTransform();
+
+		std::shared_ptr<GameObjects::Scene> GetScene() { return scene.lock(); }
 	private:
 		std::map<std::type_index, std::shared_ptr<Behaviours::Behaviour>> behavioursByTypeIndex;
 
 		std::shared_ptr<GameObjects::Transform> transform;
 
 		std::weak_ptr<Content::ContentManager> contentManager;
+
+		std::weak_ptr<GameObjects::Scene> scene;
 	};
 }

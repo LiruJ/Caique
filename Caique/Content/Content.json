@@ -3,35 +3,50 @@
    "Models":[
       {
          "Name":"Lamp",
-         "RelativePath":"Models/Lamp.fbx",
+         "RelativePath":"Models\\Lamp.fbx",
          "Positions":[0,"in_Positions"],
          "UVs":[1,"in_UVs"],
          "Materials":[
-            "Materials/LampIron",
-            "Materials/LampGlass",
-            "Materials/Brass"
+            "Materials\\LampIron",
+            "Materials\\LampGlass",
+            "Materials\\Brass"
          ]
+      },
+      {
+      	"Name":"Desk",
+      	"RelativePath":"Models\\Desk.fbx",
+      	"Positions":[0,"in_Positions"],
+        "UVs":[1,"in_UVs"],
+        "Materials":[
+        	"Materials\\Desk",
+        	"Materials\\Brass"
+        ]
       }
    ],
    "Textures":[
       {
          "Name":"LampIron",
-         "RelativePath":"Textures/LampIron.png",
+         "RelativePath":"Textures\\LampIron.png",
          "FilterMode":"Closest"
       },
       {
          "Name":"LampGlass",
-         "RelativePath":"Textures/LampGlass.png",
+         "RelativePath":"Textures\\LampGlass.png",
          "FilterMode":"Closest"
+      },
+      {
+      	"Name":"Desk",
+      	"RelativePath":"Textures\\Desk.png",
+      	"FilterMode":"Closest"
       }
    ],
    "Materials":[
       {
          "Name":"LampIron",
-         "RelativePath":"Materials/LampIron",
-         "Shader":"Shaders/DefaultShader",
+         "RelativePath":"Materials\\LampIron",
+         "Shader":"Shaders\\DefaultShader",
          "Textures":[
-            [0,"Textures/LampIron"]
+            [0,"Textures\\LampIron"]
          ],
          "Colours":[
             [0,[0.14899999,0.14899999,0.14899999,1]]
@@ -39,28 +54,39 @@
       },
       {
          "Name":"Brass",
-         "RelativePath":"Materials/Brass",
-         "Shader":"Shaders/DefaultShaderColour",
+         "RelativePath":"Materials\\Brass",
+         "Shader":"Shaders\\DefaultShaderColour",
          "Colours":[
             [0,[0.70980394,0.6509804,0.25882354,1]]
          ]
       },
       {
          "Name":"LampGlass",
-         "RelativePath":"Materials/LampGlass",
-         "Shader":"Shaders/DefaultShader",
+         "RelativePath":"Materials\\LampGlass",
+         "Shader":"Shaders\\DefaultShader",
          "Textures":[
-            [0,"Textures/LampGlass"]
+            [0,"Textures\\LampGlass"]
          ],
          "Colours":[
-            [0,[1,1,1,0.78431374]]
+            [0,[0.5,0.1,0.1,0.78431374]]
          ]
+      },
+      {
+      	"Name":"Desk",
+      	"RelativePath":"Materials\\Desk",
+        "Shader":"Shaders\\DefaultShader",
+        "Textures":[
+           [0,"Textures\\Desk"]
+        ],
+        "Colours":[
+			[0,[1,1,1,1]]
+        ]
       }
    ],
    "Shaders":[
       {
          "Name":"DefaultShader",
-         "RelativePath":"Shaders/DefaultShader",
+         "RelativePath":"Shaders\\DefaultShader",
          "ModelMatrix":"u_ModelMatrix",
          "ProjectionMatrix":"u_ProjectionMatrix",
          "ViewMatrix":"u_ViewMatrix",
@@ -68,20 +94,20 @@
          "UVs":"in_UVs",
          "Textures":"u_Texture",
          "Colours":"u_Colour",
-         "VertexPath":"Shaders/DefaultVertex.shader",
-         "FragmentPath":"Shaders/DefaultFragment.shader"
+         "VertexPath":"Shaders\\DefaultVertex.shader",
+         "FragmentPath":"Shaders\\DefaultFragment.shader"
       },
       {
          "Name":"DefaultShaderColour",
-         "RelativePath":"Shaders/DefaultShaderColour",
+         "RelativePath":"Shaders\\DefaultShaderColour",
          "ModelMatrix":"u_ModelMatrix",
          "ProjectionMatrix":"u_ProjectionMatrix",
          "ViewMatrix":"u_ViewMatrix",
          "Positions":"in_Positions",
          "UVs":"in_UVs",
          "Colours":"u_Colour",
-         "VertexPath":"Shaders/DefaultVertex.shader",
-         "FragmentPath":"Shaders/DefaultFragmentColour.shader"
+         "VertexPath":"Shaders\\DefaultVertex.shader",
+         "FragmentPath":"Shaders\\DefaultFragmentColour.shader"
       }
    ]
 }

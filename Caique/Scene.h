@@ -4,18 +4,14 @@
 #include <memory>
 #include <vector>
 
-// GameObject includes.
-#include "GameObject.h"
-
-// Content includes.
-#include "ContentManager.h"
-
-// Graphical includes.
-#include "Camera.h"
+// Foward declarations.
+namespace Content { class ContentManager; }
+namespace Behaviours { class Camera; }
 
 namespace GameObjects
 {
-	class Scene
+	class GameObject;
+	class Scene : public std::enable_shared_from_this<GameObjects::Scene>
 	{
 	public:
 		static std::shared_ptr<GameObjects::Scene> CreateScene(std::weak_ptr<Content::ContentManager> contentManager);

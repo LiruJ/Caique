@@ -1,0 +1,46 @@
+For this assignment, I decided to improve upon my raycaster from last year.
+
+Unless otherwise specified, all benchmarks were made on my own PC.
+The graphics card is a GTX 1060 6GB, rendering to 3 1080p monitors, the main one being 144Hz.
+The CPU is an AMD FX-8150 which has 8 logical cores at 3.9MHz.
+There is 16GB of DDR3 RAM at 533MHz.
+I am running a basic Windows 10 OS.
+Every render is being output to a non-fullscreened window which is 1920 by 1000 and is running on my 144Hz monitor.
+I am using StreamLabs OBS to record which impacts performance. Any video footage of the renders is therefore not fully representitive of the actual render.
+
+The original raycaster already had multi-threading support, but the way it was implemented was very inefficient. Renders could be larger than the resolution, and would be scaled down to act as anti-aliasing, this is why renders can be x2, x4, x8, or x16 resolution.
+Each thread was given a portion of the screen to render based on how many threads would be used. For example, if rendering with 3 threads, each thread would be responsible for a third of the screen.
+This did reduce the render time quite significantly. Rendering at 2x resolution went from 13300ms with 1 thread to 4500ms with 8 threads.
+
+However, there is one large flaw with this method.
+A ray that hits nothing requires fewer calculations than a ray that hits a sphere, and if the hit sphere is reflective then the ray becomes even more expensive to calculate.
+Therefore, the sections with the greatest number of visible spheres would require longer to render than those with fewer. Some sections of the screen may even have no spheres at all.
+This means that if a thread is given a section of the screen with no spheres, it would be done faster than any other thread and simply sit idle until the other threads are finished.
+In the worst case scenario, the screen could be split into 8 sections with only 1 of those sections having spheres, this would force a huge amount of the calculations on a single thread while every other thread finishes quickly.
+In general, this method fails because the slowest thread is always the one to slow down the entire render.
+
+The new system takes a different approach, similar to interlacing. For example, with 4 threads, each thread renders every row 4 rows apart with an offset based on the thread's index.
+The 0th thread takes the rows 0, 4, 8, 12, and so on. The 1st thread takes the rows 1, 5, 9, 13. Each thread continues until its row is greater than or equal to the screen's height.
+This system ensures that each thread has a roughly equal workload, as it was quite likely that a sphere could only be in a certain section of the screen, but near impossible for it to only exist in a single row.
+Downsampling was also multi-threaded using the same method, which results in a linear increase in speed as each sample operation is the same complexity.
+
+Other improvements allowed for an even greater speed increase, as well as better benchmarks.
+Limitations of last year's assignment meant that every pixel had to be drawn individually which required every pixel to wait for the GPU to handle the request.
+This took up roughly 1300ms of the render time, which is a third of the render time at 2x resolution with 8 threads.
+The colour buffer was made to be a contiguous array of colours, which was then uploaded to an SDL surface and given to the GPU in one large chunk. This brought the drawing code from 1300ms to 22ms.
+Benchmarks were changed to give a better breakdown of the rendering process. The old system gave a single time from the start of the render to the end result. The new system gives a time for rendering, sampling, and uploading.
+Due to this, comparisons between the two are somewhat difficult to make.
+
+Using 8 threads and 2x resolution, the new system renders the rays to colour data in 1900ms, downsamples in 100ms using the 8 threads again, and uploads the colour data to the GPU in 22ms. Bringing the total to around 2000ms.
+To help compare to the old system, the upload time can be considered to be 1300ms so that it is equal between the two methods, bringing the total to around 3300ms. 
+This still makes the new system faster by around 1200ms with the same settings.
+
+For further comparisons, a fully GPU-driven raycaster was also created. This is built into a game engine created for another project, and so can utilise entity component systems and content pipelines.
+The spheres are all created as GameObjects as any other object would be within the engine. These are all managed by a SphereManager object which collates the spheres into a vector.
+
+To start with, a vertex buffer object is created. This object creates a rectangle in screen-space to fill the whole view. The vertex shader simply returns the vertex position, as no transformations are required.
+
+The fragment shader is where the actual rendering takes place, and the code is mainly the same as the CPU renderer but with adjustments to conform to the restrictions of the shader language.
+The fragment shader takes the screen dimensions, view and projection matrices, background colour, sphere count and data, number of reflections, and light data as uniforms. These are all taken from other entities within the engine.
+As the fragment shader runs on every visible pixel of the calculated fragments, which is the entire screen, this shader essentially runs for every pixel on the screen.
+A ray is calculated for each pixel, using gl_FragCoord, the screen dimensions, and the projection and view matrices of the camera.

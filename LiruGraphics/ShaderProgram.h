@@ -23,20 +23,20 @@ namespace Graphics
 
 		void Link();
 
-		void SetUniform(const std::string& name, const int value);
-		void SetUniform(const std::string& name, const float value);
-		void SetUniform(const std::string& name, const glm::vec2 value);
-		void SetUniform(const std::string& name, const glm::vec3 value);
-		void SetUniform(const std::string& name, const glm::vec4 value);
-		void SetUniform(const std::string& name, const glm::mat4 value);
+		bool SetUniform(const std::string& name, const int value);
+		bool SetUniform(const std::string& name, const float value);
+		bool SetUniform(const std::string& name, const glm::vec2 value);
+		bool SetUniform(const std::string& name, const glm::vec3 value);
+		bool SetUniform(const std::string& name, const glm::vec4 value);
+		bool SetUniform(const std::string& name, const glm::mat4 value);
 
-		void SetModelMatrixUniform(const glm::mat4 value) { SetUniform(modelMatrixName, value); }
-		void SetProjectionMatrixUniform(const glm::mat4 value) { SetUniform(projectionMatrixName, value); }
-		void SetViewMatrixUniform(const glm::mat4 value) { SetUniform(viewMatrixName, value); }
+		bool SetModelMatrixUniform(const glm::mat4 value) { return SetUniform(modelMatrixName, value); }
+		bool SetProjectionMatrixUniform(const glm::mat4 value) { return SetUniform(projectionMatrixName, value); }
+		bool SetViewMatrixUniform(const glm::mat4 value) { return SetUniform(viewMatrixName, value); }
 
-		void SetTextureUniform(const char index) { SetUniform(texturesName + std::to_string(index), index); }
+		bool SetTextureUniform(const char index) { return SetUniform(texturesName + std::to_string(index), index); }
 
-		void SetColourUniform(const char index, const glm::vec4 colour) { SetUniform(coloursName + std::to_string(index), colour); }
+		bool SetColourUniform(const char index, const glm::vec4 colour) { return SetUniform(coloursName + std::to_string(index), colour); }
 
 		// Sets this program as the current via glUseProgram.
 		void SetCurrent() const;
@@ -63,6 +63,6 @@ namespace Graphics
 
 		void addShader(const int type, const std::string& source);
 
-		int getUniformLocation(const std::string& name);
+		bool getUniformLocation(const std::string& name, int& uniformID);
 	};
 }

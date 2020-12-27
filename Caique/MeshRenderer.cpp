@@ -1,15 +1,25 @@
 #include "MeshRenderer.h"
 
-// Transform is forward declared in GameObject.h which is where this file knows of Transform otherwise, so get the full thing here.
+// GameObject includes.
+#include "GameObject.h"
 #include "Transform.h"
 
+// Behaviour includes.
 #include "Camera.h"
 
-void Behaviours::MeshRenderer::Initialise()
+// Graphics includes.
+#include "Model.h"
+
+// Content includes.
+#include "ContentManager.h"
+
+void Behaviours::MeshRenderer::Initialise(std::string&& modelName)
 {
-	//std::shared_ptr<Graphics::Model> temp;
-	//contentManager.lock()->LoadModel("Models/Lamp", temp);
-	//model = temp;
+	// If the given string is empty, don't do anything with it.
+	if (modelName.size() == 0) return;
+
+	// Load the model.
+	SetModel(modelName);
 }
 
 void Behaviours::MeshRenderer::Draw(Behaviours::Camera& camera)
@@ -17,4 +27,9 @@ void Behaviours::MeshRenderer::Draw(Behaviours::Camera& camera)
 	std::shared_ptr<Graphics::Model> drawModel = GetModel();
 	if (drawModel != nullptr)
 		drawModel->Draw(GetGameObject()->GetTransform()->GetGlobalMatrix(), camera.GetProjection(), camera.GetView());
+}
+
+void Behaviours::MeshRenderer::SetModel(const std::string& name) 
+{
+	std::shared_ptr<Graphics::Model> tempModel; contentManager.lock()->LoadModel(name, tempModel); model = tempModel; 
 }

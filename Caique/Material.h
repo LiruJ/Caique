@@ -1,9 +1,5 @@
 #pragma once
 
-// Graphics includes.
-#include "ShaderProgram.h"
-#include "Texture2D.h"
-
 // Type includes.
 #include <memory>
 #include <map>
@@ -14,20 +10,24 @@
 
 namespace Graphics
 {
+	// Forward declarations.
+	class ShaderProgram;
+	class Texture2D;
+
 	class Material
 	{
 	public:
-		Material(std::shared_ptr<Graphics::ShaderProgram> shader, std::map<char, std::weak_ptr<Graphics::Texture2D>>& textures, std::map<char, glm::vec4> colours) : shader(shader), textures(textures), colours(colours) {}
+		Material(std::shared_ptr<Graphics::ShaderProgram> shader, std::map<char, std::shared_ptr<Graphics::Texture2D>>& textures, std::map<char, glm::vec4> colours) : shader(shader), textures(textures), colours(colours) {}
 
 		void InitialiseShader(const glm::mat4 modelMatrix, const glm::mat4 projectionMatrix, const glm::mat4 viewMatrix);
 		void ResetShader();
 
-		const Graphics::ShaderProgram& GetShader() { return *shader.lock(); }
+		const std::shared_ptr<Graphics::ShaderProgram> GetShader() { return shader; }
 
 	private:
-		std::weak_ptr<Graphics::ShaderProgram> shader;
+		std::shared_ptr<Graphics::ShaderProgram> shader;
 
-		std::map<char, std::weak_ptr<Graphics::Texture2D>> textures;
+		std::map<char, std::shared_ptr<Graphics::Texture2D>> textures;
 
 		std::map<char, glm::vec4> colours;
 	};

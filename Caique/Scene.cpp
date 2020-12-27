@@ -1,5 +1,14 @@
 #include "Scene.h"
 
+// GameObject includes.
+#include "GameObject.h"
+
+// Content includes.
+#include "ContentManager.h"
+
+// Graphical includes.
+#include "Camera.h"
+
 std::shared_ptr<GameObjects::Scene> GameObjects::Scene::CreateScene(std::weak_ptr<Content::ContentManager> contentManager)
 {
 	return std::shared_ptr<GameObjects::Scene>(new Scene(contentManager));
@@ -7,7 +16,7 @@ std::shared_ptr<GameObjects::Scene> GameObjects::Scene::CreateScene(std::weak_pt
 
 std::shared_ptr<GameObjects::GameObject> GameObjects::Scene::CreateGameObject()
 {
-	std::shared_ptr<GameObjects::GameObject> newGameObject = std::make_shared<GameObjects::GameObject>(contentManager);
+	std::shared_ptr<GameObjects::GameObject> newGameObject = std::make_shared<GameObjects::GameObject>(weak_from_this(), contentManager);
 
 	newGameObject->PreInitialise();
 	newGameObject->Initialise();
