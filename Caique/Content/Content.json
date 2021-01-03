@@ -109,5 +109,11 @@
          "VertexPath":"Shaders\\DefaultVertex.shader",
          "FragmentPath":"Shaders\\DefaultFragmentColour.shader"
       }
+   ],
+   "Scripts":[
+   	{
+   		"Name":"FPSTracker",
+   		"RelativePath":"Scripts\\FPSTracker.lua"
+   	}
    ]
 }

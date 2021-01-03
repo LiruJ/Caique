@@ -156,6 +156,11 @@
     <ClCompile Include="ContentManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameTimeManager.cpp" />
+    <ClCompile Include="LuaContext.cpp" />
+    <ClCompile Include="LuaGameTime.cpp" />
+    <ClCompile Include="LuaGameTimeManager.cpp" />
+    <ClCompile Include="LuaGraphicsContext.cpp" />
+    <ClCompile Include="LuaScript.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -173,6 +178,11 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTime.h" />
     <ClInclude Include="GameTimeManager.h" />
+    <ClInclude Include="LuaContext.h" />
+    <ClInclude Include="LuaGameTime.h" />
+    <ClInclude Include="LuaGameTimeManager.h" />
+    <ClInclude Include="LuaGraphicsContext.h" />
+    <ClInclude Include="LuaScript.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshRenderer.h" />

@@ -24,10 +24,14 @@ namespace Graphics
 
 		void Initialise(int windowWidth, int windowHeight);
 
+		void SetOutputWidth(const int newWidth);
 		int GetOutputWidth() { return outputWidth; }
+		void SetOutputHeight(const int newHeight);
 		int GetOutputHeight() { return outputHeight; }
 
-		void SetWindowTitle(std::string& title);
+		void SetWindowTitle(std::string& title) { SetWindowTitle(title.c_str()); }
+		void SetWindowTitle(const char* title);
+		std::string GetWindowTitle();
 
 		void SetVSyncMode(VSyncMode vSyncMode);
 

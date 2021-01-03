@@ -1,39 +1,49 @@
-//extern "C"
-//{
-//#include "lua.h"
-//#include "lauxlib.h"
-//#include "lualib.h"
-//}
-//
-//#ifdef _WIN32
-//#pragma comment(lib, "../Libraries/Lua/lua51.lib")
-//#endif
-//
-//#undef luaL_dostring
-//#define luaL_dostring(L,s)	\
-//	(luaL_loadstring(L, s) || lua_pcall(L, 0, LUA_MULTRET, 0))
-//
-//std::string cmd = "a = 7 + 11 + math.sin(50)";
-//
-//lua_State* L = luaL_newstate();
-//luaL_openlibs(L);
-//
-//int r = luaL_dostring(L, cmd.c_str());
-//
-//if (!r)
-//{
-//	lua_getglobal(L, "a");
-//	if (lua_isnumber(L, -1))
-//	{
-//		float a_in_cpp = (float)lua_tonumber(L, -1);
-//		std::cout << a_in_cpp << std::endl;
-//	}
-//}
-//else
-//{
-//	std::string errormsg = lua_tostring(L, -1);
-//	std::cout << errormsg << std::endl;
-//}
-//
-//
-//lua_close(L);
+#include "ScriptInstance.h"
+
+#include <iostream>
+
+// Timing includes.
+#include "GameTime.h"
+
+// Content includes.
+#include "ContentManager.h"
+
+// Lua includes.
+#include "LuaScript.h"
+#include "LuaGameTime.h"
+
+void Behaviours::ScriptInstance::Initialise(const std::string& scriptAsset)
+{
+	script = contentManager.lock()->Load<Lua::LuaScript>(scriptAsset);
+	
+	if (script->HasFunction("Initialise")) script->RunFunction("Initialise");
+}
+
+void Behaviours::ScriptInstance::PostInitialise()
+{
+	if (script->HasFunction("PostInitialise")) script->RunFunction("PostInitialise");
+}
+
+void Behaviours::ScriptInstance::Update(GameTiming::GameTime& gameTime)
+{
+	// If the script defines an update function, call it.
+	if (script->HasFunction("Update"))
+	{
+		// Push the gametime object onto the stack.
+		LuaGameObjects::LuaGameTime::CreateOnStack(script->GetLuaContext(), gameTime);
+
+		// Try to run the update function using the stack, if it fails then the gametime object needs to be manually removed.
+		if (!script->RunFunctionUsingStack("Update", 1))
+			script->GetLuaContext()->Remove(-1);
+	}
+}
+
+void Behaviours::ScriptInstance::PostUpdate()
+{
+	if (script->HasFunction("PostUpdate")) script->RunFunction("PostUpdate");
+}
+
+void Behaviours::ScriptInstance::Draw(Behaviours::Camera& camera)
+{
+	if (script->HasFunction("Draw")) script->RunFunction("Draw");
+}

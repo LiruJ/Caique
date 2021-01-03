@@ -31,5 +31,5 @@ void Behaviours::MeshRenderer::Draw(Behaviours::Camera& camera)
 
 void Behaviours::MeshRenderer::SetModel(const std::string& name) 
 {
-	std::shared_ptr<Graphics::Model> tempModel; contentManager.lock()->LoadModel(name, tempModel); model = tempModel; 
+	model = contentManager.lock()->Load<Graphics::Model>(name);
 }

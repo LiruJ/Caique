@@ -1,5 +1,8 @@
 #include "Scene.h"
 
+// Timing includes.
+#include "GameTime.h"
+
 // GameObject includes.
 #include "GameObject.h"
 
@@ -27,8 +30,14 @@ std::shared_ptr<GameObjects::GameObject> GameObjects::Scene::CreateGameObject()
 	return newGameObject;
 }
 
+void GameObjects::Scene::Update(GameTiming::GameTime& gameTime)
+{
+	for (size_t i = 0; i < gameObjects.size(); i++)
+		gameObjects.at(i)->Update(gameTime);
+}
+
 void GameObjects::Scene::Draw(Behaviours::Camera& camera)
 {
-	for (int i = 0; i < gameObjects.size(); i++)
+	for (size_t i = 0; i < gameObjects.size(); i++)
 		gameObjects.at(i)->Draw(camera);
 }

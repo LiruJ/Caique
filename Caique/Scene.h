@@ -7,6 +7,7 @@
 // Foward declarations.
 namespace Content { class ContentManager; }
 namespace Behaviours { class Camera; }
+namespace GameTiming { struct GameTime; }
 
 namespace GameObjects
 {
@@ -18,6 +19,7 @@ namespace GameObjects
 
 		std::shared_ptr<GameObjects::GameObject> CreateGameObject();
 
+		void Update(GameTiming::GameTime& gameTime);
 		void Draw(Behaviours::Camera& camera);
 	private:
 		Scene(std::weak_ptr<Content::ContentManager> contentManager) : contentManager(contentManager) {}

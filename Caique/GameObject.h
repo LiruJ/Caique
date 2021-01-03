@@ -5,10 +5,12 @@
 #include <map>
 #include <string>
 #include <typeindex>
+#include <type_traits>
 
 // Foward declarations.
 namespace Content { class ContentManager; }
 namespace Behaviours { class Behaviour; class Camera; }
+namespace GameTiming { struct GameTime; }
 
 namespace GameObjects
 {
@@ -41,9 +43,9 @@ namespace GameObjects
 		{
 			// Create a shared pointer from the weak.
 			std::shared_ptr<T> behaviour = std::make_shared<T>();
-
+		
 			behaviour->Setup(weak_from_this(), contentManager);
-
+			
 			behaviour->PreInitialise();
 			behaviour->Initialise(std::forward<Args>(args)...);
 			behaviour->PostInitialise();
@@ -57,7 +59,7 @@ namespace GameObjects
 		void Initialise();
 		void PostInitialise();
 
-		void Update();
+		void Update(GameTiming::GameTime& gameTime);
 		void PostUpdate();
 
 		void Draw(Behaviours::Camera& camera);

@@ -41,11 +41,35 @@ void Graphics::GraphicsContext::Initialise(int windowWidth, int windowHeight)
 	
 	// Set the width and height.
 	SDL_GL_GetDrawableSize(window, &outputWidth, &outputHeight);
+	
 }
 
-void Graphics::GraphicsContext::SetWindowTitle(std::string& title)
+void Graphics::GraphicsContext::SetOutputWidth(const int newWidth)
 {
-	SDL_SetWindowTitle(window, title.c_str());
+	// Set the width.
+	SDL_SetWindowSize(window, newWidth, outputHeight);
+
+	// Set the width and height.
+	SDL_GL_GetDrawableSize(window, &outputWidth, &outputHeight);
+}
+
+void Graphics::GraphicsContext::SetOutputHeight(const int newHeight)
+{
+	// Set the height.
+	SDL_SetWindowSize(window, newHeight, outputHeight);
+
+	// Set the width and height.
+	SDL_GL_GetDrawableSize(window, &outputWidth, &outputHeight);
+}
+
+void Graphics::GraphicsContext::SetWindowTitle(const char* title)
+{
+	SDL_SetWindowTitle(window, title);
+}
+
+std::string Graphics::GraphicsContext::GetWindowTitle()
+{
+	return std::string(SDL_GetWindowTitle(window));
 }
 
 void Graphics::GraphicsContext::SetVSyncMode(VSyncMode vSyncMode)

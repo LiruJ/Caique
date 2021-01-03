@@ -26,7 +26,11 @@
 // glm includes.
 #include <glm/vec4.hpp>
 
-void Content::ContentManager::LoadModel(const std::string& assetPath, std::shared_ptr<Graphics::Model>& model)
+// Lua includes.
+#include "LuaScript.h"
+#include "LuaContext.h"
+
+void Content::ContentManager::load(const std::string& assetPath, std::shared_ptr<Graphics::Model>& model)
 {
 	// If the model has already been loaded, use that instead then return.
 	std::map<std::string, std::shared_ptr<Graphics::Model>>::iterator foundItem = loadedModels.find(assetPath);
@@ -35,7 +39,7 @@ void Content::ContentManager::LoadModel(const std::string& assetPath, std::share
 		model = (*foundItem).second;
 		return;
 	}
-
+	
 	// Create the full file path from the given asset path.
 	std::filesystem::path fullFilePath = createFullPath(assetPath);
 
@@ -79,7 +83,7 @@ void Content::ContentManager::LoadModel(const std::string& assetPath, std::share
 
 		// Load the material as an asset.
 		std::shared_ptr<Graphics::Material> material;
-		LoadMaterial(meshesData[meshIndex][Builders::MeshMaterialDataName], material);
+		load(meshesData[meshIndex][Builders::MeshMaterialDataName], material);
 
 		// Push the mesh into the vector of meshes used for the model.
 		meshes.push_back(std::make_shared<Graphics::Mesh>(graphicsContext, indices, vertexArrayObject, material));
@@ -92,7 +96,7 @@ void Content::ContentManager::LoadModel(const std::string& assetPath, std::share
 	loadedModels.emplace(assetPath, model);
 }
 
-void Content::ContentManager::LoadTexture(const std::string& assetPath, std::shared_ptr<Graphics::Texture2D>& texture)
+void Content::ContentManager::load(const std::string& assetPath, std::shared_ptr<Graphics::Texture2D>& texture)
 {
 	// If the texture has already been loaded, use that instead then return.
 	std::map<std::string, std::shared_ptr<Graphics::Texture2D>>::iterator foundItem = loadedTextures.find(assetPath);
@@ -124,7 +128,7 @@ void Content::ContentManager::LoadTexture(const std::string& assetPath, std::sha
 	
 }
 
-void Content::ContentManager::LoadMaterial(const std::string& assetPath, std::shared_ptr<Graphics::Material>& material)
+void Content::ContentManager::load(const std::string& assetPath, std::shared_ptr<Graphics::Material>& material)
 {
 	// If the material has already been loaded, use that instead then return.
 	std::map<std::string, std::shared_ptr<Graphics::Material>>::iterator foundItem = loadedMaterials.find(assetPath);
@@ -143,7 +147,7 @@ void Content::ContentManager::LoadMaterial(const std::string& assetPath, std::sh
 
 	// Load the shader as an asset.
 	std::shared_ptr<Graphics::ShaderProgram> shader;
-	LoadShader(materialData[Builders::MaterialShaderName], shader);
+	load(materialData[Builders::MaterialShaderName], shader);
 
 	// Load the textures.
 	std::map<char, std::shared_ptr<Graphics::Texture2D>> textures;
@@ -154,7 +158,7 @@ void Content::ContentManager::LoadMaterial(const std::string& assetPath, std::sh
 
 		// Load the texture as an asset.
 		std::shared_ptr<Graphics::Texture2D> texture;
-		LoadTexture(materialData[Builders::MaterialTexturesName][textureIndex][1], texture);
+		load(materialData[Builders::MaterialTexturesName][textureIndex][1], texture);
 
 		// Add to the map.
 		textures.emplace(index, texture);
@@ -184,7 +188,7 @@ void Content::ContentManager::LoadMaterial(const std::string& assetPath, std::sh
 	loadedMaterials.emplace(assetPath, material);
 }
 
-void Content::ContentManager::LoadShader(const std::string& assetPath, std::shared_ptr<Graphics::ShaderProgram>& shader)
+void Content::ContentManager::load(const std::string& assetPath, std::shared_ptr<Graphics::ShaderProgram>& shader)
 {
 	// If the shader has already been loaded, use that instead then return.
 	std::map<std::string, std::shared_ptr<Graphics::ShaderProgram>>::iterator foundItem = loadedShaders.find(assetPath);
@@ -218,6 +222,35 @@ void Content::ContentManager::LoadShader(const std::string& assetPath, std::shar
 
 	// Add the shader to the map of loaded shaders.
 	loadedShaders.emplace(assetPath, shader);
+}
+
+void Content::ContentManager::load(const std::string& assetPath, std::shared_ptr<Lua::LuaScript>& luaScript)
+{
+	// If the script has already been loaded, use that instead then return.
+	std::shared_ptr<Lua::LuaContext> luaContext = this->luaContext.lock();
+	std::map<std::string, int>::iterator foundItem = loadedScriptInstances.find(assetPath);
+	if (foundItem != loadedScriptInstances.end())
+	{
+		luaScript = Lua::LuaScript::CreateInstance(luaContext, (*foundItem).second);
+		return;
+	}
+
+	// Create the full file path from the given asset path.
+	std::filesystem::path fullFilePath = createFullPath(assetPath);
+
+	// Load the script file.
+	nlohmann::json scriptData;
+	loadAssetFile(fullFilePath, scriptData);
+
+	// Get the script source.
+	std::string scriptSource = scriptData[Builders::ScriptSourceName];
+
+	// Load the source as lua and save the function ID.
+	int functionID = Lua::LuaScript::SaveInstanceFunction(luaContext, scriptSource);
+	loadedScriptInstances.emplace(assetPath, functionID);
+
+	// Create an instance of the script and return.
+	luaScript = Lua::LuaScript::CreateInstance(luaContext, functionID);
 }
 
 void Content::ContentManager::loadAssetFile(const std::filesystem::path& filePath, nlohmann::json& outputData)

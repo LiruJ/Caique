@@ -34,7 +34,7 @@ const GameTiming::GameTime GameTiming::GameTimeManager::GetCurrentGameTime()
 	return gameTime;
 }
 
-const int GameTiming::GameTimeManager::GetSmoothedFrameRate()
+const int GameTiming::GameTimeManager::GetCurrentFrameRate()
 {
 	return (int)floor(1.0 / ((lastDeltaSeconds * frameRateSmoothing) + (currentDeltaSeconds * (1.0 - frameRateSmoothing))));
 }

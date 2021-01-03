@@ -6,6 +6,7 @@
 // Foward declarations.
 namespace GameObjects { class GameObject; }
 namespace Content { class ContentManager; }
+namespace GameTiming { struct GameTime; }
 
 namespace Behaviours
 {
@@ -19,7 +20,7 @@ namespace Behaviours
 		void Initialise() {}
 		virtual void PostInitialise() {}
 
-		virtual void Update() {}
+		virtual void Update(GameTiming::GameTime& gameTime) {}
 		virtual void PostUpdate() {}
 
 		virtual void Draw(Behaviours::Camera& camera) {}

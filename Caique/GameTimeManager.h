@@ -17,11 +17,11 @@ namespace GameTiming
 
 		const GameTime GetCurrentGameTime();
 
-		void SetFrameRate(int frameRate) { targetDeltaSeconds = 1.0 / frameRate; }
+		void SetTargetFrameRate(int frameRate) { targetDeltaSeconds = 1.0 / frameRate; }
 
-		const double GetFrameRate() { return 1.0 / targetDeltaSeconds; }
+		const double GetTargetFrameRate() { return 1.0 / targetDeltaSeconds; }
 
-		const int GetSmoothedFrameRate();
+		const int GetCurrentFrameRate();
 
 		void WaitFrameRemainder(Graphics::GraphicsContext& graphicsContext);
 	private:

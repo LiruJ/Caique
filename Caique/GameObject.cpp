@@ -1,5 +1,8 @@
 #include "GameObject.h"
 
+// Timing includes.
+#include "GameTime.h"
+
 // Behaviour includes.
 #include "Behaviour.h"
 #include "Transform.h"
@@ -33,10 +36,10 @@ void GameObjects::GameObject::PostInitialise()
 		pair.second->PostInitialise();
 }
 
-void GameObjects::GameObject::Update()
+void GameObjects::GameObject::Update(GameTiming::GameTime& gameTime)
 {
 	for (auto& pair : behavioursByTypeIndex)
-		pair.second->Update();
+		pair.second->Update(gameTime);
 }
 
 void GameObjects::GameObject::PostUpdate()
