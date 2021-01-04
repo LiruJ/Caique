@@ -119,6 +119,18 @@ void Lua::LuaContext::Push(const luaContextFunction value)
 	lua_pushcclosure(luaState, Lua::LuaContext::interceptFunctionCall, 2);
 }
 
+int Lua::LuaContext::PushNil()
+{
+	lua_pushnil(luaState);
+	return GetTopIndex();
+}
+
+int Lua::LuaContext::PushReadOnlyErrorFunction()
+{
+	Push(readOnlyErrorFunction);
+	return GetTopIndex();
+}
+
 int Lua::LuaContext::PushNewTable()
 {
 	lua_newtable(luaState);
@@ -174,9 +186,10 @@ void Lua::LuaContext::SetField(const std::string& name, const int stackIndex)
 	lua_setfield(luaState, stackIndex, name.c_str());
 }
 
-void Lua::LuaContext::GetGlobal(const std::string& name)
+int Lua::LuaContext::GetGlobal(const std::string& name)
 {
 	lua_getglobal(luaState, name.c_str());
+	return GetTopIndex();
 }
 
 void Lua::LuaContext::SetGlobal(const std::string& name)
@@ -193,6 +206,11 @@ bool Lua::LuaContext::SetEnv(const int stackIndex)
 {
 	lua_setfenv(luaState, stackIndex);
 	return true;
+}
+
+std::string Lua::LuaContext::GetType(const int stackIndex)
+{
+	return std::string(lua_typename(luaState, lua_type(luaState, stackIndex)));
 }
 
 int Lua::LuaContext::AddTo(const int stackIndex)
@@ -282,9 +300,19 @@ bool Lua::LuaContext::IsTable(const int stackIndex)
 	return lua_istable(luaState, stackIndex);
 }
 
+bool Lua::LuaContext::IsUserData(const int stackIndex)
+{
+	return lua_isuserdata(luaState, stackIndex);
+}
+
 bool Lua::LuaContext::IsFunction(const int stackIndex)
 {
 	return lua_isfunction(luaState, stackIndex);
+}
+
+bool Lua::LuaContext::IsDouble(const int stackIndex)
+{
+	return lua_isnumber(luaState, stackIndex);
 }
 
 void* Lua::LuaContext::ToUserData(const int stackIndex)
@@ -322,6 +350,11 @@ double Lua::LuaContext::CheckDouble(const int stackIndex)
 	return luaL_checknumber(luaState, stackIndex);
 }
 
+void* Lua::LuaContext::CheckUserData(const int stackIndex, const std::string& typeName)
+{
+	return luaL_checkudata(luaState, stackIndex, typeName.c_str());
+}
+
 bool Lua::LuaContext::CallFunction(const int argumentCount, const int returnValueCount)
 {
 	return validateLua(lua_pcall(luaState, argumentCount, returnValueCount, 0));
@@ -330,4 +363,9 @@ bool Lua::LuaContext::CallFunction(const int argumentCount, const int returnValu
 std::shared_ptr<Lua::LuaContext> Lua::LuaContext::Create()
 {
 	return std::shared_ptr<Lua::LuaContext>(new LuaContext());
+}
+
+int Lua::LuaContext::readOnlyErrorFunction(std::shared_ptr<Lua::LuaContext> luaContext)
+{
+	return luaContext->Error("attempt to write to a readonly table");
 }

@@ -18,6 +18,8 @@ extern "C"
 #include <string>
 #include <map>
 
+#include <stdarg.h>
+
 namespace Lua
 {
 	class LuaContext;
@@ -28,6 +30,11 @@ namespace Lua
 	constexpr const char* GLOBALTABLENAME = "_G";
 	constexpr const char* INDEXERNAME = "__index";
 	constexpr const char* NEWINDEXERNAME = "__newindex";
+	constexpr const char* TOSTRINGNAME = "__tostring";
+	constexpr const char* ADDNAME = "__add";
+	constexpr const char* SUBTRACTNAME = "__sub";
+	constexpr const char* MULTIPLYNAME = "__mul";
+	constexpr const char* DIVIDENAME = "__div";
 
 	constexpr const int GLOBALSINDEX = LUA_GLOBALSINDEX;
 	constexpr const int REGISTRYINDEX = LUA_REGISTRYINDEX;
@@ -46,11 +53,17 @@ namespace Lua
 		void BeginBalancing();
 		void StopBalancing();
 
-		void GetGlobal(const std::string& name);
+		int GetGlobal(const std::string& name);
 		void SetGlobal(const std::string& name);
 
 		bool LoadFile(const std::string& filePath);
 		bool LoadString(const std::string& source);
+
+		template<typename... Args>
+		int Error(const std::string& formattedMessage, Args... args)
+		{
+			return luaL_error(luaState, formattedMessage.c_str(), args...);
+		}
 
 		template<typename... Args>
 		void Push(int value, Args&&... args)
@@ -84,6 +97,10 @@ namespace Lua
 		void Push(const int value);
 		void Push(const double value);
 		void Push(const luaContextFunction value);
+
+		int PushNil();
+		int PushReadOnlyErrorFunction();
+
 		int PushNewTable();
 		
 		void* PushUserData(const int size);
@@ -109,6 +126,8 @@ namespace Lua
 		void GetEnv(const int stackIndex);
 		bool SetEnv(const int stackIndex);
 
+		std::string GetType(const int stackIndex);
+
 		int AddTo(const int stackIndex);
 		bool AddToRegistry(const std::string& name);
 		void RetrieveFrom(const int stackIndex, const int tableIndex);
@@ -118,16 +137,21 @@ namespace Lua
 
 		bool IsNil(const int stackIndex);
 		bool IsTable(const int stackIndex);
+		bool IsUserData(const int stackIndex);
 		bool IsFunction(const int stackIndex);
+		bool IsDouble(const int stackIndex);
 
 		void* ToUserData(const int stackIndex);
 		std::string ToString(const int stackIndex);
 		int ToInt(const int stackIndex);
 		double ToDouble(const int stackIndex);
+		float ToFloat(const int stackIndex) { return (float)ToDouble(stackIndex); }
 
+		void* CheckUserData(const int stackIndex, const std::string& typeName);
 		std::string CheckString(const int stackIndex);
 		int CheckInt(const int stackIndex);
 		double CheckDouble(const int stackIndex);
+		float CheckFloat(const int stackIndex) { return (float)CheckDouble(stackIndex); }
 
 		bool CallFunction(const int argumentCount, const int returnValueCount);
 
@@ -140,6 +164,8 @@ namespace Lua
 		std::map<std::string, int> namesToRegistryIndices;
 
 		static int interceptFunctionCall(lua_State* calledState);
+
+		static int readOnlyErrorFunction(std::shared_ptr<Lua::LuaContext> luaContext);
 
 		LuaContext();
 

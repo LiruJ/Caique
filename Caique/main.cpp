@@ -29,12 +29,16 @@
 #include "LuaScript.h"
 #include "LuaGameTimeManager.h"
 #include "LuaGraphicsContext.h"
+#include "LuaVector3.h"
+#include "LuaTransform.h"
 
 int main(int argc, char* argv[])
 {	
 	// Create the Lua context.
 	std::shared_ptr<Lua::LuaContext> luaContext = Lua::LuaContext::Create();
 	Lua::LuaScript::Register(luaContext);
+	LuaGameObjects::LuaVector3::Register(luaContext);
+	LuaGameObjects::LuaTransform::Register(luaContext);
 
 	// Create the graphics context.
 	std::shared_ptr<Graphics::GraphicsContext> graphicsContext = std::make_shared<Graphics::GraphicsContext>();
@@ -43,7 +47,7 @@ int main(int argc, char* argv[])
 
 	// Create the content manager.
 	std::shared_ptr<Content::ContentManager> contentManager = std::make_shared<Content::ContentManager>(argv[0], "Content", graphicsContext, luaContext);
-
+	
 	// Create the scene.
 	std::shared_ptr<GameObjects::Scene> scene = GameObjects::Scene::CreateScene(contentManager);
 	std::shared_ptr<GameTiming::GameTimeManager> gameTimeManager = std::make_shared<GameTiming::GameTimeManager>();

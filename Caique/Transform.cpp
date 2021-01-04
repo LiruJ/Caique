@@ -89,6 +89,15 @@ void GameObjects::Transform::AddChild(std::shared_ptr<GameObjects::Transform> ch
 	child->dirtyGlobal();
 }
 
+void GameObjects::Transform::dirtySelfAndChildren()
+{
+	// Set local to dirty.
+	isLocalDirty = true;
+
+	// Dirty global.
+	dirtyGlobal();
+}
+
 void GameObjects::Transform::dirtyGlobal()
 {
 	// Set the dirty of this transform to true.

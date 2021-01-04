@@ -19,7 +19,7 @@ namespace LuaGameObjects
 	{
 	public:
 		static void Register(std::shared_ptr<Lua::LuaContext> luaContext, std::shared_ptr<GameTiming::GameTimeManager> gameTimeManager);
-
+	
 		static int SetIndex(std::shared_ptr<Lua::LuaContext> luaContext);
 
 		static int GetIndex(std::shared_ptr<Lua::LuaContext> luaContext);

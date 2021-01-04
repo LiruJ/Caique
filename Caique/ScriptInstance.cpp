@@ -8,14 +8,28 @@
 // Content includes.
 #include "ContentManager.h"
 
+// GameObject includes.
+#include "GameObject.h"
+#include "Transform.h"
+
 // Lua includes.
 #include "LuaScript.h"
 #include "LuaGameTime.h"
+#include "LuaTransform.h"
 
 void Behaviours::ScriptInstance::Initialise(const std::string& scriptAsset)
 {
+	// Create a new instance of the script, loaded from the content manager.
 	script = contentManager.lock()->Load<Lua::LuaScript>(scriptAsset);
+
+	// Set the transform.
+	LuaGameObjects::LuaTransform::CreateOnStack(script->GetLuaContext(), gameObject.lock()->GetTransform());
+	script->SetEnvironmentField(LuaGameObjects::TRANSFORMTYPENAME, script->GetLuaContext()->GetTopIndex());
+
+	// Perform setup on the script, fully setting it up ready to be used.
+	script->Setup();
 	
+	// Run the initialise function.
 	if (script->HasFunction("Initialise")) script->RunFunction("Initialise");
 }
 

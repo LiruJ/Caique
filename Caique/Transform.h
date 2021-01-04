@@ -35,15 +35,15 @@ namespace GameObjects
 
 		glm::quat GetLocalRotation();
 
-		void SetLocalPosition(const glm::vec3 position) { this->position = position; isLocalDirty = true; dirtyGlobal(); }
+		void SetLocalPosition(const glm::vec3 position) { this->position = position; dirtySelfAndChildren(); }
 
-		void SetLocalRotation(const glm::quat rotation) { this->rotation = rotation; isLocalDirty = true; dirtyGlobal(); }
+		void SetLocalRotation(const glm::quat rotation) { this->rotation = rotation; dirtySelfAndChildren(); }
 
 		void RotateAround(const float angle, glm::vec3 axis);
 
-		void SetLocalScale(const glm::vec3 scale) { this->scale = scale; isLocalDirty = true; dirtyGlobal(); }
+		void SetLocalScale(const glm::vec3 scale) { this->scale = scale; dirtySelfAndChildren(); }
 
-		void LookAt(const glm::vec3 target) { this->rotation = glm::quatLookAt(glm::normalize(target - position), glm::vec3(0, 1, 0)); isLocalDirty = true; dirtyGlobal(); }
+		void LookAt(const glm::vec3 target) { this->rotation = glm::quatLookAt(glm::normalize(target - position), glm::vec3(0, 1, 0)); dirtySelfAndChildren(); }
 
 		void AddChild(std::shared_ptr<GameObjects::Transform> child);
 
@@ -75,6 +75,7 @@ namespace GameObjects
 
 		glm::mat4 invertedGlobalMatrix;
 
+		void dirtySelfAndChildren();
 		void dirtyGlobal();
 	};
 }

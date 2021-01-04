@@ -47,7 +47,7 @@ int LuaGameObjects::LuaGameTimeManager::SetIndex(std::shared_ptr<Lua::LuaContext
 	GameTiming::GameTimeManager* gameTimeManager = *static_cast<GameTiming::GameTimeManager**>(luaContext->ToUserData(1));
 
 	// The name of the property itself should be the second argument.
-	std::string propertyName = luaContext->ToString(2);
+	std::string propertyName = luaContext->CheckString(2);
 	
 	// Handle the property type.
 	if (propertyName == TARGETFRAMERATENAME)

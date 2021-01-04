@@ -19,7 +19,7 @@ void LuaGameObjects::LuaGraphicsContext::Register(std::shared_ptr<Lua::LuaContex
 	luaContext->Push((int)Graphics::VSyncMode::AdaptiveVsync);
 	luaContext->SetField("adaptiveVsync", vsyncTable);
 
-	// Pop the vsync table off the stack.
+	// Put the vsync table into the global table.
 	luaContext->SetGlobal(WINDOWVSYNCNAME);
 
 	// Create a userdata that holds a pointer to the GraphicsContext. We get a pointer to the pointer back. Also store its stack position.
@@ -53,7 +53,7 @@ void LuaGameObjects::LuaGraphicsContext::Register(std::shared_ptr<Lua::LuaContex
 int LuaGameObjects::LuaGraphicsContext::SetIndex(std::shared_ptr<Lua::LuaContext> luaContext)
 {
 	// Get the GraphicsContext, this should be the first argument.
-	Graphics::GraphicsContext* graphicsContext = *static_cast<Graphics::GraphicsContext**>(luaContext->ToUserData(1));
+	Graphics::GraphicsContext* graphicsContext = *(Graphics::GraphicsContext**)(luaContext->ToUserData(1));
 	
 	// The name of the property itself should be the second argument.
 	std::string propertyName = luaContext->ToString(2);

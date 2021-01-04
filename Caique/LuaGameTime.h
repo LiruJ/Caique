@@ -3,6 +3,7 @@
 // Type Includes.
 #include <memory>
 
+// Forward declarations.
 namespace Lua { class LuaContext; }
 namespace GameTiming { struct GameTime; }
 

@@ -25,6 +25,8 @@ namespace Lua
 
 		static void Register(std::shared_ptr<Lua::LuaContext> luaContext);
 
+		void Setup();
+
 		bool HasFunction(const std::string& name);
 
 		bool RunFunctionUsingStack(const std::string& name, int argumentCount);
@@ -59,7 +61,9 @@ namespace Lua
 		}
 
 		int GetEnvironment();
+
 		int GetEnvironmentField(const std::string& name);
+		void SetEnvironmentField(const std::string& name, const int stackIndex);
 
 		std::shared_ptr<Lua::LuaContext> GetLuaContext() { return luaContext; }
 
@@ -67,7 +71,10 @@ namespace Lua
 		std::shared_ptr<Lua::LuaContext> luaContext;
 		std::map<std::string, bool> cachedFunctionQueries;
 
-		LuaScript(std::shared_ptr<LuaContext> luaContext , int environmentID) : luaContext(luaContext), environmentID(environmentID) { }
+		LuaScript(std::shared_ptr<LuaContext> luaContext , int environmentID, int functionID) : luaContext(luaContext), environmentID(environmentID), functionID(functionID) { }
+
+		// The ID of the Lua code (anonymous function) that this script uses.
+		int functionID;
 
 		// The ID of this script's table within the registry.
 		int environmentID;

@@ -53,40 +53,24 @@ std::shared_ptr<Lua::LuaScript> Lua::LuaScript::CreateInstance(std::shared_ptr<L
     // Start balancing.
     luaContext->BeginBalancing();
 
-    // Retrieve the functions table.
-    if (!luaContext->RetrieveFromRegistry(FUNCTIONTABLENAME)) throw std::exception("Could not retrieve functions table.");
-    int functionsTable = luaContext->GetTopIndex();
-
-    // Retrieve the script function from the functions table, pop the functions table, then get the stack index of the function.
-    luaContext->RetrieveFrom(functionsTable, functionID);
-    luaContext->Remove(functionsTable);
-    int instanceFunction = luaContext->GetTopIndex();
+    // Retrieve the environments table, add the environment to it, then remove the environments table from the stack.
+    if (!luaContext->RetrieveFromRegistry(ENVIRONMENTSTABLENAME)) throw std::exception("Could not retrieve environments table.");
+    int environmentsTable = luaContext->GetTopIndex();
 
     // Create the environment table for the script, and set the metatable for it.
     int environmentTable = luaContext->PushNewTable();
     luaContext->GetMetaTable(SCRIPTINSTANCENAME);
     luaContext->SetMetaTable(environmentTable);
 
-    // LuaJit uses Lua 5.1, which does not have the "_ENV" variable. Instead, the environment is set via this function.
-    luaContext->SetEnv(instanceFunction);
-
-    // Retrieve the environments table, get the environment back, add it to the environments table, then remove the environments table from the stack.
-    if (!luaContext->RetrieveFromRegistry(ENVIRONMENTSTABLENAME)) throw std::exception("Could not retrieve environments table.");
-    int environmentsTable = luaContext->GetTopIndex();
-    luaContext->GetEnv(instanceFunction);
+    // Add the environment table to the main table and remove the main table from the stack.
     int environmentID = luaContext->AddTo(environmentsTable);
     luaContext->Remove(environmentsTable);
 
-    // Run the instance function so that it fills its environment table with fields.
-    if (!luaContext->CallFunction(0, 0)) throw std::exception("Failed to run lua script.");
-
-    // Create the lua script with the ID.
-    std::shared_ptr<Lua::LuaScript> luaScript = std::shared_ptr<Lua::LuaScript>(new LuaScript(luaContext, environmentID));
-    
     // Stop balancing.
     luaContext->StopBalancing();
 
-    return luaScript;
+    // Create the lua script with the IDs.
+    return std::shared_ptr<Lua::LuaScript>(new LuaScript(luaContext, environmentID, functionID));
 }
 
 void Lua::LuaScript::Register(std::shared_ptr<Lua::LuaContext> luaContext)
@@ -107,7 +91,8 @@ void Lua::LuaScript::Register(std::shared_ptr<Lua::LuaContext> luaContext)
 
     // Create a new table to hold instance functions and place it in the registry.
     int functionTable = luaContext->PushNewTable();
-    if (!luaContext->AddToRegistry(FUNCTIONTABLENAME)) throw std::exception("Could not register function table.");
+    if (!luaContext->AddToRegistry(FUNCTIONTABLENAME))
+        throw std::exception("Could not register function table.");
 
     // Create a new table to hold environments and place it in the registry.
     int environmentTable = luaContext->PushNewTable();
@@ -115,6 +100,28 @@ void Lua::LuaScript::Register(std::shared_ptr<Lua::LuaContext> luaContext)
 
     // Stop balancing.
     luaContext->StopBalancing();
+}
+
+void Lua::LuaScript::Setup()
+{
+    // Retrieve the functions table.
+    if (!luaContext->RetrieveFromRegistry(FUNCTIONTABLENAME)) 
+        throw std::exception("Could not retrieve functions table.");
+    int functionsTable = luaContext->GetTopIndex();
+
+    // Retrieve the script function from the functions table, pop the functions table, then get the stack index of the function.
+    luaContext->RetrieveFrom(functionsTable, functionID);
+    luaContext->Remove(functionsTable);
+    int instanceFunction = luaContext->GetTopIndex();
+
+    // Get the environment for this script.
+    int environment = GetEnvironment();
+
+    // LuaJit uses Lua 5.1, which does not have the "_ENV" variable. Instead, the environment is set via this function.
+    if (!luaContext->SetEnv(instanceFunction)) throw std::exception("Could not set environment of function.");
+
+    // Run the instance function so that it fills its environment table with fields.
+    if (!luaContext->CallFunction(0, 0)) throw std::exception("Failed to run lua script.");
 }
 
 bool Lua::LuaScript::HasFunction(const std::string& name)
@@ -198,4 +205,17 @@ int Lua::LuaScript::GetEnvironmentField(const std::string& name)
     // Remove the environment table from the stack and return.
     luaContext->Remove(environmentTable);
     return luaContext->GetTopIndex();
+}
+
+void Lua::LuaScript::SetEnvironmentField(const std::string& name, const int stackIndex)
+{
+    // Get the environment and push it down below the existing stack item.
+    GetEnvironment();
+    luaContext->MoveTop(-2);
+    
+    // Set the field.
+    luaContext->SetField(name, -2);
+
+    // Pop the environment from the stack.
+    luaContext->Remove(-1);
 }
