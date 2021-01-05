@@ -123,6 +123,9 @@
     <ClCompile Include="LuaTransform.cpp">
       <Filter>Source Files\Lua</Filter>
     </ClCompile>
+    <ClCompile Include="LuaQuaternion.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ContentManager.h">
@@ -179,13 +182,16 @@
     <ClInclude Include="LuaGameTimeManager.h">
       <Filter>Header Files\Lua</Filter>
     </ClInclude>
-    <ClInclude Include="LuaGraphicsContext.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LuaVector3.h">
       <Filter>Header Files\Lua</Filter>
     </ClInclude>
     <ClInclude Include="LuaTransform.h">
+      <Filter>Header Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaQuaternion.h">
+      <Filter>Header Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaGraphicsContext.h">
       <Filter>Header Files\Lua</Filter>
     </ClInclude>
   </ItemGroup>

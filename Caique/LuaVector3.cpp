@@ -12,7 +12,7 @@ void LuaGameObjects::LuaVector3::Register(std::shared_ptr<Lua::LuaContext> luaCo
 	int vectorTable = luaContext->PushNewTable();
 
 	// Add the constructor to the table.
-	luaContext->Push(newVector);
+	luaContext->Push(createNew);
 	luaContext->SetField("new", vectorTable);
 
 	// Add any static operations to the table.
@@ -218,7 +218,7 @@ int LuaGameObjects::LuaVector3::toString(std::shared_ptr<Lua::LuaContext> luaCon
 	return 1;
 }
 
-int LuaGameObjects::LuaVector3::newVector(std::shared_ptr<Lua::LuaContext> luaContext)
+int LuaGameObjects::LuaVector3::createNew(std::shared_ptr<Lua::LuaContext> luaContext)
 {
 	// Create an empty vector.
 	glm::vec3 newVec = glm::vec3(0, 0, 0);
@@ -232,13 +232,13 @@ int LuaGameObjects::LuaVector3::newVector(std::shared_ptr<Lua::LuaContext> luaCo
 	// If there is one argument, use it for all values.
 	case 1:
 	{
-		float singleValue = (float)luaContext->CheckDouble(1);
+		float singleValue = luaContext->CheckFloat(1);
 		newVec = glm::vec3(singleValue, singleValue, singleValue);
 		break;
 	}
 	// If there are three arguments, use all of them.
 	case 3:
-		newVec = glm::vec3((float)luaContext->CheckDouble(1), (float)luaContext->CheckDouble(2), (float)luaContext->CheckDouble(3));
+		newVec = glm::vec3(luaContext->CheckFloat(1), luaContext->CheckFloat(2), luaContext->CheckFloat(3));
 		break;
 	// Otherwise; cause an error.
 	default:

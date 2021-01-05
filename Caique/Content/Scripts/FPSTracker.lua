@@ -3,7 +3,6 @@ local currentFrame = 0
 
 local maxFPS = 0
 
-print(transform.localPosition)
 
 function Update(gameTime)
     if currentFrame >= skipFrames then
@@ -15,7 +14,5 @@ function Update(gameTime)
     else
         currentFrame = currentFrame + 1
     end
-
-    transform.localPosition = vector3.new(0, math.sin(gameTime.secondsSinceStart), 0)
 
 end

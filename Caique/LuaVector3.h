@@ -39,7 +39,7 @@ namespace LuaGameObjects
 
 		static int toString(std::shared_ptr<Lua::LuaContext> luaContext);
 
-		static int newVector(std::shared_ptr<Lua::LuaContext> luaContext);
+		static int createNew(std::shared_ptr<Lua::LuaContext> luaContext);
 
 		static int add(std::shared_ptr<Lua::LuaContext> luaContext);
 

@@ -159,6 +159,7 @@
     <ClCompile Include="LuaContext.cpp" />
     <ClCompile Include="LuaGameTime.cpp" />
     <ClCompile Include="LuaGameTimeManager.cpp" />
+    <ClCompile Include="LuaQuaternion.cpp" />
     <ClCompile Include="LuaTransform.cpp" />
     <ClCompile Include="LuaVector3.cpp" />
     <ClCompile Include="LuaGraphicsContext.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="LuaContext.h" />
     <ClInclude Include="LuaGameTime.h" />
     <ClInclude Include="LuaGameTimeManager.h" />
+    <ClInclude Include="LuaQuaternion.h" />
     <ClInclude Include="LuaTransform.h" />
     <ClInclude Include="LuaVector3.h" />
     <ClInclude Include="LuaGraphicsContext.h" />

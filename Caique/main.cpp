@@ -30,6 +30,7 @@
 #include "LuaGameTimeManager.h"
 #include "LuaGraphicsContext.h"
 #include "LuaVector3.h"
+#include "LuaQuaternion.h"
 #include "LuaTransform.h"
 
 int main(int argc, char* argv[])
@@ -38,6 +39,7 @@ int main(int argc, char* argv[])
 	std::shared_ptr<Lua::LuaContext> luaContext = Lua::LuaContext::Create();
 	Lua::LuaScript::Register(luaContext);
 	LuaGameObjects::LuaVector3::Register(luaContext);
+	LuaGameObjects::LuaQuaternion::Register(luaContext);
 	LuaGameObjects::LuaTransform::Register(luaContext);
 
 	// Create the graphics context.
@@ -61,6 +63,7 @@ int main(int argc, char* argv[])
 	std::shared_ptr<Behaviours::Camera> camera = cameraObject->AddComponent<Behaviours::Camera>(graphicsContext->GetOutputWidth(), graphicsContext->GetOutputHeight());
 	cameraMount->GetTransform()->AddChild(cameraObject->GetTransform());
 	cameraObject->GetTransform()->SetLocalPosition(glm::vec3(0, 0, 21.0f));
+	cameraMount->AddComponent<Behaviours::ScriptInstance>("Scripts\\CameraRotator");
 
 	// Create the lamp model.
 	std::shared_ptr<GameObjects::GameObject> lamp = scene->CreateGameObject();
@@ -69,8 +72,6 @@ int main(int argc, char* argv[])
 	lamp->AddComponent<Behaviours::ScriptInstance>("Scripts\\FPSTracker");
 
 	scene->CreateGameObject()->AddComponent<Behaviours::MeshRenderer>(std::string("Models\\Desk"));
-
-	float rotationPerSeconds = 0.1f;
 
 	bool quit = false;
 	while (!quit)
@@ -92,9 +93,6 @@ int main(int argc, char* argv[])
 
 		// Update the scene using the GameTime, this updates every GameObject and their Behaviours.
 		scene->Update(gameTime);
-		
-		// DEBUG: Rotate camera.
-		cameraMount->GetTransform()->SetLocalRotation(glm::quat(glm::vec3(0, rotationPerSeconds * gameTime.deltaSeconds, 0)) * cameraMount->GetTransform()->GetLocalRotation());
 
 		// Draw the scene.
 		graphicsContext->Clear(0, 0, 0);

@@ -114,6 +114,10 @@
    	{
    		"Name":"FPSTracker",
    		"RelativePath":"Scripts\\FPSTracker.lua"
-   	}
+   	},
+      {
+         "Name":"CameraRotator",
+         "RelativePath":"Scripts\\CameraRotator.lua"
+      }
    ]
 }

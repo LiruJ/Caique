@@ -6,6 +6,7 @@
 // Lua includes.
 #include "LuaContext.h"
 #include "LuaVector3.h"
+#include "LuaQuaternion.h"
 
 void LuaGameObjects::LuaTransform::Register(std::shared_ptr<Lua::LuaContext> luaContext)
 {
@@ -53,6 +54,9 @@ int LuaGameObjects::LuaTransform::getIndex(std::shared_ptr<Lua::LuaContext> luaC
 	// If the property is the local position, get it.
 	if (propertyName == LOCALPOSITIONNAME)
 		LuaGameObjects::LuaVector3::CreateOnStack(luaContext, transform->GetLocalPosition());
+	// If the property is the local rotation, get it.
+	if (propertyName == LOCALROTATIONNAME)
+		LuaGameObjects::LuaQuaternion::CreateOnStack(luaContext, transform->GetLocalRotation());
 	// Finally; push a nil if nothing else was found.
 	else luaContext->PushNil();
 
@@ -77,6 +81,13 @@ int LuaGameObjects::LuaTransform::setIndex(std::shared_ptr<Lua::LuaContext> luaC
 		// Get the value as a vector and set the property.
 		glm::vec3 value = *(glm::vec3*)luaContext->CheckUserData(3, VECTOR3TYPENAME);
 		transform->SetLocalPosition(value);
+	}
+	// If the property is the local rotation, set it.
+	else if (propertyName == LOCALROTATIONNAME)
+	{
+		// Get the value as a quat and set the property.
+		glm::quat value = *(glm::quat*)luaContext->CheckUserData(3, QUATERNIONTYPENAME);
+		transform->SetLocalRotation(value);
 	}
 
 	return 0;

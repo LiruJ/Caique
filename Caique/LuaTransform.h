@@ -12,6 +12,7 @@ namespace LuaGameObjects
 	constexpr const char* TRANSFORMTYPENAME = "transform";
 
 	constexpr const char* LOCALPOSITIONNAME = "localPosition";
+	constexpr const char* LOCALROTATIONNAME = "localRotation";
 
 	class LuaTransform
 	{
