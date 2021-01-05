@@ -1,7 +1,8 @@
-#include <SDL.h>
-
 #include <glm\glm.hpp>
-#include <glm\gtc\matrix_transform.hpp>
+
+// Event includes.
+#include "EventManager.h"
+#include "InputManager.h"
 
 // Timing includes.
 #include "GameTimeManager.h"
@@ -32,6 +33,9 @@
 #include "LuaVector3.h"
 #include "LuaQuaternion.h"
 #include "LuaTransform.h"
+#include "LuaInputManager.h"
+
+#include <iostream>
 
 int main(int argc, char* argv[])
 {	
@@ -50,20 +54,23 @@ int main(int argc, char* argv[])
 	// Create the content manager.
 	std::shared_ptr<Content::ContentManager> contentManager = std::make_shared<Content::ContentManager>(argv[0], "Content", graphicsContext, luaContext);
 	
+	// Create the input and events managers.
+	std::shared_ptr<Input::InputManager> inputManager = std::make_shared<Input::InputManager>();
+	std::shared_ptr<Events::EventManager> eventManager = std::make_shared<Events::EventManager>(inputManager);
+	LuaGameObjects::LuaInputManager::Register(luaContext, inputManager);
+
 	// Create the scene.
 	std::shared_ptr<GameObjects::Scene> scene = GameObjects::Scene::CreateScene(contentManager);
 	std::shared_ptr<GameTiming::GameTimeManager> gameTimeManager = std::make_shared<GameTiming::GameTimeManager>();
 	LuaGameObjects::LuaGameTimeManager::Register(luaContext, gameTimeManager);
 
 	// Create the camera.
-	std::shared_ptr<GameObjects::GameObject> cameraMount = scene->CreateGameObject();
-	cameraMount->GetTransform()->SetLocalRotation(glm::quat(glm::vec3(-0.35877f, 0, 0)));
-
 	std::shared_ptr<GameObjects::GameObject> cameraObject = scene->CreateGameObject();
 	std::shared_ptr<Behaviours::Camera> camera = cameraObject->AddComponent<Behaviours::Camera>(graphicsContext->GetOutputWidth(), graphicsContext->GetOutputHeight());
-	cameraMount->GetTransform()->AddChild(cameraObject->GetTransform());
-	cameraObject->GetTransform()->SetLocalPosition(glm::vec3(0, 0, 21.0f));
-	cameraMount->AddComponent<Behaviours::ScriptInstance>("Scripts\\CameraRotator");
+
+	cameraObject->AddComponent<Behaviours::ScriptInstance>("Scripts\\CameraRotator");
+	cameraObject->GetTransform()->SetLocalRotation(glm::quat(glm::vec3(-0.35877f, 0, 0)));
+	cameraObject->GetTransform()->SetLocalPosition(cameraObject->GetTransform()->GetLocalRotation() * glm::vec3(0, 0, 21.0f));
 
 	// Create the lamp model.
 	std::shared_ptr<GameObjects::GameObject> lamp = scene->CreateGameObject();
@@ -73,24 +80,15 @@ int main(int argc, char* argv[])
 
 	scene->CreateGameObject()->AddComponent<Behaviours::MeshRenderer>(std::string("Models\\Desk"));
 
-	bool quit = false;
-	while (!quit)
+	while (!eventManager->IsQuitting())
 	{
 		// Update the gametime.
 		gameTimeManager->Update();
 		GameTiming::GameTime gameTime = gameTimeManager->GetCurrentGameTime();
 
-		// TODO: InputManager.
-		SDL_Event event = { 0 };
-
-		while (SDL_PollEvent(&event))
-		{
-			if (event.type == SDL_QUIT)
-			{
-				quit = true;
-			}
-		}
-
+		// Update events, which also updates inputs.
+		eventManager->Update();
+		
 		// Update the scene using the GameTime, this updates every GameObject and their Behaviours.
 		scene->Update(gameTime);
 

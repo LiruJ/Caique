@@ -41,6 +41,12 @@ namespace GameObjects
 
 		void RotateAround(const float angle, glm::vec3 axis);
 
+		const glm::vec3 GetLocalForward();
+
+		const glm::vec3 GetLocalUp();
+		
+		const glm::vec3 GetLocalRight();
+
 		void SetLocalScale(const glm::vec3 scale) { this->scale = scale; dirtySelfAndChildren(); }
 
 		void LookAt(const glm::vec3 target) { this->rotation = glm::quatLookAt(glm::normalize(target - position), glm::vec3(0, 1, 0)); dirtySelfAndChildren(); }
@@ -48,7 +54,7 @@ namespace GameObjects
 		void AddChild(std::shared_ptr<GameObjects::Transform> child);
 
 		std::shared_ptr<GameObjects::Transform> GetChildByIndex(int index) { return children.at(index); }
-
+		
 		int GetChildCount() { return children.size(); }
 	private:
 		std::weak_ptr<GameObjects::Transform> parent;

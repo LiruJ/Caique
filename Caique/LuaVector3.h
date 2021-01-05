@@ -53,6 +53,8 @@ namespace LuaGameObjects
 
 		static int distance(std::shared_ptr<Lua::LuaContext> luaContext);
 
+		static int unarySubtract(std::shared_ptr<Lua::LuaContext> luaContext);
+
 		static int dot(std::shared_ptr<Lua::LuaContext> luaContext);
 		
 		static int normalise(std::shared_ptr<Lua::LuaContext> luaContext);

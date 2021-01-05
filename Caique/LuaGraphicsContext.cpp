@@ -23,25 +23,25 @@ void LuaGameObjects::LuaGraphicsContext::Register(std::shared_ptr<Lua::LuaContex
 	luaContext->SetGlobal(WINDOWVSYNCNAME);
 
 	// Create a userdata that holds a pointer to the GraphicsContext. We get a pointer to the pointer back. Also store its stack position.
-	Graphics::GraphicsContext** pointerUserData = (Graphics::GraphicsContext**)luaContext->PushUserData(sizeof(graphicsContext.get()));
-	int userData = luaContext->GetTopIndex();
+	std::weak_ptr<Graphics::GraphicsContext>* graphicsPointer = (std::weak_ptr<Graphics::GraphicsContext>*)luaContext->PushUserData(sizeof(std::weak_ptr<Graphics::GraphicsContext>));
+	int graphicsContextPointerData = luaContext->GetTopIndex();
 
-	// Set the userdata pointer to the GraphicsContext.
-	*pointerUserData = graphicsContext.get();
+	// Placement operator, see Lua::LuaContext::Push(luaContextFunction) for more info.
+	new(graphicsPointer) std::weak_ptr<Graphics::GraphicsContext>(graphicsContext);
 
 	// Create a metatable for the userdata.
-	int metaTable = luaContext->PushNewMetaTable(GLOBALGRAPHICSCONTEXTNAME);
+	int metatable = luaContext->PushNewMetatable(GLOBALGRAPHICSCONTEXTNAME);
 
 	// Bind the read indexer to call the getter functions.
-	luaContext->Push(GetIndex);
-	luaContext->SetField(Lua::INDEXERNAME, metaTable);
+	luaContext->Push(getIndex);
+	luaContext->SetField(Lua::INDEXERNAME, metatable);
 
 	// Bind the assign indexer to call the setter functions.
-	luaContext->Push(SetIndex);
-	luaContext->SetField(Lua::NEWINDEXERNAME, metaTable);
+	luaContext->Push(setIndex);
+	luaContext->SetField(Lua::NEWINDEXERNAME, metatable);
 
 	// Set the metatable of the userdata to the created metatable.
-	luaContext->SetMetaTable(userData);
+	luaContext->SetMetatable(graphicsContextPointerData);
 
 	// Add the userdata to the global namespace so that any script can access and use it.
 	luaContext->SetGlobal(GLOBALGRAPHICSCONTEXTNAME);
@@ -50,13 +50,13 @@ void LuaGameObjects::LuaGraphicsContext::Register(std::shared_ptr<Lua::LuaContex
 	luaContext->StopBalancing();
 }
 
-int LuaGameObjects::LuaGraphicsContext::SetIndex(std::shared_ptr<Lua::LuaContext> luaContext)
+int LuaGameObjects::LuaGraphicsContext::setIndex(std::shared_ptr<Lua::LuaContext> luaContext)
 {
 	// Get the GraphicsContext, this should be the first argument.
-	Graphics::GraphicsContext* graphicsContext = *(Graphics::GraphicsContext**)(luaContext->ToUserData(1));
+	std::shared_ptr<Graphics::GraphicsContext> graphicsContext = ((std::weak_ptr<Graphics::GraphicsContext>*)luaContext->CheckUserData(1, GLOBALGRAPHICSCONTEXTNAME))->lock();
 	
 	// The name of the property itself should be the second argument.
-	std::string propertyName = luaContext->ToString(2);
+	std::string propertyName = luaContext->CheckString(2);
 
 	// Handle the property type.
 	if (propertyName == WINDOWWIDTHNAME)
@@ -69,13 +69,13 @@ int LuaGameObjects::LuaGraphicsContext::SetIndex(std::shared_ptr<Lua::LuaContext
 	return 0;
 }
 
-int LuaGameObjects::LuaGraphicsContext::GetIndex(std::shared_ptr<Lua::LuaContext> luaContext)
+int LuaGameObjects::LuaGraphicsContext::getIndex(std::shared_ptr<Lua::LuaContext> luaContext)
 {
 	// Get the GraphicsContext, this should be the first argument.
-	Graphics::GraphicsContext* graphicsContext = *static_cast<Graphics::GraphicsContext**>(luaContext->ToUserData(1));
+	std::shared_ptr<Graphics::GraphicsContext> graphicsContext = ((std::weak_ptr<Graphics::GraphicsContext>*)luaContext->CheckUserData(1, GLOBALGRAPHICSCONTEXTNAME))->lock();
 
 	// The name of the property itself should be the second argument.
-	std::string propertyName = luaContext->ToString(2);
+	std::string propertyName = luaContext->CheckString(2);
 
 	// Handle the property type.
 	if (propertyName == WINDOWWIDTHNAME)
@@ -90,7 +90,6 @@ int LuaGameObjects::LuaGraphicsContext::GetIndex(std::shared_ptr<Lua::LuaContext
 	}
 	else if (propertyName == WINDOWTITLENAME)
 	{
-
 		luaContext->Push(graphicsContext->GetWindowTitle());
 		return 1;
 	}

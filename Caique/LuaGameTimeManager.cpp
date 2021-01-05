@@ -14,25 +14,25 @@ void LuaGameObjects::LuaGameTimeManager::Register(std::shared_ptr<Lua::LuaContex
 	luaContext->BeginBalancing();
 
 	// Create a userdata that holds a pointer to the gameTimeManager. We get a pointer to the pointer back. Also store its stack position.
-	GameTiming::GameTimeManager** pointerUserData = (GameTiming::GameTimeManager**)luaContext->PushUserData(sizeof(gameTimeManager.get()));
-	int userData = luaContext->GetTopIndex();
+	std::weak_ptr<GameTiming::GameTimeManager>* gameTimeManagerPointer = (std::weak_ptr<GameTiming::GameTimeManager>*)luaContext->PushUserData(sizeof(std::weak_ptr<GameTiming::GameTimeManager>));
+	int gameTimeManagerData = luaContext->GetTopIndex();
 
-	// Set the userdata pointer to the gameTimeManager.
-	*pointerUserData = gameTimeManager.get();
+	// Placement operator, see Lua::LuaContext::Push(luaContextFunction) for more info.
+	new(gameTimeManagerPointer) std::weak_ptr<GameTiming::GameTimeManager>(gameTimeManager);
 
 	// Create a metatable for the userdata.
-	int metaTable = luaContext->PushNewMetaTable(GLOBALGAMETIMEMANAGERNAME);
+	int metatable = luaContext->PushNewMetatable(GLOBALGAMETIMEMANAGERNAME);
 
 	// Bind the read indexer to call the getter functions.
-	luaContext->Push(GetIndex);
-	luaContext->SetField(Lua::INDEXERNAME, metaTable);
+	luaContext->Push(getIndex);
+	luaContext->SetField(Lua::INDEXERNAME, metatable);
 
 	// Bind the assign indexer to call the setter functions.
-	luaContext->Push(SetIndex);
-	luaContext->SetField(Lua::NEWINDEXERNAME, metaTable);
+	luaContext->Push(setIndex);
+	luaContext->SetField(Lua::NEWINDEXERNAME, metatable);
 
 	// Set the metatable of the userdata to the created metatable.
-	luaContext->SetMetaTable(userData);
+	luaContext->SetMetatable(gameTimeManagerData);
 
 	// Add the userdata to the global namespace so that any script can access and use it.
 	luaContext->SetGlobal(GLOBALGAMETIMEMANAGERNAME);
@@ -41,29 +41,13 @@ void LuaGameObjects::LuaGameTimeManager::Register(std::shared_ptr<Lua::LuaContex
 	luaContext->StopBalancing();
 }
 
-int LuaGameObjects::LuaGameTimeManager::SetIndex(std::shared_ptr<Lua::LuaContext> luaContext)
+int LuaGameObjects::LuaGameTimeManager::getIndex(std::shared_ptr<Lua::LuaContext> luaContext)
 {
 	// Get the gameTimeManager, this should be the first argument.
-	GameTiming::GameTimeManager* gameTimeManager = *static_cast<GameTiming::GameTimeManager**>(luaContext->ToUserData(1));
+	std::shared_ptr<GameTiming::GameTimeManager> gameTimeManager = ((std::weak_ptr<GameTiming::GameTimeManager>*)luaContext->CheckUserData(1, GLOBALGAMETIMEMANAGERNAME))->lock();
 
 	// The name of the property itself should be the second argument.
 	std::string propertyName = luaContext->CheckString(2);
-	
-	// Handle the property type.
-	if (propertyName == TARGETFRAMERATENAME)
-		gameTimeManager->SetTargetFrameRate(luaContext->CheckInt(-1));
-		
-	// In any case, this function should not put anything onto the stack.
-	return 0;
-}
-
-int LuaGameObjects::LuaGameTimeManager::GetIndex(std::shared_ptr<Lua::LuaContext> luaContext)
-{
-	// Get the gameTimeManager, this should be the first argument.
-	GameTiming::GameTimeManager* gameTimeManager = *static_cast<GameTiming::GameTimeManager**>(luaContext->ToUserData(1));
-
-	// The name of the property itself should be the second argument.
-	std::string propertyName = luaContext->ToString(2);
 
 	// Handle the property type.
 	if (propertyName == TARGETFRAMERATENAME)
@@ -83,5 +67,21 @@ int LuaGameObjects::LuaGameTimeManager::GetIndex(std::shared_ptr<Lua::LuaContext
 		return 1;
 	}
 
+	return 0;
+}
+
+int LuaGameObjects::LuaGameTimeManager::setIndex(std::shared_ptr<Lua::LuaContext> luaContext)
+{
+	// Get the gameTimeManager, this should be the first argument.
+	std::shared_ptr<GameTiming::GameTimeManager> gameTimeManager = ((std::weak_ptr<GameTiming::GameTimeManager>*)luaContext->CheckUserData(1, GLOBALGAMETIMEMANAGERNAME))->lock();
+
+	// The name of the property itself should be the second argument.
+	std::string propertyName = luaContext->CheckString(2);
+	
+	// Handle the property type.
+	if (propertyName == TARGETFRAMERATENAME)
+		gameTimeManager->SetTargetFrameRate(luaContext->CheckInt(-1));
+		
+	// In any case, this function should not put anything onto the stack.
 	return 0;
 }

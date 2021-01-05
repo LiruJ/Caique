@@ -35,6 +35,7 @@ namespace Lua
 	constexpr const char* SUBTRACTNAME = "__sub";
 	constexpr const char* MULTIPLYNAME = "__mul";
 	constexpr const char* DIVIDENAME = "__div";
+	constexpr const char* UNARYMINUSNAME = "__unm";
 
 	constexpr const int GLOBALSINDEX = LUA_GLOBALSINDEX;
 	constexpr const int REGISTRYINDEX = LUA_REGISTRYINDEX;
@@ -66,6 +67,14 @@ namespace Lua
 		}
 
 		template<typename... Args>
+		void Push(bool value, Args&&... args)
+		{
+			Push(value);
+			Push(args...);
+		}
+
+
+		template<typename... Args>
 		void Push(int value, Args&&... args)
 		{
 			Push(value);
@@ -94,6 +103,7 @@ namespace Lua
 		}
 
 		void Push(const std::string& value);
+		void Push(const bool value);
 		void Push(const int value);
 		void Push(const double value);
 		void Push(const luaContextFunction value);
@@ -105,8 +115,8 @@ namespace Lua
 		
 		void* PushUserData(const int size);
 
-		int PushNewMetaTable(const std::string& typeName);
-		void SetMetaTable(const int stackIndex);
+		int PushNewMetatable(const std::string& typeName);
+		void SetMetatable(const int stackIndex);
 		int GetMetaTable(const std::string& typeName);
 
 		void CopyFrom(const int stackIndex);
@@ -136,19 +146,24 @@ namespace Lua
 		bool RemoveFromRegistry(const std::string& name);
 
 		bool IsNil(const int stackIndex);
+		bool IsString(const int stackIndex);
 		bool IsTable(const int stackIndex);
 		bool IsUserData(const int stackIndex);
+		bool IsUserData(const int stackIndex, const char* typeName);
+		bool IsUserData(const int stackIndex, std::string& typeName) { return IsUserData(stackIndex, typeName.c_str()); }
 		bool IsFunction(const int stackIndex);
 		bool IsDouble(const int stackIndex);
 
 		void* ToUserData(const int stackIndex);
 		std::string ToString(const int stackIndex);
+		const char* ToCString(const int stackIndex);
 		int ToInt(const int stackIndex);
 		double ToDouble(const int stackIndex);
 		float ToFloat(const int stackIndex) { return (float)ToDouble(stackIndex); }
 
 		void* CheckUserData(const int stackIndex, const std::string& typeName);
 		std::string CheckString(const int stackIndex);
+		const char* CheckCString(const int stackIndex);
 		int CheckInt(const int stackIndex);
 		double CheckDouble(const int stackIndex);
 		float CheckFloat(const int stackIndex) { return (float)CheckDouble(stackIndex); }

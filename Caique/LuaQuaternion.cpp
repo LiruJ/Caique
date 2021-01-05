@@ -27,7 +27,7 @@ void LuaGameObjects::LuaQuaternion::Register(std::shared_ptr<Lua::LuaContext> lu
     luaContext->SetGlobal(QUATERNIONTYPENAME);
 
     // Push a new metatable to be used for quaternions.
-    int metatable = luaContext->PushNewMetaTable(QUATERNIONTYPENAME);
+    int metatable = luaContext->PushNewMetatable(QUATERNIONTYPENAME);
 
     // Set up the operations.
     luaContext->Push(toString);
@@ -46,7 +46,7 @@ void LuaGameObjects::LuaQuaternion::Register(std::shared_ptr<Lua::LuaContext> lu
     luaContext->SetField(Lua::NEWINDEXERNAME, quaternionMetatable);
 
     // Set the metatable.
-    luaContext->SetMetaTable(quaternionTable);
+    luaContext->SetMetatable(quaternionTable);
 
     // Pop the metatable and quaternion table from the stack.
     luaContext->Remove(metatable);
@@ -64,7 +64,7 @@ void LuaGameObjects::LuaQuaternion::CreateOnStack(std::shared_ptr<Lua::LuaContex
 
     // Set the metatable for the data.
     luaContext->GetMetaTable(QUATERNIONTYPENAME);
-    luaContext->SetMetaTable(quaternionData);
+    luaContext->SetMetatable(quaternionData);
 }
 
 int LuaGameObjects::LuaQuaternion::getIndex(std::shared_ptr<Lua::LuaContext> luaContext)
@@ -190,14 +190,17 @@ int LuaGameObjects::LuaQuaternion::multiply(std::shared_ptr<Lua::LuaContext> lua
 
     // The first argument should be a quaternion.
     glm::quat left = *(glm::quat*)luaContext->CheckUserData(1, QUATERNIONTYPENAME);
-
+    
     // If the second argument is a number, use that.
     glm::quat result;
     if (luaContext->IsDouble(2))
         result = left * luaContext->ToFloat(2);
     // Otherwise; if the second argument is another quaternion, use that.
-    else if (luaContext->IsUserData(2))
+    else if (luaContext->IsUserData(2, QUATERNIONTYPENAME))
         result = left * *(glm::quat*)luaContext->CheckUserData(2, QUATERNIONTYPENAME);
+    // Otherwise; if the second argument is a vector3, use that.
+    else if (luaContext->IsUserData(2, VECTOR3TYPENAME))
+        result = left * *(glm::vec3*)luaContext->CheckUserData(2, VECTOR3TYPENAME);
     // Otherwise; cause an error.
     else return luaContext->Error("cannot multiply quaternion with %s", luaContext->GetType(2).c_str());
 

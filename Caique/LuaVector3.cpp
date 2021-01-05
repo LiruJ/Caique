@@ -2,6 +2,10 @@
 
 // Lua includes.
 #include "LuaContext.h"
+#include "LuaQuaternion.h"
+
+// GLM includes.
+#include <glm/gtc/quaternion.hpp>
 
 void LuaGameObjects::LuaVector3::Register(std::shared_ptr<Lua::LuaContext> luaContext)
 {
@@ -33,11 +37,14 @@ void LuaGameObjects::LuaVector3::Register(std::shared_ptr<Lua::LuaContext> luaCo
 	luaContext->SetGlobal(VECTOR3TYPENAME);
 
 	// Push a new metatable to be used for vectors.
-	int metatable = luaContext->PushNewMetaTable(VECTOR3TYPENAME);
+	int metatable = luaContext->PushNewMetatable(VECTOR3TYPENAME);
 
 	// Set up the operations.
 	luaContext->Push(toString);
 	luaContext->SetField(Lua::TOSTRINGNAME, metatable);
+
+	luaContext->Push(unarySubtract);
+	luaContext->SetField(Lua::UNARYMINUSNAME, metatable);
 
 	luaContext->Push(add);
 	luaContext->Push(add);
@@ -60,8 +67,6 @@ void LuaGameObjects::LuaVector3::Register(std::shared_ptr<Lua::LuaContext> luaCo
 	luaContext->SetField("divide", vectorTable);
 
 	luaContext->Push(length);
-	luaContext->Push(length);
-	luaContext->SetField(LENGTHNAME, metatable);
 	luaContext->SetField(LENGTHNAME, vectorTable);
 
 	luaContext->Push(getIndex);
@@ -92,7 +97,7 @@ void LuaGameObjects::LuaVector3::Register(std::shared_ptr<Lua::LuaContext> luaCo
 	luaContext->SetField(Lua::NEWINDEXERNAME, vectorMetatable);
 
 	// Set the metatable.
-	luaContext->SetMetaTable(vectorTable);
+	luaContext->SetMetatable(vectorTable);
 
 	// Pop the metatable and vector table from the stack.
 	luaContext->Remove(metatable);
@@ -110,7 +115,7 @@ void LuaGameObjects::LuaVector3::CreateOnStack(std::shared_ptr<Lua::LuaContext> 
 
 	// Set the metatable for the data.
 	luaContext->GetMetaTable(VECTOR3TYPENAME);
-	luaContext->SetMetaTable(vectorData);
+	luaContext->SetMetatable(vectorData);
 }
 
 int LuaGameObjects::LuaVector3::getIndex(std::shared_ptr<Lua::LuaContext> luaContext)
@@ -154,9 +159,10 @@ int LuaGameObjects::LuaVector3::getIndex(std::shared_ptr<Lua::LuaContext> luaCon
 		luaContext->Remove(vectorTable);
 	}
 	// Otherwise; if the name is length, return the length value.
-	else if (propertyName == LENGTHNAME) luaContext->Push(glm::length(left));
+	else if (propertyName == LENGTHNAME) 
+		luaContext->Push(glm::length(left));
 	// Otherwise; if the name is normal, return the normal value.
-	else if (propertyName == NORMALNAME) CreateOnStack(luaContext, glm::normalize(left));
+	else if (propertyName == NORMALNAME) CreateOnStack(luaContext, left == glm::vec3(0, 0, 0) ? glm::vec3(0, 0, 0) : glm::normalize(left));
 	// Finally; return nil if none of these are true.
 	else luaContext->PushNil();
 
@@ -305,14 +311,17 @@ int LuaGameObjects::LuaVector3::multiply(std::shared_ptr<Lua::LuaContext> luaCon
 
 	// The first argument should be a vector3.
 	glm::vec3 left = *(glm::vec3*)luaContext->CheckUserData(1, VECTOR3TYPENAME);
-
+	
 	// If the second argument is a number, use that.
 	glm::vec3 result;
 	if (luaContext->IsDouble(2))
 		result = left * luaContext->ToFloat(2);
 	// Otherwise; if the second argument is another vector, use that.
-	else if (luaContext->IsUserData(2))
+	else if (luaContext->IsUserData(2, VECTOR3TYPENAME))
 		result = left * *(glm::vec3*)luaContext->CheckUserData(2, VECTOR3TYPENAME);
+	// Otherwise; if the second argument is a quaternion, use that.
+	else if (luaContext->IsUserData(2, QUATERNIONTYPENAME))
+		result = left * *(glm::quat*)luaContext->CheckUserData(2, QUATERNIONTYPENAME);
 	// Otherwise; cause an error.
 	else return luaContext->Error("cannot multiply vector with %s", luaContext->GetType(2).c_str());
 
@@ -371,6 +380,20 @@ int LuaGameObjects::LuaVector3::distance(std::shared_ptr<Lua::LuaContext> luaCon
 
 	// Push the distance onto the stack and return.
 	luaContext->Push(glm::distance(left, right));
+	return 1;
+}
+
+int LuaGameObjects::LuaVector3::unarySubtract(std::shared_ptr<Lua::LuaContext> luaContext)
+{
+	// There should be two arguments. You may wonder what "unary" means in this case, well it turns out Lua adds a dummy value for unary operators to make it easier for them, as all other operators require 2. This is incredibly confusing, but such is C.
+	int argumentCount = luaContext->GetTopIndex();
+	if (argumentCount != 2)  luaContext->Error("unary minus operation was expecting 2 arguments, instead was given %d arguments", argumentCount);
+
+	// The first argument should be a vector3.
+	glm::vec3 left = *(glm::vec3*)luaContext->CheckUserData(1, VECTOR3TYPENAME);
+
+	// Push the negated vector onto the stack and return.
+	CreateOnStack(luaContext, -left);
 	return 1;
 }
 

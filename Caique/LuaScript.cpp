@@ -60,7 +60,7 @@ std::shared_ptr<Lua::LuaScript> Lua::LuaScript::CreateInstance(std::shared_ptr<L
     // Create the environment table for the script, and set the metatable for it.
     int environmentTable = luaContext->PushNewTable();
     luaContext->GetMetaTable(SCRIPTINSTANCENAME);
-    luaContext->SetMetaTable(environmentTable);
+    luaContext->SetMetatable(environmentTable);
 
     // Add the environment table to the main table and remove the main table from the stack.
     int environmentID = luaContext->AddTo(environmentsTable);
@@ -79,7 +79,7 @@ void Lua::LuaScript::Register(std::shared_ptr<Lua::LuaContext> luaContext)
     luaContext->BeginBalancing();
 
     // Create a metatable to hold the script instance behaviours.
-    int metaTable = luaContext->PushNewMetaTable(SCRIPTINSTANCENAME);
+    int metaTable = luaContext->PushNewMetatable(SCRIPTINSTANCENAME);
 
     // Get "_G" (one underscore), which is the Lua state's global context. This will then be on the top of the stack, so set the "__index" field of the metatable to it.
     // This essentially means that if the script's environment table is indexed and a value is not found, it will fall back onto the global context.

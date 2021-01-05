@@ -14,7 +14,7 @@ void LuaGameObjects::LuaTransform::Register(std::shared_ptr<Lua::LuaContext> lua
 	luaContext->BeginBalancing();
 
 	// Create a metatable to bind to.
-	int transformMetatable = luaContext->PushNewMetaTable(TRANSFORMTYPENAME);
+	int transformMetatable = luaContext->PushNewMetatable(TRANSFORMTYPENAME);
 
 	// Bind get/set index.
 	luaContext->Push(getIndex);
@@ -40,7 +40,7 @@ void LuaGameObjects::LuaTransform::CreateOnStack(std::shared_ptr<Lua::LuaContext
 
 	// Set the metatable for the data.
 	luaContext->GetMetaTable(TRANSFORMTYPENAME);
-	luaContext->SetMetaTable(transformData);
+	luaContext->SetMetatable(transformData);
 }
 
 int LuaGameObjects::LuaTransform::getIndex(std::shared_ptr<Lua::LuaContext> luaContext)
@@ -55,8 +55,15 @@ int LuaGameObjects::LuaTransform::getIndex(std::shared_ptr<Lua::LuaContext> luaC
 	if (propertyName == LOCALPOSITIONNAME)
 		LuaGameObjects::LuaVector3::CreateOnStack(luaContext, transform->GetLocalPosition());
 	// If the property is the local rotation, get it.
-	if (propertyName == LOCALROTATIONNAME)
+	else if (propertyName == LOCALROTATIONNAME)
 		LuaGameObjects::LuaQuaternion::CreateOnStack(luaContext, transform->GetLocalRotation());
+	// Directions.
+	else if (propertyName == LOCALFORWARDNAME)
+		LuaGameObjects::LuaVector3::CreateOnStack(luaContext, transform->GetLocalForward());
+	else if (propertyName == LOCALUPNAME)
+		LuaGameObjects::LuaVector3::CreateOnStack(luaContext, transform->GetLocalUp());
+	else if (propertyName == LOCALRIGHTNAME)
+		LuaGameObjects::LuaVector3::CreateOnStack(luaContext, transform->GetLocalRight());
 	// Finally; push a nil if nothing else was found.
 	else luaContext->PushNil();
 

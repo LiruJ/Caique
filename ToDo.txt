@@ -2,10 +2,8 @@ ENGINE
 ------
 
 make a batch file that builds the content file manually
-Add transform, gameobject, behaviour, etc. into Lua so that the Lua files can interact with the world. Basically each environment table will have these values filled in.
-	InputManager
 
-InputManager that handles checking for player input without caring about SDL events. Should be useable in Lua so a camera controller script can be made.
+Add mouse position/delta position to inputmanager so that the script can rotate the camera.
 
 Camera controller using inputmanager, like unity controls
 
@@ -14,7 +12,13 @@ GameObject Lua bindings
 	Get parent
 	Get child by name or index
 
-
+Scene loading.
+	Lua file that's run once the basic world has been set up
+	Access to scene, can add gameobjects
+		set gameobject parent
+		add gameobject children
+		add gameobject components
+	Maybe a unity project that serialises the scene into lua?
 
 OPTIONAL
 --------

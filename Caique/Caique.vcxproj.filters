@@ -58,6 +58,18 @@
     <Filter Include="Source Files\DataStructures">
       <UniqueIdentifier>{32fcefc1-d827-4a0f-9e24-f0baa8e5ec42}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Input">
+      <UniqueIdentifier>{dab96b60-07a8-4762-9c92-2d158a895da7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Input">
+      <UniqueIdentifier>{ca2010fc-b304-473e-a25c-6fd4efec5591}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Events">
+      <UniqueIdentifier>{28fe95b2-a8fb-4694-b8d5-279575bd0d71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Events">
+      <UniqueIdentifier>{eb74369d-8093-4f4a-a56f-63ac1799305a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -126,6 +138,15 @@
     <ClCompile Include="LuaQuaternion.cpp">
       <Filter>Source Files\Lua</Filter>
     </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaInputManager.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ContentManager.h">
@@ -192,6 +213,15 @@
       <Filter>Header Files\Lua</Filter>
     </ClInclude>
     <ClInclude Include="LuaGraphicsContext.h">
+      <Filter>Header Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaInputManager.h">
       <Filter>Header Files\Lua</Filter>
     </ClInclude>
   </ItemGroup>

@@ -81,6 +81,21 @@ void GameObjects::Transform::RotateAround(const float angle, glm::vec3 axis)
 	dirtyGlobal();
 }
 
+const glm::vec3 GameObjects::Transform::GetLocalForward()
+{
+	return rotation * glm::vec3(0, 0, -1);
+}
+
+const glm::vec3 GameObjects::Transform::GetLocalUp()
+{
+	return rotation * glm::vec3(0, 1, 0);
+}
+
+const glm::vec3 GameObjects::Transform::GetLocalRight()
+{
+	return rotation * glm::vec3(1, 0, 0);
+}
+
 void GameObjects::Transform::AddChild(std::shared_ptr<GameObjects::Transform> child)
 {
 	// TODO: Properly implement this function so it's safe to use.

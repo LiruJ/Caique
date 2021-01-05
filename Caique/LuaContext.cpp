@@ -92,6 +92,11 @@ void Lua::LuaContext::Push(const std::string& value)
 	lua_pushstring(luaState, value.c_str());
 }
 
+void Lua::LuaContext::Push(const bool value)
+{
+	lua_pushboolean(luaState, value);
+}
+
 void Lua::LuaContext::Push(const int value)
 {
 	lua_pushinteger(luaState, value);
@@ -142,13 +147,13 @@ void* Lua::LuaContext::PushUserData(const int size)
 	return lua_newuserdata(luaState, size);
 }
 
-int Lua::LuaContext::PushNewMetaTable(const std::string& typeName)
+int Lua::LuaContext::PushNewMetatable(const std::string& typeName)
 {
 	luaL_newmetatable(luaState, typeName.c_str());
 	return GetTopIndex();
 }
 
-void Lua::LuaContext::SetMetaTable(const int stackIndex)
+void Lua::LuaContext::SetMetatable(const int stackIndex)
 {
 	lua_setmetatable(luaState, stackIndex);
 }
@@ -295,6 +300,11 @@ bool Lua::LuaContext::IsNil(const int stackIndex)
 	return lua_isnil(luaState, stackIndex);
 }
 
+bool Lua::LuaContext::IsString(const int stackIndex)
+{
+	return lua_isstring(luaState, stackIndex);
+}
+
 bool Lua::LuaContext::IsTable(const int stackIndex)
 {
 	return lua_istable(luaState, stackIndex);
@@ -303,6 +313,30 @@ bool Lua::LuaContext::IsTable(const int stackIndex)
 bool Lua::LuaContext::IsUserData(const int stackIndex)
 {
 	return lua_isuserdata(luaState, stackIndex);
+}
+
+bool Lua::LuaContext::IsUserData(const int stackIndex, const char* typeName)
+{
+	BeginBalancing();
+
+	// Get the metatable for the type at the given index.
+	if (!lua_getmetatable(luaState, stackIndex)) return false;
+	int firstMetatable = GetTopIndex();
+
+	// Get the metatable for the type with the given name.
+	luaL_getmetatable(luaState, typeName);
+	int secondMetatable = GetTopIndex();
+	
+	// Equality check.
+	bool equal = lua_equal(luaState, firstMetatable, secondMetatable);
+
+	// Clean up.
+	Remove(secondMetatable);
+	Remove(firstMetatable);
+
+	StopBalancing();
+
+	return equal;
 }
 
 bool Lua::LuaContext::IsFunction(const int stackIndex)
@@ -325,6 +359,11 @@ std::string Lua::LuaContext::ToString(const int stackIndex)
 	return lua_tostring(luaState, stackIndex);
 }
 
+const char* Lua::LuaContext::ToCString(const int stackIndex)
+{
+	return lua_tostring(luaState, stackIndex);
+}
+
 int Lua::LuaContext::ToInt(const int stackIndex)
 {
 	return lua_tointeger(luaState, stackIndex);
@@ -336,6 +375,11 @@ double Lua::LuaContext::ToDouble(const int stackIndex)
 }
 
 std::string Lua::LuaContext::CheckString(const int stackIndex)
+{
+	return luaL_checkstring(luaState, stackIndex);
+}
+
+const char* Lua::LuaContext::CheckCString(const int stackIndex)
 {
 	return luaL_checkstring(luaState, stackIndex);
 }

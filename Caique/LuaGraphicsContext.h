@@ -23,9 +23,9 @@ namespace LuaGameObjects
 	{
 	public:
 		static void Register(std::shared_ptr<Lua::LuaContext> luaContext, std::shared_ptr<Graphics::GraphicsContext> graphicsContext);
+	private:
+		static int setIndex(std::shared_ptr<Lua::LuaContext> luaContext);
 
-		static int SetIndex(std::shared_ptr<Lua::LuaContext> luaContext);
-
-		static int GetIndex(std::shared_ptr<Lua::LuaContext> luaContext);
+		static int getIndex(std::shared_ptr<Lua::LuaContext> luaContext);
 	};
 }
