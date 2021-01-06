@@ -55,6 +55,10 @@ int LuaGameObjects::LuaInputManager::indexFunction(std::shared_ptr<Lua::LuaConte
 		luaContext->Push(wasKeyDown);
 	else if (strcmp(propertyName, WASKEYUPNAME) == 0)
 		luaContext->Push(wasKeyUp);
+	else if (strcmp(propertyName, MOUSEDELTAXNAME) == 0)
+		luaContext->Push(inputManager->GetMouseDeltaX());
+	else if (strcmp(propertyName, MOUSEDELTAYNAME) == 0)
+		luaContext->Push(inputManager->GetMouseDeltaY());
 	// Push nil onto the stack if the function does not exist.
 	else 
 		luaContext->PushNil();

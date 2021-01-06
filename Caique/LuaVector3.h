@@ -15,7 +15,7 @@ namespace LuaGameObjects
 	constexpr const char* LENGTHNAME = "length";
 	constexpr const char* DISTANCENAME = "distance";
 	constexpr const char* DOTNAME = "dot";
-	constexpr const char* NORMALNAME = "normal";
+	constexpr const char* VECNORMALNAME = "normal";
 	constexpr const char* NORMALISENAME = "normalise";
 	constexpr const char* NORMALIZENAME = "normalize";
 

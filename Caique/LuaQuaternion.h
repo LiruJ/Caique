@@ -14,6 +14,7 @@ namespace LuaGameObjects
 	constexpr const char* QUATERNIONTYPENAME = "quaternion";
 
 	constexpr const char* EULERNAME = "euler";
+	constexpr const char* QUATNORMALNAME = "normal";
 
 
 	class LuaQuaternion
@@ -32,6 +33,8 @@ namespace LuaGameObjects
 		static int createNewFromXYZW(std::shared_ptr<Lua::LuaContext> luaContext);
 
 		static int createNewFromEuler(std::shared_ptr<Lua::LuaContext> luaContext);
+
+		static int createNewFromAngleAxis(std::shared_ptr<Lua::LuaContext> luaContext);
 
 		static int multiply(std::shared_ptr<Lua::LuaContext> luaContext);
 	};

@@ -41,4 +41,7 @@ void Input::InputManager::refreshState()
 {
 	// Copy over the current keys to the last keys.
 	lastKeysDown = currentKeysDown;
+
+	mouseDeltaX = 0;
+	mouseDeltaY = 0;
 }

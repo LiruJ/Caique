@@ -46,20 +46,47 @@ void Graphics::GraphicsContext::Initialise(int windowWidth, int windowHeight)
 
 void Graphics::GraphicsContext::SetOutputWidth(const int newWidth)
 {
+	// If the size won't change, do nothing.
+	if (newWidth == outputWidth) return;
+
 	// Set the width.
 	SDL_SetWindowSize(window, newWidth, outputHeight);
 
 	// Set the width and height.
 	SDL_GL_GetDrawableSize(window, &outputWidth, &outputHeight);
+
+	// Invoke the event.
+	invokeResizeEvent();
 }
 
 void Graphics::GraphicsContext::SetOutputHeight(const int newHeight)
 {
+	// If the size won't change, do nothing.
+	if (newHeight == outputHeight) return;
+
 	// Set the height.
-	SDL_SetWindowSize(window, newHeight, outputHeight);
+	SDL_SetWindowSize(window, outputWidth, newHeight);
 
 	// Set the width and height.
 	SDL_GL_GetDrawableSize(window, &outputWidth, &outputHeight);
+
+	// Invoke the event.
+	invokeResizeEvent();
+}
+
+void Graphics::GraphicsContext::SetOutputSize(const int newWidth, const int newHeight)
+{
+	// If the size won't change, do nothing.
+	if (newWidth == outputWidth && newHeight == outputHeight) return;
+
+	// Set the size.
+	SDL_SetWindowSize(window, newWidth, newHeight);
+
+	// Set the width and height.
+	SDL_GL_GetDrawableSize(window, &outputWidth, &outputHeight);
+
+	// Invoke the event.
+	invokeResizeEvent();
 }
 
 void Graphics::GraphicsContext::SetWindowTitle(const char* title)
@@ -105,6 +132,13 @@ Graphics::VSyncMode Graphics::GraphicsContext::GetVSyncMode()
 
 }
 
+void Graphics::GraphicsContext::ListenForResize(std::function<void(int width, int height)> onResize)
+{
+	if (onResize == nullptr) return;
+
+	resizedEventListeners.push_back(onResize);
+}
+
 void Graphics::GraphicsContext::Clear(const float red, const float green, const float blue) const
 {
 	glClearColor(red, green, blue, 1.0f);
@@ -132,4 +166,10 @@ void Graphics::GraphicsContext::Draw(const ShaderProgram& shader, const std::vec
 void Graphics::GraphicsContext::Present()
 {
 	SDL_GL_SwapWindow(window);
+}
+
+void Graphics::GraphicsContext::invokeResizeEvent()
+{
+	for (size_t i = 0; i < resizedEventListeners.size(); i++)
+		resizedEventListeners.at(i)(outputWidth, outputHeight);
 }

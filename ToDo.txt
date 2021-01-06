@@ -1,11 +1,11 @@
 ENGINE
 ------
 
+REPLY TO EMAIL
+APPLY FOR EXTENSION
+Make an interesting scene in code, fix the desk model and import some more models. not super likely that I'll get scene loading done
+
 make a batch file that builds the content file manually
-
-Add mouse position/delta position to inputmanager so that the script can rotate the camera.
-
-Camera controller using inputmanager, like unity controls
 
 GameObject Lua bindings
 	Get component by string, typename for C++ components and script name for Lua ones.

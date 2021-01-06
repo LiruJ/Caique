@@ -18,6 +18,9 @@ namespace LuaGameObjects
 	constexpr const char* WASKEYDOWNNAME = "wasKeyDown";
 	constexpr const char* WASKEYUPNAME = "wasKeyUp";
 
+	constexpr const char* MOUSEDELTAXNAME = "mouseDeltaX";
+	constexpr const char* MOUSEDELTAYNAME = "mouseDeltaY";
+
 	class LuaInputManager
 	{
 	public:

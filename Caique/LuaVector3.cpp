@@ -162,7 +162,7 @@ int LuaGameObjects::LuaVector3::getIndex(std::shared_ptr<Lua::LuaContext> luaCon
 	else if (propertyName == LENGTHNAME) 
 		luaContext->Push(glm::length(left));
 	// Otherwise; if the name is normal, return the normal value.
-	else if (propertyName == NORMALNAME) CreateOnStack(luaContext, left == glm::vec3(0, 0, 0) ? glm::vec3(0, 0, 0) : glm::normalize(left));
+	else if (propertyName == VECNORMALNAME) CreateOnStack(luaContext, left == glm::vec3(0, 0, 0) ? glm::vec3(0, 0, 0) : glm::normalize(left));
 	// Finally; return nil if none of these are true.
 	else luaContext->PushNil();
 

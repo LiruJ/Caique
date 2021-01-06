@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <functional>
 
 // SDL includes.
 #include <SDL.h>
@@ -28,6 +29,7 @@ namespace Graphics
 		int GetOutputWidth() { return outputWidth; }
 		void SetOutputHeight(const int newHeight);
 		int GetOutputHeight() { return outputHeight; }
+		void SetOutputSize(const int newWidth, const int newHeight);
 
 		void SetWindowTitle(std::string& title) { SetWindowTitle(title.c_str()); }
 		void SetWindowTitle(const char* title);
@@ -36,6 +38,10 @@ namespace Graphics
 		void SetVSyncMode(VSyncMode vSyncMode);
 
 		VSyncMode GetVSyncMode();
+
+		SDL_Window* GetWindow() { return window; }
+
+		void ListenForResize(std::function<void(int newWidth, int newHeight)> onResize);
 
 		void Clear(const float red, const float green, const float blue) const;
 
@@ -46,8 +52,12 @@ namespace Graphics
 		int outputWidth;
 		int outputHeight;
 
+		std::vector<std::function<void(int newWidth, int newHeight)>> resizedEventListeners;
+
 		SDL_Window* window;
 
 		SDL_GLContext context;
+
+		void invokeResizeEvent();
 	};
 }

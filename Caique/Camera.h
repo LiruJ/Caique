@@ -10,8 +10,8 @@
 // Type includes.
 #include <memory>
 
-// Foward declarations.
-namespace Graphics { class GraphicsContext; }
+// Graphics includes.
+#include <GraphicsContext.h>
 
 namespace Behaviours
 {
@@ -24,8 +24,7 @@ namespace Behaviours
 		glm::mat4 GetInvertedProjection() { return invertedProjection; }
 		void SetProjection(glm::mat4 projection) { this->projection = projection; invertedProjection = glm::inverse(projection); }
 
-		void Initialise(int windowWidth, int windowHeight);
-		void Initialise(std::shared_ptr<Graphics::GraphicsContext> graphicsContext, glm::mat4&& projection);
+		void Initialise(std::shared_ptr<Graphics::GraphicsContext> graphicsContext);
 
 		int GetWidth() { return width; }
 		int GetHeight() { return height; }
@@ -38,5 +37,7 @@ namespace Behaviours
 
 		glm::mat4 projection;
 		glm::mat4 invertedProjection;
+
+		void onResize(int newWidth, int newHeight);
 	};
 }

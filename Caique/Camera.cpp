@@ -4,23 +4,19 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-// Graphics includes.
-#include "GraphicsContext.h"
-
-void Behaviours::Camera::Initialise(int windowWidth, int windowHeight)
+void Behaviours::Camera::Initialise(std::shared_ptr<Graphics::GraphicsContext> graphicsContext)
 {
-	SetProjection(glm::perspective(glm::radians(45.0f), windowWidth / (float)windowHeight, 0.1f, 1000.0f));
-	width = windowWidth;
-	height = windowHeight;
-}
-
-void Behaviours::Camera::Initialise(std::shared_ptr<Graphics::GraphicsContext> graphicsContext, glm::mat4&& projection)
-{
-	width = graphicsContext->GetOutputWidth();
-	height = graphicsContext->GetOutputHeight();
-	SetProjection(projection);
+	onResize(graphicsContext->GetOutputWidth(), graphicsContext->GetOutputHeight());
+	graphicsContext->ListenForResize(std::bind(&Behaviours::Camera::onResize, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 glm::mat4 Behaviours::Camera::GetView() { return GetGameObject()->GetTransform()->GetInvertedGlobalMatrix(); }
 
 glm::mat4 Behaviours::Camera::GetInvertedView() { return GetGameObject()->GetTransform()->GetGlobalMatrix(); }
+
+void Behaviours::Camera::onResize(int newWidth, int newHeight)
+{
+	SetProjection(glm::perspective(glm::radians(45.0f), newWidth / (float)newHeight, 0.1f, 1000.0f));
+	width = newWidth;
+	height = newHeight;
+}

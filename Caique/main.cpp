@@ -55,8 +55,8 @@ int main(int argc, char* argv[])
 	std::shared_ptr<Content::ContentManager> contentManager = std::make_shared<Content::ContentManager>(argv[0], "Content", graphicsContext, luaContext);
 	
 	// Create the input and events managers.
-	std::shared_ptr<Input::InputManager> inputManager = std::make_shared<Input::InputManager>();
-	std::shared_ptr<Events::EventManager> eventManager = std::make_shared<Events::EventManager>(inputManager);
+	std::shared_ptr<Input::InputManager> inputManager = std::make_shared<Input::InputManager>(graphicsContext);
+	std::shared_ptr<Events::EventManager> eventManager = std::make_shared<Events::EventManager>(inputManager, graphicsContext);
 	LuaGameObjects::LuaInputManager::Register(luaContext, inputManager);
 
 	// Create the scene.
@@ -66,10 +66,9 @@ int main(int argc, char* argv[])
 
 	// Create the camera.
 	std::shared_ptr<GameObjects::GameObject> cameraObject = scene->CreateGameObject();
-	std::shared_ptr<Behaviours::Camera> camera = cameraObject->AddComponent<Behaviours::Camera>(graphicsContext->GetOutputWidth(), graphicsContext->GetOutputHeight());
+	std::shared_ptr<Behaviours::Camera> camera = cameraObject->AddComponent<Behaviours::Camera>(graphicsContext);
 
 	cameraObject->AddComponent<Behaviours::ScriptInstance>("Scripts\\CameraRotator");
-	cameraObject->GetTransform()->SetLocalRotation(glm::quat(glm::vec3(-0.35877f, 0, 0)));
 	cameraObject->GetTransform()->SetLocalPosition(cameraObject->GetTransform()->GetLocalRotation() * glm::vec3(0, 0, 21.0f));
 
 	// Create the lamp model.
@@ -91,12 +90,12 @@ int main(int argc, char* argv[])
 		
 		// Update the scene using the GameTime, this updates every GameObject and their Behaviours.
 		scene->Update(gameTime);
-
+		
 		// Draw the scene.
 		graphicsContext->Clear(0, 0, 0);
 		scene->Draw(*camera);
 		graphicsContext->Present();
-
+		
 		// Wait out the remaining frame time.
 		gameTimeManager->WaitFrameRemainder(*graphicsContext);
 	}

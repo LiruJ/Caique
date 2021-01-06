@@ -14,25 +14,34 @@ void LuaGameObjects::LuaQuaternion::Register(std::shared_ptr<Lua::LuaContext> lu
 
     // Push a new table to be used for static quaternion functions.
     int quaternionTable = luaContext->PushNewTable();
-
+    
     // Add the constructors to the table.
     luaContext->Push(createNewFromXYZW);
     luaContext->SetField("fromXYZW", quaternionTable);
 
     luaContext->Push(createNewFromEuler);
     luaContext->SetField("fromEuler", quaternionTable);
-
+    
+    luaContext->Push(createNewFromAngleAxis);
+    luaContext->SetField("fromAngleAxis", quaternionTable);
+    
     // Set the global quaternion table, but leave it on the stack.
     luaContext->CopyFrom(quaternionTable);
     luaContext->SetGlobal(QUATERNIONTYPENAME);
-
+    
     // Push a new metatable to be used for quaternions.
     int metatable = luaContext->PushNewMetatable(QUATERNIONTYPENAME);
-
+    
     // Set up the operations.
     luaContext->Push(toString);
     luaContext->SetField(Lua::TOSTRINGNAME, metatable);
+    
+    luaContext->Push(getIndex);
+    luaContext->SetField(Lua::INDEXERNAME, metatable);
 
+    luaContext->Push(setIndex);
+    luaContext->SetField(Lua::NEWINDEXERNAME, metatable);
+    
     luaContext->Push(multiply);
     luaContext->Push(multiply);
     luaContext->SetField(Lua::MULTIPLYNAME, metatable);
@@ -100,6 +109,8 @@ int LuaGameObjects::LuaQuaternion::getIndex(std::shared_ptr<Lua::LuaContext> lua
     // Otherwise; if the property is for euler angles, push it.
     else if (propertyName == EULERNAME)
         LuaGameObjects::LuaVector3::CreateOnStack(luaContext, glm::eulerAngles(left));
+    else if (propertyName == QUATNORMALNAME)
+        CreateOnStack(luaContext, glm::normalize(left));
     // Finally; return nil if none of these are true.
     else luaContext->PushNil();
 
@@ -179,6 +190,22 @@ int LuaGameObjects::LuaQuaternion::createNewFromEuler(std::shared_ptr<Lua::LuaCo
 
     // Create a quaternion with the euler angles and push it onto the stack.
     CreateOnStack(luaContext, glm::quat(eulerAngles));
+    return 1;
+}
+
+int LuaGameObjects::LuaQuaternion::createNewFromAngleAxis(std::shared_ptr<Lua::LuaContext> luaContext)
+{
+    int argumentCount = luaContext->GetTopIndex();
+    if (argumentCount != 2)  luaContext->Error("constructor was expecting 2 arguments, instead was given %d arguments", argumentCount);
+
+    // The first argument should be a number.
+    float angle = luaContext->CheckFloat(1);
+
+    // The second argument should be a vector3.
+    glm::vec3 axis = *(glm::vec3*)luaContext->CheckUserData(2, VECTOR3TYPENAME);
+
+    // Create and return.
+    CreateOnStack(luaContext, glm::angleAxis(angle, axis));
     return 1;
 }
 
