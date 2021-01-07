@@ -5,6 +5,7 @@
 
 // GameObject includes.
 #include "GameObject.h"
+#include "Transform.h"
 
 // Behaviour includes.
 #include "Camera.h"
@@ -16,6 +17,8 @@
 #include "LuaTransform.h"
 #include "LuaScript.h"
 #include "LuaGraphicsContext.h"
+#include "LuaVector3.h"
+#include "LuaQuaternion.h"
 
 void LuaGameObjects::LuaGameObject::Register(std::shared_ptr<Lua::LuaContext> luaContext)
 {
@@ -64,6 +67,8 @@ int LuaGameObjects::LuaGameObject::getIndex(std::shared_ptr<Lua::LuaContext> lua
 	// If the property is a function, forward it on.
 	else if (propertyName == ADDCOMPONENTNAME)
 		luaContext->Push(addComponent);
+	else if (propertyName == ADDGAMEOBJECTNAME)
+		luaContext->Push(addNewGameObject);
 	// Finally; push a nil if nothing else was found.
 	else luaContext->PushNil();
 
@@ -100,7 +105,32 @@ int LuaGameObjects::LuaGameObject::addComponent(std::shared_ptr<Lua::LuaContext>
 		scriptInstance->GetScript()->GetEnvironment();
 	}
 	else luaContext->PushNil();
-
+	
 	// TODO: Return the component itself rather than just handling scripts.
+	return 1;
+}
+
+int LuaGameObjects::LuaGameObject::addNewGameObject(std::shared_ptr<Lua::LuaContext> luaContext)
+{
+	// The first argument should be a gameObject.
+	std::shared_ptr<GameObjects::GameObject> gameObject = ((std::weak_ptr<GameObjects::GameObject>*)luaContext->CheckUserData(1, GAMEOBJECTTYPENAME))->lock();
+
+	// Add a new gameObject to the gameObject.
+	std::shared_ptr<GameObjects::GameObject> newGameObject = gameObject->AddNewGameObject();
+
+	// If a second argument was given, treat it as a position.
+	if (luaContext->GetTopIndex() == 2)
+		newGameObject->GetTransform()->SetLocalPosition(*(glm::vec3*)luaContext->CheckUserData(2, VECTOR3TYPENAME));
+
+	// If three arguments were given, treat them as position and rotation.
+	if (luaContext->GetTopIndex() == 3)
+	{
+		newGameObject->GetTransform()->SetLocalPosition(*(glm::vec3*)luaContext->CheckUserData(2, VECTOR3TYPENAME));
+		newGameObject->GetTransform()->SetLocalRotation(*(glm::quat*)luaContext->CheckUserData(3, QUATERNIONTYPENAME));
+	}
+
+	// Push the gameObject onto the stack.
+	CreateOnStack(luaContext, newGameObject);
+
 	return 1;
 }

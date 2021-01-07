@@ -32,6 +32,25 @@
         	"Materials\\BookshelfBooks",
         	"Materials\\Brass"
         ]
+      },
+      {
+      	"Name":"Tree1",
+      	"RelativePath":"Models\\Tree1.fbx",
+      	"Positions":[0,"in_Positions"],
+        "UVs":[1,"in_UVs"],
+        "Materials":[
+        	"Materials\\Leaves",
+        	"Materials\\Bark"
+        ]
+      },
+      {
+      	"Name":"BookOpen",
+      	"RelativePath":"Models\\BookOpen.fbx",
+      	"Positions":[0,"in_Positions"],
+        "UVs":[1,"in_UVs"],
+        "Materials":[
+        	"Materials\\BookCover"
+        ]
       }
    ],
    "Textures":[
@@ -58,6 +77,26 @@
       {
       	"Name":"BookshelfBooks",
       	"RelativePath":"Textures\\BookshelfBooks.png",
+      	"FilterMode":"Closest"
+      },
+      {
+      	"Name":"Grass",
+      	"RelativePath":"Textures\\Grass.png",
+      	"FilterMode":"Closest"
+      },
+      {
+      	"Name":"Leaves",
+      	"RelativePath":"Textures\\Leaves.png",
+      	"FilterMode":"Closest"
+      },
+      {
+      	"Name":"Bark",
+      	"RelativePath":"Textures\\Bark.png",
+      	"FilterMode":"Closest"
+      },
+      {
+      	"Name":"BookCover",
+      	"RelativePath":"Textures\\BookCover.png",
       	"FilterMode":"Closest"
       }
    ],
@@ -89,7 +128,7 @@
             [0,"Textures\\LampGlass"]
          ],
          "Colours":[
-            [0,[0.5,0.1,0.1,0.78431374]]
+            [0,[0.843, 0.769, 0 ,0.78431374]]
          ]
       },
       {
@@ -120,6 +159,50 @@
         "Shader":"Shaders\\DefaultShader",
         "Textures":[
            [0,"Textures\\BookshelfBooks"]
+        ],
+        "Colours":[
+			[0,[1,1,1,1]]
+        ]
+      },
+      {
+      	"Name":"Grass",
+      	"RelativePath":"Materials\\Grass",
+        "Shader":"Shaders\\DefaultShader",
+        "Textures":[
+           [0,"Textures\\Grass"]
+        ],
+        "Colours":[
+			[0,[1,1,1,1]]
+        ]
+      },
+      {
+      	"Name":"Bark",
+      	"RelativePath":"Materials\\Bark",
+        "Shader":"Shaders\\DefaultShader",
+        "Textures":[
+           [0,"Textures\\Bark"]
+        ],
+        "Colours":[
+			[0,[0.22352941,0.28627452,0.11764706, 1]]
+        ]
+      },
+      {
+      	"Name":"Leaves",
+      	"RelativePath":"Materials\\Leaves",
+        "Shader":"Shaders\\DefaultShader",
+        "Textures":[
+           [0,"Textures\\Leaves"]
+        ],
+        "Colours":[
+			[0,[0.2627451,0.18431373,0.23137255,1]]
+        ]
+      },
+      {
+      	"Name":"BookCover",
+      	"RelativePath":"Materials\\BookCover",
+        "Shader":"Shaders\\DefaultShader",
+        "Textures":[
+           [0,"Textures\\BookCover"]
         ],
         "Colours":[
 			[0,[1,1,1,1]]
@@ -166,5 +249,9 @@
      	"Name":"CameraController",
      	"RelativePath":"Scripts\\CameraController.lua"
   	},
+ 	{
+     	"Name":"ObjectSpinner",
+     	"RelativePath":"Scripts\\ObjectSpinner.lua"
+  	}
    ]
 }

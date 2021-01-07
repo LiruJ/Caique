@@ -23,6 +23,7 @@ namespace GameObjects
 	{
 	public:
 		GameObject(std::weak_ptr<GameObjects::Scene> scene, std::weak_ptr<Content::ContentManager> contentManager);
+		void InitialiseTransform();
 
 		template<typename T>
 		std::shared_ptr<T> GetComponent()

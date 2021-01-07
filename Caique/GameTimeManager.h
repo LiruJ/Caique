@@ -11,11 +11,13 @@ namespace GameTiming
 	class GameTimeManager
 	{
 	public:
-		GameTimeManager() : targetDeltaSeconds(1.0 / 60.0), frameRateSmoothing(0.8), currentUpdateSeconds(0), lastUpdateSeconds(0), currentDeltaSeconds(0.0), lastDeltaSeconds(0.0) {}
+		GameTimeManager();
 
 		void Update();
 
 		const GameTime GetCurrentGameTime();
+
+		const int GetRoughStartID() { return roughStartID; }
 
 		void SetTargetFrameRate(int frameRate) { targetDeltaSeconds = 1.0 / frameRate; }
 
@@ -25,6 +27,8 @@ namespace GameTiming
 
 		void WaitFrameRemainder(Graphics::GraphicsContext& graphicsContext);
 	private:
+		int roughStartID;
+
 		double targetDeltaSeconds;
 
 		double frameRateSmoothing;

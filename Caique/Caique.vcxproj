@@ -91,6 +91,7 @@
     <CustomBuildStep>
       <Command>"F:\Liru UwU\3D Graphics OwO\LiruContent\Release\LiruContent.exe" "$(ProjectDir)Content\Content.json" "$(OutDir)Content"</Command>
       <Outputs>DOESNOTEXIST.DNE;%(Outputs)</Outputs>
+      <Message>Building Content</Message>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -114,6 +115,7 @@
     <CustomBuildStep>
       <Command>"F:\Liru UwU\3D Graphics OwO\LiruContent\Release\LiruContent.exe" "$(ProjectDir)Content\Content.json" "$(OutDir)Content"</Command>
       <Outputs>DOESNOTEXIST.DNE;%(Outputs)</Outputs>
+      <Message>Building Content</Message>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -141,6 +143,7 @@
     <CustomBuildStep>
       <Command>"F:\Liru UwU\3D Graphics OwO\LiruContent\Release\LiruContent.exe" "$(ProjectDir)Content\Content.json" "$(OutDir)Content"</Command>
       <Outputs>DOESNOTEXIST.DNE;%(Outputs)</Outputs>
+      <Message>Building Content</Message>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -168,6 +171,7 @@
     <CustomBuildStep>
       <Command>"F:\Liru UwU\3D Graphics OwO\LiruContent\Release\LiruContent.exe" "$(ProjectDir)Content\Content.json" "$(OutDir)Content"</Command>
       <Outputs>DOESNOTEXIST.DNE;%(Outputs)</Outputs>
+      <Message>Building Content</Message>
     </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>

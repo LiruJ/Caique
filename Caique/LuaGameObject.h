@@ -12,6 +12,7 @@ namespace LuaGameObjects
 	constexpr const char* GAMEOBJECTTYPENAME = "gameObject";
 
 	constexpr const char* ADDCOMPONENTNAME = "addComponent";
+	constexpr const char* ADDGAMEOBJECTNAME = "addNewGameObject";
 
 	class LuaGameObject
 	{
@@ -23,5 +24,7 @@ namespace LuaGameObjects
 		static int getIndex(std::shared_ptr<Lua::LuaContext> luaContext);
 
 		static int addComponent(std::shared_ptr<Lua::LuaContext> luaContext);
+
+		static int addNewGameObject(std::shared_ptr<Lua::LuaContext> luaContext);
 	};
 }

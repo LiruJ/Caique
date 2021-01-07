@@ -12,6 +12,15 @@
 // GameTime includes.
 #include "GameTime.h"
 
+// Time includes.
+#include <chrono>
+
+GameTiming::GameTimeManager::GameTimeManager() : targetDeltaSeconds(1.0 / 60.0), frameRateSmoothing(0.8), currentUpdateSeconds(0), lastUpdateSeconds(0), currentDeltaSeconds(0.0), lastDeltaSeconds(0.0)
+{
+	std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+	roughStartID = (int)ms.count();
+}
+
 void GameTiming::GameTimeManager::Update()
 {
 	lastUpdateSeconds = currentUpdateSeconds;

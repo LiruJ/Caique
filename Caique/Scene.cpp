@@ -21,6 +21,7 @@ std::shared_ptr<GameObjects::Scene> GameObjects::Scene::CreateScene(std::weak_pt
 std::shared_ptr<GameObjects::GameObject> GameObjects::Scene::CreateNewGameObject()
 {
 	std::shared_ptr<GameObjects::GameObject> newGameObject = std::make_shared<GameObjects::GameObject>(weak_from_this(), contentManager);
+	newGameObject->InitialiseTransform();
 
 	// If the scene has already initialised, then immediately initialise this new gameobject.
 	if (hasInitialised)
@@ -29,6 +30,8 @@ std::shared_ptr<GameObjects::GameObject> GameObjects::Scene::CreateNewGameObject
 		newGameObject->Initialise();
 		newGameObject->PostInitialise();
 	}
+
+	allGameObjects.push_back(newGameObject);
 
 	return newGameObject;
 }

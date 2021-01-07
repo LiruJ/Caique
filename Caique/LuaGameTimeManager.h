@@ -11,6 +11,7 @@ struct lua_State;
 namespace LuaGameObjects
 {
 	constexpr const char* GLOBALGAMETIMEMANAGERNAME = "gameTimeManager";
+	constexpr const char* STARTIDNAME = "startTimeID";
 	constexpr const char* TARGETFRAMERATENAME = "targetFrameRate";
 	constexpr const char* FRAMERATENAME = "frameRate";
 	constexpr const char* GAMETIMENAME = "gameTime";

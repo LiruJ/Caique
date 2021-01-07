@@ -2,6 +2,7 @@
 
 // GLM includes.
 #include <glm/vec3.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 // GameObject includes.
 #include "Scene.h"
@@ -12,12 +13,13 @@
 #include "LuaContext.h"
 #include "LuaGameObject.h"
 #include "LuaVector3.h"
+#include "LuaQuaternion.h"
 
 void LuaGameObjects::LuaScene::Register(std::shared_ptr<Lua::LuaContext> luaContext, std::shared_ptr<GameObjects::Scene> scene)
 {
 	// Start balancing.
 	luaContext->BeginBalancing();
-
+	
 	// Create a userdata that holds a pointer to the scene. We get a pointer to the pointer back. Also store its stack position.
 	std::weak_ptr<GameObjects::Scene>* scenePointer = (std::weak_ptr<GameObjects::Scene>*)luaContext->PushUserData(sizeof(std::weak_ptr<GameObjects::Scene>));
 	int scenePointerData = luaContext->GetTopIndex();
@@ -69,6 +71,13 @@ int LuaGameObjects::LuaScene::addNewGameObject(std::shared_ptr<Lua::LuaContext> 
 	// If a second argument was given, treat it as a position.
 	if (luaContext->GetTopIndex() == 2)
 		gameObject->GetTransform()->SetLocalPosition(*(glm::vec3*)luaContext->CheckUserData(2, VECTOR3TYPENAME));
+
+	// If three arguments were given, treat them as position and rotation.
+	if (luaContext->GetTopIndex() == 3)
+	{
+		gameObject->GetTransform()->SetLocalPosition(*(glm::vec3*)luaContext->CheckUserData(2, VECTOR3TYPENAME));
+		gameObject->GetTransform()->SetLocalRotation(*(glm::quat*)luaContext->CheckUserData(3, QUATERNIONTYPENAME));
+	}
 
 	// Push the gameObject onto the stack.
 	LuaGameObjects::LuaGameObject::CreateOnStack(luaContext, gameObject);

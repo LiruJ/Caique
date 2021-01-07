@@ -51,23 +51,19 @@ int LuaGameObjects::LuaGameTimeManager::getIndex(std::shared_ptr<Lua::LuaContext
 
 	// Handle the property type.
 	if (propertyName == TARGETFRAMERATENAME)
-	{
 		luaContext->Push(gameTimeManager->GetTargetFrameRate());
-		return 1;
-	}
 	else if (propertyName == FRAMERATENAME)
-	{
 		luaContext->Push(gameTimeManager->GetCurrentFrameRate());
-		return 1;
-	}
+	else if (propertyName == STARTIDNAME)
+		luaContext->Push(gameTimeManager->GetRoughStartID());
 	else if (propertyName == GAMETIMENAME)
 	{
 		GameTiming::GameTime gameTime = gameTimeManager->GetCurrentGameTime();
 		LuaGameObjects::LuaGameTime::CreateOnStack(luaContext, gameTime);
-		return 1;
 	}
+	else luaContext->PushNil();
 
-	return 0;
+	return 1;
 }
 
 int LuaGameObjects::LuaGameTimeManager::setIndex(std::shared_ptr<Lua::LuaContext> luaContext)

@@ -38,6 +38,8 @@ namespace GameObjects
 
 		std::vector<std::shared_ptr<GameObjects::GameObject>> gameObjects;
 
+		std::vector<std::shared_ptr<GameObjects::GameObject>> allGameObjects;
+
 		std::vector<std::weak_ptr<Behaviours::Camera>> cameras;
 
 		std::vector<std::weak_ptr<Behaviours::MeshRenderer>> drawableObjects;

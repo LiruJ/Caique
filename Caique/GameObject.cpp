@@ -14,9 +14,13 @@
 
 
 GameObjects::GameObject::GameObject(std::weak_ptr<GameObjects::Scene> scene, std::weak_ptr<Content::ContentManager> contentManager)
-	: scene(scene), contentManager(contentManager), transform(std::make_shared<GameObjects::Transform>(weak_from_this()))
+	: scene(scene), contentManager(contentManager)
 {
+}
 
+void GameObjects::GameObject::InitialiseTransform()
+{
+	transform = std::make_shared<GameObjects::Transform>(shared_from_this());
 }
 
 std::shared_ptr<GameObjects::GameObject> GameObjects::GameObject::AddNewGameObject()
@@ -59,12 +63,16 @@ void GameObjects::GameObject::Update(GameTiming::GameTime& gameTime)
 {
 	for (auto& pair : behavioursByTypeIndex)
 		pair.second->Update(gameTime);
+	for (size_t i = 0; i < transform->GetChildCount(); i++)
+		transform->GetChildByIndex(i)->GetGameObject()->Update(gameTime);
 }
 
 void GameObjects::GameObject::PostUpdate()
 {
 	for (auto& pair : behavioursByTypeIndex)
 		pair.second->PostUpdate();
+	for (size_t i = 0; i < transform->GetChildCount(); i++)
+		transform->GetChildByIndex(i)->GetGameObject()->PostUpdate();
 }
 
 std::shared_ptr<GameObjects::Transform> GameObjects::GameObject::GetTransform() { return transform; }
