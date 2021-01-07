@@ -85,8 +85,13 @@
       <AdditionalDependencies>LiruGraphics.lib;SDL2.lib;SDL2main.lib;lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>"F:\Liru UwU\3D Graphics OwO\LiruContent\Release\LiruContent.exe" "$(ProjectDir)Content\Content.json" "$(OutDir)Content"</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>"F:\Liru UwU\3D Graphics OwO\LiruContent\Release\LiruContent.exe" "$(ProjectDir)Content\Content.json" "$(OutDir)Content"</Command>
+      <Outputs>DOESNOTEXIST.DNE;%(Outputs)</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -103,8 +108,13 @@
       <AdditionalLibraryDirectories>$(SolutionDir)Libraries\LiruGraphics\lib;$(SolutionDir)Libraries\SDL\lib;$(SolutionDir)Libraries\Lua;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>"F:\Liru UwU\3D Graphics OwO\LiruContent\Release\LiruContent.exe" "$(ProjectDir)Content\Content.json" "$(OutDir)Content"</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>"F:\Liru UwU\3D Graphics OwO\LiruContent\Release\LiruContent.exe" "$(ProjectDir)Content\Content.json" "$(OutDir)Content"</Command>
+      <Outputs>DOESNOTEXIST.DNE;%(Outputs)</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -125,8 +135,13 @@
       <AdditionalDependencies>LiruGraphics.lib;SDL2.lib;SDL2main.lib;lua51.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>"F:\Liru UwU\3D Graphics OwO\LiruContent\Release\LiruContent.exe" "$(ProjectDir)Content\Content.json" "$(OutDir)Content"</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>"F:\Liru UwU\3D Graphics OwO\LiruContent\Release\LiruContent.exe" "$(ProjectDir)Content\Content.json" "$(OutDir)Content"</Command>
+      <Outputs>DOESNOTEXIST.DNE;%(Outputs)</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -147,11 +162,15 @@
       <AdditionalLibraryDirectories>$(SolutionDir)Libraries\LiruGraphics\lib;$(SolutionDir)Libraries\SDL\lib;$(SolutionDir)Libraries\Lua;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>"F:\Liru UwU\3D Graphics OwO\LiruContent\Release\LiruContent.exe" "$(ProjectDir)Content\Content.json" "$(OutDir)Content"</Command>
+      <Command>
+      </Command>
     </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>"F:\Liru UwU\3D Graphics OwO\LiruContent\Release\LiruContent.exe" "$(ProjectDir)Content\Content.json" "$(OutDir)Content"</Command>
+      <Outputs>DOESNOTEXIST.DNE;%(Outputs)</Outputs>
+    </CustomBuildStep>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Behaviour.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ContentManager.cpp" />
     <ClCompile Include="EventManager.cpp" />
@@ -159,10 +178,12 @@
     <ClCompile Include="GameTimeManager.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LuaContext.cpp" />
+    <ClCompile Include="LuaGameObject.cpp" />
     <ClCompile Include="LuaGameTime.cpp" />
     <ClCompile Include="LuaGameTimeManager.cpp" />
     <ClCompile Include="LuaInputManager.cpp" />
     <ClCompile Include="LuaQuaternion.cpp" />
+    <ClCompile Include="LuaScene.cpp" />
     <ClCompile Include="LuaTransform.cpp" />
     <ClCompile Include="LuaVector3.cpp" />
     <ClCompile Include="LuaGraphicsContext.cpp" />
@@ -173,7 +194,6 @@
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Scene.cpp" />
-    <ClCompile Include="SceneLoader.cpp" />
     <ClCompile Include="ScriptInstance.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
@@ -187,10 +207,12 @@
     <ClInclude Include="GameTimeManager.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LuaContext.h" />
+    <ClInclude Include="LuaGameObject.h" />
     <ClInclude Include="LuaGameTime.h" />
     <ClInclude Include="LuaGameTimeManager.h" />
     <ClInclude Include="LuaInputManager.h" />
     <ClInclude Include="LuaQuaternion.h" />
+    <ClInclude Include="LuaScene.h" />
     <ClInclude Include="LuaTransform.h" />
     <ClInclude Include="LuaVector3.h" />
     <ClInclude Include="LuaGraphicsContext.h" />
@@ -200,7 +222,6 @@
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneLoader.h" />
     <ClInclude Include="ScriptInstance.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>

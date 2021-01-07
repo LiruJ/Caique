@@ -34,6 +34,8 @@
 #include "LuaQuaternion.h"
 #include "LuaTransform.h"
 #include "LuaInputManager.h"
+#include "LuaGameObject.h"
+#include "LuaScene.h"
 
 #include <iostream>
 
@@ -45,6 +47,7 @@ int main(int argc, char* argv[])
 	LuaGameObjects::LuaVector3::Register(luaContext);
 	LuaGameObjects::LuaQuaternion::Register(luaContext);
 	LuaGameObjects::LuaTransform::Register(luaContext);
+	LuaGameObjects::LuaGameObject::Register(luaContext);
 
 	// Create the graphics context.
 	std::shared_ptr<Graphics::GraphicsContext> graphicsContext = std::make_shared<Graphics::GraphicsContext>();
@@ -63,22 +66,15 @@ int main(int argc, char* argv[])
 	std::shared_ptr<GameObjects::Scene> scene = GameObjects::Scene::CreateScene(contentManager);
 	std::shared_ptr<GameTiming::GameTimeManager> gameTimeManager = std::make_shared<GameTiming::GameTimeManager>();
 	LuaGameObjects::LuaGameTimeManager::Register(luaContext, gameTimeManager);
+	LuaGameObjects::LuaScene::Register(luaContext, scene);
 
-	// Create the camera.
-	std::shared_ptr<GameObjects::GameObject> cameraObject = scene->CreateGameObject();
-	std::shared_ptr<Behaviours::Camera> camera = cameraObject->AddComponent<Behaviours::Camera>(graphicsContext);
+	// Load the scene from file.
+	std::shared_ptr<Lua::LuaScript> loadScript = contentManager->Load<Lua::LuaScript>("Scripts\\SceneLoader");
+	loadScript->Setup();
 
-	cameraObject->AddComponent<Behaviours::ScriptInstance>("Scripts\\CameraRotator");
-	cameraObject->GetTransform()->SetLocalPosition(cameraObject->GetTransform()->GetLocalRotation() * glm::vec3(0, 0, 21.0f));
-
-	// Create the lamp model.
-	std::shared_ptr<GameObjects::GameObject> lamp = scene->CreateGameObject();
-	std::shared_ptr<Behaviours::MeshRenderer> lampMesh = lamp->AddComponent<Behaviours::MeshRenderer>(std::string("Models\\Lamp"));
-	lamp->GetTransform()->SetLocalPosition(glm::vec3(0, -2, 0));
-	lamp->AddComponent<Behaviours::ScriptInstance>("Scripts\\FPSTracker");
-
-	scene->CreateGameObject()->AddComponent<Behaviours::MeshRenderer>(std::string("Models\\Desk"));
-
+	// Initialise the scene.
+	scene->Initialise();
+	
 	while (!eventManager->IsQuitting())
 	{
 		// Update the gametime.
@@ -93,7 +89,7 @@ int main(int argc, char* argv[])
 		
 		// Draw the scene.
 		graphicsContext->Clear(0, 0, 0);
-		scene->Draw(*camera);
+		scene->Draw();
 		graphicsContext->Present();
 		
 		// Wait out the remaining frame time.

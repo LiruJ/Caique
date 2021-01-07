@@ -16,25 +16,41 @@
 #include "LuaScript.h"
 #include "LuaGameTime.h"
 #include "LuaTransform.h"
+#include "LuaGameObject.h"
 
-void Behaviours::ScriptInstance::Initialise(const std::string& scriptAsset)
+Behaviours::ScriptInstance::ScriptInstance(std::weak_ptr<GameObjects::GameObject> gameObject, std::weak_ptr<Content::ContentManager> contentManager, const std::string& scriptName)
+	: Behaviour(gameObject, contentManager)
 {
 	// Create a new instance of the script, loaded from the content manager.
-	script = contentManager.lock()->Load<Lua::LuaScript>(scriptAsset);
+	script = contentManager.lock()->Load<Lua::LuaScript>(scriptName);
 
 	// Set the transform.
 	LuaGameObjects::LuaTransform::CreateOnStack(script->GetLuaContext(), gameObject.lock()->GetTransform());
 	script->SetEnvironmentField(LuaGameObjects::TRANSFORMTYPENAME, script->GetLuaContext()->GetTopIndex());
 
+	// Set the gameObject.
+	LuaGameObjects::LuaGameObject::CreateOnStack(script->GetLuaContext(), gameObject.lock());
+	script->SetEnvironmentField(LuaGameObjects::GAMEOBJECTTYPENAME, script->GetLuaContext()->GetTopIndex());
+}
+
+void Behaviours::ScriptInstance::PreInitialise()
+{
 	// Perform setup on the script, fully setting it up ready to be used.
 	script->Setup();
-	
+
+	// Run the preInitialise function.
+	if (script->HasFunction("PreInitialise")) script->RunFunction("PreInitialise");
+}
+
+void Behaviours::ScriptInstance::Initialise()
+{
 	// Run the initialise function.
 	if (script->HasFunction("Initialise")) script->RunFunction("Initialise");
 }
 
 void Behaviours::ScriptInstance::PostInitialise()
 {
+	// Run the postInitialise function.
 	if (script->HasFunction("PostInitialise")) script->RunFunction("PostInitialise");
 }
 
@@ -55,9 +71,4 @@ void Behaviours::ScriptInstance::Update(GameTiming::GameTime& gameTime)
 void Behaviours::ScriptInstance::PostUpdate()
 {
 	if (script->HasFunction("PostUpdate")) script->RunFunction("PostUpdate");
-}
-
-void Behaviours::ScriptInstance::Draw(Behaviours::Camera& camera)
-{
-	if (script->HasFunction("Draw")) script->RunFunction("Draw");
 }

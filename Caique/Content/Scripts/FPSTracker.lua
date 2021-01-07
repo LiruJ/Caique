@@ -1,4 +1,4 @@
-local skipFrames = 120
+skipFrames = skipFrames and skipFrames or 120
 local currentFrame = 0
 
 local maxFPS = 0

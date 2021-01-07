@@ -102,12 +102,6 @@
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files\GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="Behaviour.cpp">
-      <Filter>Source Files\Behaviours</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneLoader.cpp">
-      <Filter>Source Files\Content</Filter>
-    </ClCompile>
     <ClCompile Include="GameTimeManager.cpp">
       <Filter>Source Files\DataStructures</Filter>
     </ClCompile>
@@ -147,6 +141,12 @@
     <ClCompile Include="LuaInputManager.cpp">
       <Filter>Source Files\Lua</Filter>
     </ClCompile>
+    <ClCompile Include="LuaGameObject.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="LuaScene.cpp">
+      <Filter>Source Files\Lua</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ContentManager.h">
@@ -178,9 +178,6 @@
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Header Files\GameObjects</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneLoader.h">
-      <Filter>Header Files\Content</Filter>
     </ClInclude>
     <ClInclude Include="GameTimeManager.h">
       <Filter>Header Files\DataStructures</Filter>
@@ -222,6 +219,12 @@
       <Filter>Header Files\Events</Filter>
     </ClInclude>
     <ClInclude Include="LuaInputManager.h">
+      <Filter>Header Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaGameObject.h">
+      <Filter>Header Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="LuaScene.h">
       <Filter>Header Files\Lua</Filter>
     </ClInclude>
   </ItemGroup>

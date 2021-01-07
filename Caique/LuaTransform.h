@@ -17,8 +17,6 @@ namespace LuaGameObjects
 	constexpr const char* LOCALUPNAME = "localUp";
 	constexpr const char* LOCALRIGHTNAME = "localRight";
 
-
-
 	class LuaTransform
 	{
 	public:

@@ -18,16 +18,16 @@ namespace Behaviours
 	class Camera : public Behaviour
 	{
 	public:
-		Camera() : width(0), height(0), projection(glm::identity<glm::mat4>()), invertedProjection(glm::identity<glm::mat4>()) { }
+		Camera(std::weak_ptr<GameObjects::GameObject> gameObject, std::weak_ptr<Content::ContentManager> contentManager, std::shared_ptr<Graphics::GraphicsContext> graphicsContext);
 
 		glm::mat4 GetProjection() { return projection; }
 		glm::mat4 GetInvertedProjection() { return invertedProjection; }
 		void SetProjection(glm::mat4 projection) { this->projection = projection; invertedProjection = glm::inverse(projection); }
 
-		void Initialise(std::shared_ptr<Graphics::GraphicsContext> graphicsContext);
-
 		int GetWidth() { return width; }
 		int GetHeight() { return height; }
+
+		void PreInitialise() override;
 
 		glm::mat4 GetView();
 		glm::mat4 GetInvertedView();

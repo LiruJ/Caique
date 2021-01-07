@@ -7,6 +7,9 @@
 #include <typeindex>
 #include <type_traits>
 
+// Scene includes.
+#include "Scene.h"
+
 // Foward declarations.
 namespace Content { class ContentManager; }
 namespace Behaviours { class Behaviour; class Camera; }
@@ -14,14 +17,12 @@ namespace GameTiming { struct GameTime; }
 
 namespace GameObjects
 {
-	class Scene;
 	class Transform;
 
 	class GameObject : public std::enable_shared_from_this<GameObjects::GameObject>
 	{
 	public:
-		GameObject(std::weak_ptr<GameObjects::Scene> scene, std::weak_ptr<Content::ContentManager> contentManager) : contentManager(contentManager), scene(scene) {}
-		GameObject() {}
+		GameObject(std::weak_ptr<GameObjects::Scene> scene, std::weak_ptr<Content::ContentManager> contentManager);
 
 		template<typename T>
 		std::shared_ptr<T> GetComponent()
@@ -32,8 +33,8 @@ namespace GameObjects
 			// If the component exists, return the component.
 			std::map<std::type_index, std::shared_ptr<Behaviours::Behaviour>>::iterator foundItem = behavioursByTypeIndex.find(typeIndex);
 			if (foundItem != behavioursByTypeIndex.end())
-				return foundItem->second;
-			
+				return std::dynamic_pointer_cast<T>(foundItem->second);
+
 			// Return null otherwise, and don't set the component.
 			return nullptr;
 		}
@@ -41,19 +42,23 @@ namespace GameObjects
 		template<typename T, typename ... Args>
 		std::shared_ptr<T> AddComponent(Args&&... args)
 		{
-			// Create a shared pointer from the weak.
-			std::shared_ptr<T> behaviour = std::make_shared<T>();
-		
-			behaviour->Setup(weak_from_this(), contentManager);
-			
-			behaviour->PreInitialise();
-			behaviour->Initialise(std::forward<Args>(args)...);
-			behaviour->PostInitialise();
+			// Create the behaviour.
+			std::shared_ptr<T> behaviour = std::make_shared<T>(weak_from_this(), contentManager, std::forward<Args>(args)...);
+
+			// If the scene has already been initialised, initialise this GameObject immediately.
+			if (scene.lock()->HasBeenInitialised())
+			{
+				behaviour->PreInitialise();
+				behaviour->Initialise();
+				behaviour->PostInitialise();
+			}
 
 			behavioursByTypeIndex.emplace(typeid(T), behaviour);
 
 			return behaviour;
 		}
+
+		std::shared_ptr<GameObjects::GameObject> AddNewGameObject();
 
 		void PreInitialise();
 		void Initialise();
@@ -61,8 +66,6 @@ namespace GameObjects
 
 		void Update(GameTiming::GameTime& gameTime);
 		void PostUpdate();
-
-		void Draw(Behaviours::Camera& camera);
 
 		std::shared_ptr<GameObjects::Transform> GetTransform();
 

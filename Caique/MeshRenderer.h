@@ -14,10 +14,11 @@ namespace Behaviours
 	class MeshRenderer : public Behaviour
 	{
 	public:
-		void Initialise() {}
-		void Initialise(std::string&& modelName);
+		MeshRenderer(std::weak_ptr<GameObjects::GameObject> gameObject, std::weak_ptr<Content::ContentManager> contentManager, const std::string& modelName);
 
-		void Draw(Behaviours::Camera& camera) override;
+		void PreInitialise() override;
+
+		void Draw(Behaviours::Camera& camera);
 
 		std::shared_ptr<Graphics::Model> GetModel() { return model.lock(); }
 

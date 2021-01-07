@@ -7,6 +7,7 @@
 #include "LuaContext.h"
 #include "LuaVector3.h"
 #include "LuaQuaternion.h"
+#include "LuaGameObject.h"
 
 void LuaGameObjects::LuaTransform::Register(std::shared_ptr<Lua::LuaContext> luaContext)
 {
@@ -64,6 +65,8 @@ int LuaGameObjects::LuaTransform::getIndex(std::shared_ptr<Lua::LuaContext> luaC
 		LuaGameObjects::LuaVector3::CreateOnStack(luaContext, transform->GetLocalUp());
 	else if (propertyName == LOCALRIGHTNAME)
 		LuaGameObjects::LuaVector3::CreateOnStack(luaContext, transform->GetLocalRight());
+	else if (propertyName == LuaGameObjects::GAMEOBJECTTYPENAME)
+		LuaGameObjects::LuaGameObject::CreateOnStack(luaContext, transform->GetGameObject());
 	// Finally; push a nil if nothing else was found.
 	else luaContext->PushNil();
 

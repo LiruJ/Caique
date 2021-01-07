@@ -13,11 +13,11 @@ namespace Behaviours
 	class Camera;
 	class Behaviour
 	{
-	public:		
-		void Setup(std::weak_ptr<GameObjects::GameObject> gameObject, std::weak_ptr<Content::ContentManager> contentManager);
+	public:
+		Behaviour(std::weak_ptr<GameObjects::GameObject> gameObject, std::weak_ptr<Content::ContentManager> contentManager) : gameObject(gameObject), contentManager(contentManager) {}
 
 		virtual void PreInitialise() {}
-		void Initialise() {}
+		virtual void Initialise() {}
 		virtual void PostInitialise() {}
 
 		virtual void Update(GameTiming::GameTime& gameTime) {}

@@ -21,6 +21,17 @@
         	"Materials\\Desk",
         	"Materials\\Brass"
         ]
+      },
+      {
+      	"Name":"Bookshelf1",
+      	"RelativePath":"Models\\Bookshelf1.fbx",
+      	"Positions":[0,"in_Positions"],
+        "UVs":[1,"in_UVs"],
+        "Materials":[
+        	"Materials\\Bookshelf1",
+        	"Materials\\BookshelfBooks",
+        	"Materials\\Brass"
+        ]
       }
    ],
    "Textures":[
@@ -37,6 +48,16 @@
       {
       	"Name":"Desk",
       	"RelativePath":"Textures\\Desk.png",
+      	"FilterMode":"Closest"
+      },
+      {
+      	"Name":"Bookshelf1",
+      	"RelativePath":"Textures\\Bookshelf1.png",
+      	"FilterMode":"Closest"
+      },
+      {
+      	"Name":"BookshelfBooks",
+      	"RelativePath":"Textures\\BookshelfBooks.png",
       	"FilterMode":"Closest"
       }
    ],
@@ -79,6 +100,28 @@
            [0,"Textures\\Desk"]
         ],
         "Colours":[
+			[0,[0.2313,0.1098,0.0039,1]]
+        ]
+      },
+      {
+      	"Name":"Bookshelf1",
+      	"RelativePath":"Materials\\Bookshelf1",
+        "Shader":"Shaders\\DefaultShader",
+        "Textures":[
+           [0,"Textures\\Bookshelf1"]
+        ],
+        "Colours":[
+			[0,[0.2313,0.1098,0.0039,1]]
+        ]
+      },
+      {
+      	"Name":"BookshelfBooks",
+      	"RelativePath":"Materials\\BookshelfBooks",
+        "Shader":"Shaders\\DefaultShader",
+        "Textures":[
+           [0,"Textures\\BookshelfBooks"]
+        ],
+        "Colours":[
 			[0,[1,1,1,1]]
         ]
       }
@@ -112,12 +155,16 @@
    ],
    "Scripts":[
    	{
+     	"Name":"SceneLoader",
+     	"RelativePath":"Scripts\\SceneLoader.lua"
+  	},
+   	{
    		"Name":"FPSTracker",
    		"RelativePath":"Scripts\\FPSTracker.lua"
    	},
-      {
-         "Name":"CameraRotator",
-         "RelativePath":"Scripts\\CameraRotator.lua"
-      }
+ 	{
+     	"Name":"CameraController",
+     	"RelativePath":"Scripts\\CameraController.lua"
+  	},
    ]
 }

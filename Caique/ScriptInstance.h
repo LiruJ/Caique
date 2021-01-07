@@ -13,14 +13,16 @@ namespace Behaviours
 	class ScriptInstance : public Behaviour
 	{
 	public:
-		void Initialise() {}
-		void Initialise(const std::string& scriptAsset);
+		ScriptInstance(std::weak_ptr<GameObjects::GameObject> gameObject, std::weak_ptr<Content::ContentManager> contentManager, const std::string& scriptName);
+
+		void PreInitialise() override;
+		void Initialise() override;
 		void PostInitialise() override;
 
 		void Update(GameTiming::GameTime& gameTime) override;
 		void PostUpdate() override;
 
-		void Draw(Behaviours::Camera& camera) override;
+		const std::shared_ptr<Lua::LuaScript> GetScript() { return script; }
 
 	private:
 		std::shared_ptr<Lua::LuaScript> script;

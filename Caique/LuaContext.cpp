@@ -26,7 +26,7 @@ int Lua::LuaContext::interceptFunctionCall(lua_State* calledState)
 
 	if (luaContext->luaState != calledState)
 		throw std::exception("Lua state mismatch.");
-
+	
 	// Get the lua function to be called.
 	luaContextFunction luaFunction = *(luaContextFunction*)luaContext->ToUserData(lua_upvalueindex(2));
 
