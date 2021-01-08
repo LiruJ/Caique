@@ -9,11 +9,9 @@
 #include "Camera.h"
 
 // Content includes.
-#include "ContentManager.h"
+#include "JsonContentManager.h"
 
-
-
-GameObjects::GameObject::GameObject(std::weak_ptr<GameObjects::Scene> scene, std::weak_ptr<Content::ContentManager> contentManager)
+GameObjects::GameObject::GameObject(std::weak_ptr<GameObjects::Scene> scene, std::weak_ptr<Content::JsonContentManager> contentManager)
 	: scene(scene), contentManager(contentManager)
 {
 }

@@ -5,7 +5,7 @@
 #include <vector>
 
 // Foward declarations.
-namespace Content { class ContentManager; }
+namespace Content { class JsonContentManager; }
 namespace Behaviours { class Camera; class MeshRenderer; }
 namespace GameTiming { struct GameTime; }
 
@@ -15,7 +15,7 @@ namespace GameObjects
 	class Scene : public std::enable_shared_from_this<GameObjects::Scene>
 	{
 	public:
-		static std::shared_ptr<GameObjects::Scene> CreateScene(std::weak_ptr<Content::ContentManager> contentManager);
+		static std::shared_ptr<GameObjects::Scene> CreateScene(std::weak_ptr<Content::JsonContentManager> contentManager);
 
 		std::shared_ptr<GameObjects::GameObject> CreateNewGameObject();
 
@@ -34,7 +34,7 @@ namespace GameObjects
 	private:
 		bool hasInitialised;
 
-		std::weak_ptr<Content::ContentManager> contentManager;
+		std::weak_ptr<Content::JsonContentManager> contentManager;
 
 		std::vector<std::shared_ptr<GameObjects::GameObject>> gameObjects;
 
@@ -44,6 +44,6 @@ namespace GameObjects
 
 		std::vector<std::weak_ptr<Behaviours::MeshRenderer>> drawableObjects;
 
-		Scene(std::weak_ptr<Content::ContentManager> contentManager) : contentManager(contentManager), hasInitialised(false) {}
+		Scene(std::weak_ptr<Content::JsonContentManager> contentManager) : contentManager(contentManager), hasInitialised(false) {}
 	};
 }

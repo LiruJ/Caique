@@ -1,12 +1,12 @@
-#include "EventManager.h"
+#include "SDLEventManager.h"
 
 // SDL includes.
 #include <SDL.h>
 
 // Input includes.
-#include "InputManager.h"
+#include "SDLInputManager.h"
 
-void Events::EventManager::Update()
+void Events::SDLEventManager::Update()
 {
 	// Refresh the input manager state.
 	inputManager.lock()->refreshState();

@@ -1,43 +1,43 @@
-#include "InputManager.h"
+#include "SDLInputManager.h"
 
 // Event includes.
 #include "EventManager.h"
 
-bool Input::InputManager::IsKeyDown(const char* keyName)
+bool Input::SDLInputManager::IsKeyDown(const char* keyName)
 {
 	SDL_Keycode keycode = SDL_GetKeyFromName(keyName);
 	return currentKeysDown.count(keycode) > 0;
 }
 
-bool Input::InputManager::IsKeyUp(const char* keyName)
+bool Input::SDLInputManager::IsKeyUp(const char* keyName)
 {
 	SDL_Keycode keycode = SDL_GetKeyFromName(keyName);
 	return currentKeysDown.count(keycode) == 0;
 }
 
-bool Input::InputManager::WasKeyDown(const char* keyName)
+bool Input::SDLInputManager::WasKeyDown(const char* keyName)
 {
 	SDL_Keycode keycode = SDL_GetKeyFromName(keyName);
 	return lastKeysDown.count(keycode) > 0;
 }
 
-bool Input::InputManager::WasKeyUp(const char* keyName)
+bool Input::SDLInputManager::WasKeyUp(const char* keyName)
 {
 	SDL_Keycode keycode = SDL_GetKeyFromName(keyName);
 	return lastKeysDown.count(keycode) == 0;
 }
 
-void Input::InputManager::setKeyDown(SDL_Keycode keycode)
+void Input::SDLInputManager::setKeyDown(SDL_Keycode keycode)
 {
 	currentKeysDown.emplace(keycode);
 }
 
-void Input::InputManager::setKeyUp(SDL_Keycode keycode)
+void Input::SDLInputManager::setKeyUp(SDL_Keycode keycode)
 {
 	currentKeysDown.erase(keycode); 
 }
 
-void Input::InputManager::refreshState()
+void Input::SDLInputManager::refreshState()
 {
 	// Copy over the current keys to the last keys.
 	lastKeysDown = currentKeysDown;

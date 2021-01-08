@@ -11,32 +11,18 @@ namespace GameTiming
 	class GameTimeManager
 	{
 	public:
-		GameTimeManager();
+		virtual ~GameTimeManager() {}
 
-		void Update();
+		virtual void Update() = 0;
 
-		const GameTime GetCurrentGameTime();
+		virtual const GameTime GetCurrentGameTime() = 0;
 
-		const int GetRoughStartID() { return roughStartID; }
+		virtual void SetTargetFrameRate(int frameRate) = 0;
 
-		void SetTargetFrameRate(int frameRate) { targetDeltaSeconds = 1.0 / frameRate; }
+		virtual const double GetTargetFrameRate() = 0;
 
-		const double GetTargetFrameRate() { return 1.0 / targetDeltaSeconds; }
+		virtual const int GetCurrentFrameRate() = 0;
 
-		const int GetCurrentFrameRate();
-
-		void WaitFrameRemainder(Graphics::GraphicsContext& graphicsContext);
-	private:
-		int roughStartID;
-
-		double targetDeltaSeconds;
-
-		double frameRateSmoothing;
-
-		double currentUpdateSeconds;
-		double lastUpdateSeconds;
-
-		double currentDeltaSeconds;
-		double lastDeltaSeconds;
+		virtual void WaitFrameRemainder(Graphics::GraphicsContext& graphicsContext) = 0;
 	};
 }

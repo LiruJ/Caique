@@ -7,13 +7,13 @@
 #include "GameObject.h"
 
 // Content includes.
-#include "ContentManager.h"
+#include "JsonContentManager.h"
 
 // Behaviour includes.
 #include "Camera.h"
 #include "MeshRenderer.h"
 
-std::shared_ptr<GameObjects::Scene> GameObjects::Scene::CreateScene(std::weak_ptr<Content::ContentManager> contentManager)
+std::shared_ptr<GameObjects::Scene> GameObjects::Scene::CreateScene(std::weak_ptr<Content::JsonContentManager> contentManager)
 {
 	return std::shared_ptr<GameObjects::Scene>(new Scene(contentManager));
 }

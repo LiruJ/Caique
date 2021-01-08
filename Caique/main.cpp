@@ -1,15 +1,15 @@
 #include <glm\glm.hpp>
 
 // Event includes.
-#include "EventManager.h"
-#include "InputManager.h"
+#include "SDLEventManager.h"
+#include "SDLInputManager.h"
 
 // Timing includes.
-#include "GameTimeManager.h"
+#include "SDLGameTimeManager.h"
 #include "GameTime.h"
 
 // Content includes.
-#include "ContentManager.h"
+#include "JsonContentManager.h"
 
 // Graphics includes.
 #include <GraphicsContext.h>
@@ -55,16 +55,18 @@ int main(int argc, char* argv[])
 	LuaGameObjects::LuaGraphicsContext::Register(luaContext, graphicsContext);
 
 	// Create the content manager.
-	std::shared_ptr<Content::ContentManager> contentManager = std::make_shared<Content::ContentManager>(argv[0], "Content", graphicsContext, luaContext);
+	std::shared_ptr<Content::JsonContentManager> contentManager = std::make_shared<Content::JsonContentManager>(argv[0], "Content", graphicsContext, luaContext);
 	
 	// Create the input and events managers.
-	std::shared_ptr<Input::InputManager> inputManager = std::make_shared<Input::InputManager>(graphicsContext);
-	std::shared_ptr<Events::EventManager> eventManager = std::make_shared<Events::EventManager>(inputManager, graphicsContext);
+	std::shared_ptr<Input::SDLInputManager> sdlInputManager = std::make_shared<Input::SDLInputManager>(graphicsContext);
+	std::shared_ptr<Input::InputManager> inputManager = sdlInputManager;
+
+	std::shared_ptr<Events::EventManager> eventManager = std::make_shared<Events::SDLEventManager>(sdlInputManager, graphicsContext);
 	LuaGameObjects::LuaInputManager::Register(luaContext, inputManager);
 
 	// Create the scene.
 	std::shared_ptr<GameObjects::Scene> scene = GameObjects::Scene::CreateScene(contentManager);
-	std::shared_ptr<GameTiming::GameTimeManager> gameTimeManager = std::make_shared<GameTiming::GameTimeManager>();
+	std::shared_ptr<GameTiming::GameTimeManager> gameTimeManager = std::make_shared<GameTiming::SDLGameTimeManager>();
 	LuaGameObjects::LuaGameTimeManager::Register(luaContext, gameTimeManager);
 	LuaGameObjects::LuaScene::Register(luaContext, scene);
 

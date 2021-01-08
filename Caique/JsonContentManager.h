@@ -1,5 +1,5 @@
 #pragma once
-#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
+//#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 
 // Type includes.
 #include <string>
@@ -21,10 +21,10 @@ namespace Lua { class LuaContext; class LuaScript; }
 
 namespace Content
 {
-	class ContentManager
+	class JsonContentManager
 	{
 	public:
-		ContentManager(const std::string& exeFolderPath, const std::string& contentFolderName, std::shared_ptr<Graphics::GraphicsContext> graphicsContext, std::weak_ptr<Lua::LuaContext> luaContext)
+		JsonContentManager(const std::string& exeFolderPath, const std::string& contentFolderName, std::shared_ptr<Graphics::GraphicsContext> graphicsContext, std::weak_ptr<Lua::LuaContext> luaContext)
 			: rootFolderPath(std::filesystem::path(exeFolderPath).parent_path().append(contentFolderName)), graphicsContext(graphicsContext), luaContext(luaContext) {}
 		
 		const std::shared_ptr<Graphics::GraphicsContext> GetGraphicsContext() { return graphicsContext.lock(); }
@@ -36,7 +36,6 @@ namespace Content
 			load(assetPath, pointer);
 			return pointer;
 		}
-
 		
 	private:
 

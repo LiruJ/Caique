@@ -76,7 +76,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\SDL\include;$(SolutionDir)LiruGraphics;$(SolutionDir)Libraries\glm;$(SolutionDir)LiruPhysics;$(SolutionDir)..\Libraries\LiruContent;$(SolutionDir)Libraries\Json;$(SolutionDir)Libraries\Lua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\SDL\include;$(SolutionDir)LiruGraphics;$(SolutionDir)Libraries\glm;$(SolutionDir)..\Libraries\LiruContent;$(SolutionDir)Libraries\Json;$(SolutionDir)Libraries\Lua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -100,7 +100,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\SDL\include;$(SolutionDir)LiruGraphics;$(SolutionDir)Libraries\glm;$(SolutionDir)LiruPhysics;$(SolutionDir)..\Libraries\LiruContent;$(SolutionDir)Libraries\Json;$(SolutionDir)Libraries\Lua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\SDL\include;$(SolutionDir)LiruGraphics;$(SolutionDir)Libraries\glm;$(SolutionDir)..\Libraries\LiruContent;$(SolutionDir)Libraries\Json;$(SolutionDir)Libraries\Lua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -126,7 +126,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\SDL\include;$(SolutionDir)LiruGraphics;$(SolutionDir)Libraries\glm;$(SolutionDir)LiruPhysics;$(SolutionDir)..\Libraries\LiruContent;$(SolutionDir)Libraries\Json;$(SolutionDir)Libraries\Lua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\SDL\include;$(SolutionDir)LiruGraphics;$(SolutionDir)Libraries\glm;$(SolutionDir)..\Libraries\LiruContent;$(SolutionDir)Libraries\Json;$(SolutionDir)Libraries\Lua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -154,7 +154,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\SDL\include;$(SolutionDir)LiruGraphics;$(SolutionDir)Libraries\glm;$(SolutionDir)LiruPhysics;$(SolutionDir)..\Libraries\LiruContent;$(SolutionDir)Libraries\Json;$(SolutionDir)Libraries\Lua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Libraries\SDL\include;$(SolutionDir)LiruGraphics;$(SolutionDir)Libraries\glm;$(SolutionDir)..\Libraries\LiruContent;$(SolutionDir)Libraries\Json;$(SolutionDir)Libraries\Lua\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -176,11 +176,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="ContentManager.cpp" />
-    <ClCompile Include="EventManager.cpp" />
+    <ClCompile Include="JsonContentManager.cpp" />
+    <ClCompile Include="SDLEventManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
-    <ClCompile Include="GameTimeManager.cpp" />
-    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="SDLGameTimeManager.cpp" />
+    <ClCompile Include="SDLInputManager.cpp" />
     <ClCompile Include="LuaContext.cpp" />
     <ClCompile Include="LuaGameObject.cpp" />
     <ClCompile Include="LuaGameTime.cpp" />
@@ -204,12 +204,15 @@
   <ItemGroup>
     <ClInclude Include="Behaviour.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="ContentManager.h" />
+    <ClInclude Include="JsonContentManager.h" />
     <ClInclude Include="EventManager.h" />
+    <ClInclude Include="GameTimeManager.h" />
+    <ClInclude Include="SDLEventManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameTime.h" />
-    <ClInclude Include="GameTimeManager.h" />
+    <ClInclude Include="SDLGameTimeManager.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="SDLInputManager.h" />
     <ClInclude Include="LuaContext.h" />
     <ClInclude Include="LuaGameObject.h" />
     <ClInclude Include="LuaGameTime.h" />

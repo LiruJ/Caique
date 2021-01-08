@@ -1,4 +1,4 @@
-#include "ContentManager.h"
+#include "JsonContentManager.h"
 
 // Builder includes.
 #include <JsonEnums.h>
@@ -30,7 +30,7 @@
 #include "LuaScript.h"
 #include "LuaContext.h"
 
-void Content::ContentManager::load(const std::string& assetPath, std::shared_ptr<Graphics::Model>& model)
+void Content::JsonContentManager::load(const std::string& assetPath, std::shared_ptr<Graphics::Model>& model)
 {
 	// If the model has already been loaded, use that instead then return.
 	std::map<std::string, std::shared_ptr<Graphics::Model>>::iterator foundItem = loadedModels.find(assetPath);
@@ -96,7 +96,7 @@ void Content::ContentManager::load(const std::string& assetPath, std::shared_ptr
 	loadedModels.emplace(assetPath, model);
 }
 
-void Content::ContentManager::load(const std::string& assetPath, std::shared_ptr<Graphics::Texture2D>& texture)
+void Content::JsonContentManager::load(const std::string& assetPath, std::shared_ptr<Graphics::Texture2D>& texture)
 {
 	// If the texture has already been loaded, use that instead then return.
 	std::map<std::string, std::shared_ptr<Graphics::Texture2D>>::iterator foundItem = loadedTextures.find(assetPath);
@@ -128,7 +128,7 @@ void Content::ContentManager::load(const std::string& assetPath, std::shared_ptr
 	
 }
 
-void Content::ContentManager::load(const std::string& assetPath, std::shared_ptr<Graphics::Material>& material)
+void Content::JsonContentManager::load(const std::string& assetPath, std::shared_ptr<Graphics::Material>& material)
 {
 	// If the material has already been loaded, use that instead then return.
 	std::map<std::string, std::shared_ptr<Graphics::Material>>::iterator foundItem = loadedMaterials.find(assetPath);
@@ -188,7 +188,7 @@ void Content::ContentManager::load(const std::string& assetPath, std::shared_ptr
 	loadedMaterials.emplace(assetPath, material);
 }
 
-void Content::ContentManager::load(const std::string& assetPath, std::shared_ptr<Graphics::ShaderProgram>& shader)
+void Content::JsonContentManager::load(const std::string& assetPath, std::shared_ptr<Graphics::ShaderProgram>& shader)
 {
 	// If the shader has already been loaded, use that instead then return.
 	std::map<std::string, std::shared_ptr<Graphics::ShaderProgram>>::iterator foundItem = loadedShaders.find(assetPath);
@@ -224,7 +224,7 @@ void Content::ContentManager::load(const std::string& assetPath, std::shared_ptr
 	loadedShaders.emplace(assetPath, shader);
 }
 
-void Content::ContentManager::load(const std::string& assetPath, std::shared_ptr<Lua::LuaScript>& luaScript)
+void Content::JsonContentManager::load(const std::string& assetPath, std::shared_ptr<Lua::LuaScript>& luaScript)
 {
 	// If the script has already been loaded, use that instead then return.
 	std::shared_ptr<Lua::LuaContext> luaContext = this->luaContext.lock();
@@ -253,7 +253,7 @@ void Content::ContentManager::load(const std::string& assetPath, std::shared_ptr
 	luaScript = Lua::LuaScript::CreateInstance(luaContext, functionID);
 }
 
-void Content::ContentManager::loadAssetFile(const std::filesystem::path& filePath, nlohmann::json& outputData)
+void Content::JsonContentManager::loadAssetFile(const std::filesystem::path& filePath, nlohmann::json& outputData)
 {
 	// Load the file.
 	std::ifstream fileStream(filePath);

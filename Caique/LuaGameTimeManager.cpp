@@ -54,8 +54,6 @@ int LuaGameObjects::LuaGameTimeManager::getIndex(std::shared_ptr<Lua::LuaContext
 		luaContext->Push(gameTimeManager->GetTargetFrameRate());
 	else if (propertyName == FRAMERATENAME)
 		luaContext->Push(gameTimeManager->GetCurrentFrameRate());
-	else if (propertyName == STARTIDNAME)
-		luaContext->Push(gameTimeManager->GetRoughStartID());
 	else if (propertyName == GAMETIMENAME)
 	{
 		GameTiming::GameTime gameTime = gameTimeManager->GetCurrentGameTime();

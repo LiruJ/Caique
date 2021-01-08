@@ -6,7 +6,7 @@
 #include "GameTime.h"
 
 // Content includes.
-#include "ContentManager.h"
+#include "JsonContentManager.h"
 
 // GameObject includes.
 #include "GameObject.h"
@@ -18,7 +18,7 @@
 #include "LuaTransform.h"
 #include "LuaGameObject.h"
 
-Behaviours::ScriptInstance::ScriptInstance(std::weak_ptr<GameObjects::GameObject> gameObject, std::weak_ptr<Content::ContentManager> contentManager, const std::string& scriptName)
+Behaviours::ScriptInstance::ScriptInstance(std::weak_ptr<GameObjects::GameObject> gameObject, std::weak_ptr<Content::JsonContentManager> contentManager, const std::string& scriptName)
 	: Behaviour(gameObject, contentManager)
 {
 	// Create a new instance of the script, loaded from the content manager.

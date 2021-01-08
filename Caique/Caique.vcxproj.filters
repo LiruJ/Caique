@@ -52,12 +52,6 @@
     <Filter Include="Resource Files\Models">
       <UniqueIdentifier>{79b19574-1a1a-4fa8-a98d-a1565cc09f86}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\DataStructures">
-      <UniqueIdentifier>{522c870d-d7b9-4899-a531-889cfea8cb37}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\DataStructures">
-      <UniqueIdentifier>{32fcefc1-d827-4a0f-9e24-f0baa8e5ec42}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Input">
       <UniqueIdentifier>{dab96b60-07a8-4762-9c92-2d158a895da7}</UniqueIdentifier>
     </Filter>
@@ -70,13 +64,16 @@
     <Filter Include="Source Files\Events">
       <UniqueIdentifier>{eb74369d-8093-4f4a-a56f-63ac1799305a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\GameTiming">
+      <UniqueIdentifier>{32fcefc1-d827-4a0f-9e24-f0baa8e5ec42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameTiming">
+      <UniqueIdentifier>{522c870d-d7b9-4899-a531-889cfea8cb37}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ContentManager.cpp">
-      <Filter>Source Files\Content</Filter>
     </ClCompile>
     <ClCompile Include="Model.cpp">
       <Filter>Source Files\Graphics</Filter>
@@ -101,9 +98,6 @@
     </ClCompile>
     <ClCompile Include="Scene.cpp">
       <Filter>Source Files\GameObjects</Filter>
-    </ClCompile>
-    <ClCompile Include="GameTimeManager.cpp">
-      <Filter>Source Files\DataStructures</Filter>
     </ClCompile>
     <ClCompile Include="ScriptInstance.cpp">
       <Filter>Source Files\Behaviours</Filter>
@@ -132,12 +126,6 @@
     <ClCompile Include="LuaQuaternion.cpp">
       <Filter>Source Files\Lua</Filter>
     </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Source Files\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="EventManager.cpp">
-      <Filter>Source Files\Events</Filter>
-    </ClCompile>
     <ClCompile Include="LuaInputManager.cpp">
       <Filter>Source Files\Lua</Filter>
     </ClCompile>
@@ -147,11 +135,20 @@
     <ClCompile Include="LuaScene.cpp">
       <Filter>Source Files\Lua</Filter>
     </ClCompile>
+    <ClCompile Include="SDLInputManager.cpp">
+      <Filter>Source Files\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="SDLEventManager.cpp">
+      <Filter>Source Files\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="SDLGameTimeManager.cpp">
+      <Filter>Source Files\GameTiming</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonContentManager.cpp">
+      <Filter>Source Files\Content</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ContentManager.h">
-      <Filter>Header Files\Content</Filter>
-    </ClInclude>
     <ClInclude Include="Model.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -179,11 +176,8 @@
     <ClInclude Include="Scene.h">
       <Filter>Header Files\GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="GameTimeManager.h">
-      <Filter>Header Files\DataStructures</Filter>
-    </ClInclude>
     <ClInclude Include="GameTime.h">
-      <Filter>Header Files\DataStructures</Filter>
+      <Filter>Header Files\GameTiming</Filter>
     </ClInclude>
     <ClInclude Include="ScriptInstance.h">
       <Filter>Header Files\Behaviours</Filter>
@@ -212,12 +206,6 @@
     <ClInclude Include="LuaGraphicsContext.h">
       <Filter>Header Files\Lua</Filter>
     </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Header Files\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="EventManager.h">
-      <Filter>Header Files\Events</Filter>
-    </ClInclude>
     <ClInclude Include="LuaInputManager.h">
       <Filter>Header Files\Lua</Filter>
     </ClInclude>
@@ -226,6 +214,27 @@
     </ClInclude>
     <ClInclude Include="LuaScene.h">
       <Filter>Header Files\Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLInputManager.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Header Files\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLEventManager.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Header Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLGameTimeManager.h">
+      <Filter>Header Files\GameTiming</Filter>
+    </ClInclude>
+    <ClInclude Include="GameTimeManager.h">
+      <Filter>Header Files\GameTiming</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonContentManager.h">
+      <Filter>Header Files\Content</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -12,9 +12,9 @@
 #include "Model.h"
 
 // Content includes.
-#include "ContentManager.h"
+#include "JsonContentManager.h"
 
-Behaviours::MeshRenderer::MeshRenderer(std::weak_ptr<GameObjects::GameObject> gameObject, std::weak_ptr<Content::ContentManager> contentManager, const std::string& modelName)
+Behaviours::MeshRenderer::MeshRenderer(std::weak_ptr<GameObjects::GameObject> gameObject, std::weak_ptr<Content::JsonContentManager> contentManager, const std::string& modelName)
 	: Behaviour(gameObject, contentManager)
 {
 	// If the given string is empty, don't do anything with it.

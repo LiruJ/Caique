@@ -1,3 +1,4 @@
+-- Seed the randomiser
 math.randomseed(os.time())
 
 -- Create the camera
@@ -22,7 +23,7 @@ end
 scene:addNewGameObject(vector3.new(-2, 0, -10)):addComponent("MeshRenderer", "Models\\Desk")
 scene:addNewGameObject(vector3.new(-4, 0, -15)):addComponent("MeshRenderer", "Models\\Bookshelf1")
 
--- Tree circle
+-- Tree/book circle
 local treesInCircle = 5
 local treeRadius = 7
 local treeCircleCentre = vector3.new(-5, 0, 15)

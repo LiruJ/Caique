@@ -13,7 +13,7 @@ namespace Behaviours
 	class ScriptInstance : public Behaviour
 	{
 	public:
-		ScriptInstance(std::weak_ptr<GameObjects::GameObject> gameObject, std::weak_ptr<Content::ContentManager> contentManager, const std::string& scriptName);
+		ScriptInstance(std::weak_ptr<GameObjects::GameObject> gameObject, std::weak_ptr<Content::JsonContentManager> contentManager, const std::string& scriptName);
 
 		void PreInitialise() override;
 		void Initialise() override;

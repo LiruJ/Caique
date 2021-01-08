@@ -1,4 +1,4 @@
-#include "GameTimeManager.h"
+#include "SDLGameTimeManager.h"
 
 // Utility includes.
 #include <math.h>
@@ -12,16 +12,9 @@
 // GameTime includes.
 #include "GameTime.h"
 
-// Time includes.
-#include <chrono>
+GameTiming::SDLGameTimeManager::SDLGameTimeManager() : targetDeltaSeconds(1.0 / 60.0), frameRateSmoothing(0.8), currentUpdateSeconds(0), lastUpdateSeconds(0), currentDeltaSeconds(0.0), lastDeltaSeconds(0.0) { }
 
-GameTiming::GameTimeManager::GameTimeManager() : targetDeltaSeconds(1.0 / 60.0), frameRateSmoothing(0.8), currentUpdateSeconds(0), lastUpdateSeconds(0), currentDeltaSeconds(0.0), lastDeltaSeconds(0.0)
-{
-	std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
-	roughStartID = (int)ms.count();
-}
-
-void GameTiming::GameTimeManager::Update()
+void GameTiming::SDLGameTimeManager::Update()
 {
 	lastUpdateSeconds = currentUpdateSeconds;
 	currentUpdateSeconds = SDL_GetPerformanceCounter() / (double)SDL_GetPerformanceFrequency();
@@ -30,7 +23,7 @@ void GameTiming::GameTimeManager::Update()
 	currentDeltaSeconds = (currentUpdateSeconds - lastUpdateSeconds);
 }
 
-const GameTiming::GameTime GameTiming::GameTimeManager::GetCurrentGameTime()
+const GameTiming::GameTime GameTiming::SDLGameTimeManager::GetCurrentGameTime()
 {
 	GameTime gameTime;
 
@@ -43,12 +36,12 @@ const GameTiming::GameTime GameTiming::GameTimeManager::GetCurrentGameTime()
 	return gameTime;
 }
 
-const int GameTiming::GameTimeManager::GetCurrentFrameRate()
+const int GameTiming::SDLGameTimeManager::GetCurrentFrameRate()
 {
 	return (int)floor(1.0 / ((lastDeltaSeconds * frameRateSmoothing) + (currentDeltaSeconds * (1.0 - frameRateSmoothing))));
 }
 
-void GameTiming::GameTimeManager::WaitFrameRemainder(Graphics::GraphicsContext& graphicsContext)
+void GameTiming::SDLGameTimeManager::WaitFrameRemainder(Graphics::GraphicsContext& graphicsContext)
 {
 	// Get the vsync mode of the graphics context.
 	Graphics::VSyncMode vSyncMode = graphicsContext.GetVSyncMode();

@@ -14,7 +14,7 @@ namespace Behaviours
 	class MeshRenderer : public Behaviour
 	{
 	public:
-		MeshRenderer(std::weak_ptr<GameObjects::GameObject> gameObject, std::weak_ptr<Content::ContentManager> contentManager, const std::string& modelName);
+		MeshRenderer(std::weak_ptr<GameObjects::GameObject> gameObject, std::weak_ptr<Content::JsonContentManager> contentManager, const std::string& modelName);
 
 		void PreInitialise() override;
 

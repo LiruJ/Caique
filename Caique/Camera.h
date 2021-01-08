@@ -18,7 +18,7 @@ namespace Behaviours
 	class Camera : public Behaviour
 	{
 	public:
-		Camera(std::weak_ptr<GameObjects::GameObject> gameObject, std::weak_ptr<Content::ContentManager> contentManager, std::shared_ptr<Graphics::GraphicsContext> graphicsContext);
+		Camera(std::weak_ptr<GameObjects::GameObject> gameObject, std::weak_ptr<Content::JsonContentManager> contentManager, std::shared_ptr<Graphics::GraphicsContext> graphicsContext);
 
 		glm::mat4 GetProjection() { return projection; }
 		glm::mat4 GetInvertedProjection() { return invertedProjection; }

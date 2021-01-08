@@ -11,7 +11,7 @@
 #include "Scene.h"
 
 // Foward declarations.
-namespace Content { class ContentManager; }
+namespace Content { class JsonContentManager; }
 namespace Behaviours { class Behaviour; class Camera; }
 namespace GameTiming { struct GameTime; }
 
@@ -22,7 +22,7 @@ namespace GameObjects
 	class GameObject : public std::enable_shared_from_this<GameObjects::GameObject>
 	{
 	public:
-		GameObject(std::weak_ptr<GameObjects::Scene> scene, std::weak_ptr<Content::ContentManager> contentManager);
+		GameObject(std::weak_ptr<GameObjects::Scene> scene, std::weak_ptr<Content::JsonContentManager> contentManager);
 		void InitialiseTransform();
 
 		template<typename T>
@@ -76,7 +76,7 @@ namespace GameObjects
 
 		std::shared_ptr<GameObjects::Transform> transform;
 
-		std::weak_ptr<Content::ContentManager> contentManager;
+		std::weak_ptr<Content::JsonContentManager> contentManager;
 
 		std::weak_ptr<GameObjects::Scene> scene;
 	};

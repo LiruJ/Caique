@@ -5,7 +5,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-Behaviours::Camera::Camera(std::weak_ptr<GameObjects::GameObject> gameObject, std::weak_ptr<Content::ContentManager> contentManager, std::shared_ptr<Graphics::GraphicsContext> graphicsContext)
+Behaviours::Camera::Camera(std::weak_ptr<GameObjects::GameObject> gameObject, std::weak_ptr<Content::JsonContentManager> contentManager, std::shared_ptr<Graphics::GraphicsContext> graphicsContext)
 	: Behaviour(gameObject, contentManager), width(0), height(0), projection(glm::identity<glm::mat4>()), invertedProjection(glm::identity<glm::mat4>())
 {
 
