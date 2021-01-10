@@ -7,10 +7,6 @@ extern "C"
 #include "lualib.h"
 }
 
-#ifdef _WIN32
-#pragma comment(lib, "../Libraries/Lua/lua51.lib")
-#endif
-
 #define method(class, name) {#name, class::name}
 
 // Type includes.
