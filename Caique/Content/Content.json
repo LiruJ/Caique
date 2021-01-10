@@ -51,6 +51,15 @@
         "Materials":[
         	"Materials\\BookCover"
         ]
+      },
+      {
+      	"Name":"Terrain",
+      	"RelativePath":"Models\\Terrain.fbx",
+      	"Positions":[0,"in_Positions"],
+        "UVs":[1,"in_UVs"],
+        "Materials":[
+        	"Materials\\Grass"
+        ]
       }
    ],
    "Textures":[

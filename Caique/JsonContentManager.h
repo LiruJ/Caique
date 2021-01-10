@@ -1,5 +1,4 @@
 #pragma once
-//#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 
 // Type includes.
 #include <string>

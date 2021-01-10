@@ -2,7 +2,7 @@
 math.randomseed(os.time())
 
 -- Create the camera
-local camera = scene:addNewGameObject(vector3.new(0, 10, 21))
+local camera = scene:addNewGameObject(vector3.new(10, 10, 21))
 camera:addComponent("Camera", graphicsContext)
 camera:addComponent("ScriptInstance", "Scripts\\CameraController")
 
@@ -15,8 +15,8 @@ scene:addNewGameObject(vector3.new(0, 0, 0)):addComponent("MeshRenderer", "Model
 
 -- Rows of lamps
 for i=-30,30,10 do
-	scene:addNewGameObject(vector3.new(-30, 0, i)):addComponent("MeshRenderer", "Models\\Lamp")
-	scene:addNewGameObject(vector3.new(-22.5, 0, i)):addComponent("MeshRenderer", "Models\\Lamp")
+	scene:addNewGameObject(vector3.new(-30, 0, i), quaternion.fromAngleAxis((math.random() * math.pi * 2) - 1, vector3.up)):addComponent("MeshRenderer", "Models\\Lamp")
+	scene:addNewGameObject(vector3.new(-22.5, 0, i), quaternion.fromAngleAxis((math.random() * math.pi * 2) - 1, vector3.up)):addComponent("MeshRenderer", "Models\\Lamp")
 end
 
 
