@@ -25,6 +25,9 @@ namespace GameObjects
 		GameObject(std::weak_ptr<GameObjects::Scene> scene, std::weak_ptr<Content::JsonContentManager> contentManager);
 		void InitialiseTransform();
 
+		/// <summary> Gets the Behaviour with the given type. </summary>
+		/// <typeparam name="T"> The type of Behaviour. </typeparam>
+		/// <returns> The Behaviour with the given type. </returns>
 		template<typename T>
 		std::shared_ptr<T> GetComponent()
 		{
@@ -40,6 +43,11 @@ namespace GameObjects
 			return nullptr;
 		}
 
+		/// <summary> Adds a Behaviour of the given type to this GameObject, using the constructor found from the given args. </summary>
+		/// <typeparam name="T"> The Behaviour type. </typeparam>
+		/// <typeparam name="...Args"> The arguments to be passed through to the Behaviour. </typeparam>
+		/// <param name="...args"> The arguments to be passed through to the Behaviour. </param>
+		/// <returns> The created Behaviour. </returns>
 		template<typename T, typename ... Args>
 		std::shared_ptr<T> AddComponent(Args&&... args)
 		{
@@ -61,15 +69,28 @@ namespace GameObjects
 
 		std::shared_ptr<GameObjects::GameObject> AddNewGameObject();
 
+		/// <summary> The first initialisation function, having a top-down effect. </summary>
 		void PreInitialise();
+
+		/// <summary> The second initialisation function, having a bottom-up effect. </summary>
 		void Initialise();
+		
+		/// <summary> The last initialisation function, having a top-down effect. </summary>
 		void PostInitialise();
 
+		/// <summary> Runs every frame. </summary>
+		/// <param name="gameTime"> The current game time. </param>
 		void Update(GameTiming::GameTime& gameTime);
+
+		/// <summary> Runs every frame after the main update function. </summary>
 		void PostUpdate();
 
+		/// <summary> Gets this GameObject's transform. </summary>
+		/// <returns> The transform of this GameObject. </returns>
 		std::shared_ptr<GameObjects::Transform> GetTransform();
 
+		/// <summary> Gets the Scene that this GameObject belongs to. </summary>
+		/// <returns> The owning scene. </returns>
 		std::shared_ptr<GameObjects::Scene> GetScene() { return scene.lock(); }
 	private:
 		std::map<std::type_index, std::shared_ptr<Behaviours::Behaviour>> behavioursByTypeIndex;

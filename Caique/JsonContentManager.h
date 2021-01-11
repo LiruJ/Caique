@@ -26,8 +26,14 @@ namespace Content
 		JsonContentManager(const std::string& exeFolderPath, const std::string& contentFolderName, std::shared_ptr<Graphics::GraphicsContext> graphicsContext, std::weak_ptr<Lua::LuaContext> luaContext)
 			: rootFolderPath(std::filesystem::path(exeFolderPath).parent_path().append(contentFolderName)), graphicsContext(graphicsContext), luaContext(luaContext) {}
 		
+		/// <summary> Gets the graphics context. </summary>
+		/// <returns> The GraphicsContext. </returns>
 		const std::shared_ptr<Graphics::GraphicsContext> GetGraphicsContext() { return graphicsContext.lock(); }
 
+		/// <summary> Loads the asset at the given content path. </summary>
+		/// <typeparam name="T"> The type of asset to load (model, texture, material, shader, or script). </typeparam>
+		/// <param name="assetPath"> The path of the content relative to the content folder. </param>
+		/// <returns> The loaded asset. </returns>
 		template<typename T>
 		std::shared_ptr<T> Load(const std::string& assetPath)
 		{
@@ -35,7 +41,6 @@ namespace Content
 			load(assetPath, pointer);
 			return pointer;
 		}
-		
 	private:
 
 		std::weak_ptr<Graphics::GraphicsContext> graphicsContext;
